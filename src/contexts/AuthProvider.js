@@ -5,11 +5,11 @@ import isValidToken from "../utils/jwt";
 import { useNavigate } from "react-router-dom";
 
 
+
 const initialState = {
     isInitialized: false,
     isAuthenticated: false,
     user: null,
-    creator: null,
 };
 
 const INITIALIZE = "AUTH.INITIALIZE";
@@ -29,35 +29,17 @@ const reducer = (state, action) => {
             }
          }; 
          case REGISTER_SUCCESS: 
-         const { userType, user } = action.payload;
-         let updatedPayload = {};
-         if (userType === 'creator') {
-            updatedPayload = { creator: user}
-         } else if (userType === "user") {
-            updatedPayload = { user }
-         };
           return {
             ...state,
             isAuthenticated: true,
-            payload: { 
-                ...updatedPayload
-            }
+            user: action.payload.user
          };
         default:
         return state;
-    }
+    } 
 }
 const AuthContext = createContext({ ...initialState});
 
-const setSession = (accessToken) => {
-    if (accessToken) {
-        window.localStorage.setItem("accessToken", accessToken);
-        apiService.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-    } else {
-        window.localStorage.removeItem("accessToken");
-        delete apiService.defaults.headers.common.Authorization;
-    }
-}
 
 
 function AuthProvider({ children }) {
@@ -68,6 +50,22 @@ function AuthProvider({ children }) {
         try {
             const response = await apiService.post("/auth/login", {email, password});
             const { creator, user, accessToken } = response.data;
+            console.log("res", response.data);
+            if (creator !== null) {
+                navigate("/creator", { replace: true });
+            } else if ( user !== null) {
+                navigate("/", { replace: true })
+            }
+
+            const setSession = (accessToken) => {
+                if (accessToken) {
+                    window.localStorage.setItem("accessToken", accessToken);
+                    apiService.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+                } else {
+                    window.localStorage.removeItem("accessToken");
+                    delete apiService.defaults.headers.common.Authorization;
+                }
+            }
 
         setSession(accessToken);
         dispatch({
@@ -82,32 +80,23 @@ function AuthProvider({ children }) {
        }
         catch (error) {
             toast.error(error.message);
-            navigate("/auth/register");
        }
     };
 
-    const register = async ({ name, email, role, password}, callback) => {
-        try {
+    const register = async ({ name, email, password, role }, callback) => {
             const response = await apiService.post("/auth/register", {
                 name,
                 email,
                 password,
                 role
             });
-            const { user, updatedPayload } = response.data;
+            const { user } = response.data;
 
             dispatch({ 
                 type: REGISTER_SUCCESS,
-                payload: { 
-                    ...updatedPayload,
-                    user
-                }
+                payload: { user },
             });
-
             callback();
-        } catch (error) {
-            toast.error(error.message);
-        }
     };
 
 

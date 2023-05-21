@@ -43,18 +43,12 @@ function LoginPage() {
   } = methods;
 
   const onSubmit = async (data) => {
-    const from = location.state?.from?.pathname || "/";
     let { email, password } = data;
+    
 
     try {
        await auth.login({ email, password }, () => {
-      // if (data.creator !== null ) {
-      //   navigate("/creator", { replace: true });
-      // } else if (data.user !== null) {
-      //   navigate(from, { replace: true } );
-  
-      // }
-      navigate(from, { replace: true })
+        console.log("data", data);
      });
     
     } catch (error) {

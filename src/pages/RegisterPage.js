@@ -20,13 +20,13 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { LoadingButton } from '@mui/lab';
 
 
-const RegisterSchema = Yup.object().shape({
+const registerSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string().required("Password is required"),
   passwordConfirmation: Yup.string()
-     .required("Please confirm your password")
-     .oneOf([Yup.ref("password")], "Password must match"),
+  .required("Please confirm your password")
+  .oneOf([Yup.ref("password")], "Password must match"),
   role: Yup.string().required("Your role is required"),
 });
 
@@ -36,6 +36,7 @@ const defaultValues = {
   password: "",
   passwordConfirmation: "",
   role: ""
+
 }
 
 
@@ -46,7 +47,7 @@ function RegisterPage() {
   const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false);
 
   const methods = useForm({
-    resolver: yupResolver(RegisterSchema),
+    resolver: yupResolver(registerSchema),
     defaultValues,
   });
 
@@ -57,13 +58,15 @@ function RegisterPage() {
     formState: { errors, isSubmitting },
   } = methods;
 
-  const onSubmit = async(data) => {
-    const { name, email, password, role } = data;
+  const onSubmit = async (data) => {
+    let { name, email, password, role } = data;
+    console.log(data); 
+
     try {
       await auth.register({ name, email, password, role }, () => {
         navigate("/", { replace: true });
-        toast.success("Register successful. Check your email to verify the account")
-      })
+        toast.success("Register successful. Check your email to verify the account");
+      });
     } catch (error) {
       reset();
       setError("responseError", error)
@@ -71,13 +74,15 @@ function RegisterPage() {
   };
 
 
+
+
   return (
     <Container maxWidth="xs">
-      <FormProvider methods={methods} obSubmit={handleSubmit(onSubmit)}>
+      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3}>
           {!!errors.responseError && (
             <Alert serverity="error">
-              {errors.response.message}
+              {errors.responseError.message}
             </Alert>
           )}
           <Alert severity='info'>Already have account?{" "}
@@ -88,7 +93,7 @@ function RegisterPage() {
           <FTextField name="email" label="Email"/>
           <FormHelperText>Please choose creator role if you want to raise fund, user role to donate</FormHelperText>
           <FSelect
-            name="role" size="small"
+            name="role"
           >
             {[
               {value: "user", label: "user"},

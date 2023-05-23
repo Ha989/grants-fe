@@ -9,6 +9,8 @@ import { FTextField, FormProvider, FCheckbox } from "../components/form";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { LoadingButton } from '@mui/lab';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -26,9 +28,7 @@ const defaultValues = {
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
   const auth = useAuth();
-  const location = useLocation();
 
   const methods = useForm({
     resolver: yupResolver(LoginSchema),
@@ -48,7 +48,8 @@ function LoginPage() {
 
     try {
        await auth.login({ email, password }, () => {
-        console.log("data", data);
+        toast.success("Login success");
+        <ToastContainer />
      });
     
     } catch (error) {
@@ -58,7 +59,7 @@ function LoginPage() {
   };
 
   return (
-    <Container maxWidth="xs" >
+    <Container maxWidth="xs">
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3}>
           {!!errors.responseError && (

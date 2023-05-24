@@ -1,6 +1,7 @@
 import jwtDecode from 'jwt-decode';
 
-export const isValidToken = (accessToken) => {
+
+const isValidToken = (accessToken) => {
   if (!accessToken) {
     return false;
   }
@@ -9,3 +10,5 @@ export const isValidToken = (accessToken) => {
 
   return decoded.exp > currentTime;
 };
+
+export default isValidToken;

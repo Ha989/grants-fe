@@ -71,6 +71,12 @@ function MainHeader() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const user = auth.user;
+  console.log("user", user);
+  const creator = auth.user?.creator;
+  console.log("creator", creator);
+
+  
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -110,7 +116,7 @@ function MainHeader() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem component={RouterLink} to={ creator ? "/creator/account" :  "/user/account"}>
       <IconButton
                   size="large"
                   color="primary"
@@ -136,7 +142,7 @@ function MainHeader() {
                 Logout
               </MenuItem>
     </Menu>
-  );
+  )
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
@@ -155,7 +161,7 @@ function MainHeader() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     > 
-      {auth.user ? (
+      {auth.user || auth.creator ? (
         <div>
           <MenuItem>
             <IconButton
@@ -194,7 +200,8 @@ function MainHeader() {
         </MenuItem>
       )}
       </Menu>
-      );
+    );
+
 
   return (
     <Box sx={{ flexGrow: 1 }}>

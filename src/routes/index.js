@@ -14,14 +14,14 @@ import AuthRequired from "./AuthRequired";
 import CreatorPage from "../pages/CreatorPage";
 import VerificationPage from "../pages/VerificationPage";
 import CreateDetailPage from "../pages/CreateDetailPage";
+import ProjectList from "../features/project/ProjectList";
 
 function Router() {
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
-        <Route path="project" element={<ProjectListPage />} />
-        <Route path="/creator" element={<CreatorPage />} />
+        <Route path="project" element={<ProjectList />} />
       </Route>
       <Route
         element={
@@ -30,6 +30,7 @@ function Router() {
           </AuthRequired>
         }
       >
+        <Route path="/creator" element={<CreatorPage />} />
         <Route path="/user/account" element={<UserPage />} />
         <Route path="/:projectId" element={<ProjectDetailPage />} />
         <Route path="/creator/account" element={<CreateDetailPage />}/>

@@ -9,8 +9,7 @@ import { FTextField, FormProvider, FCheckbox } from "../components/form";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { LoadingButton } from '@mui/lab';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+
 
 const LoginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -48,8 +47,7 @@ function LoginPage() {
 
     try {
        await auth.login({ email, password }, () => {
-        toast.success("Login success");
-        <ToastContainer />
+
      });
     
     } catch (error) {

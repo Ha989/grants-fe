@@ -4,8 +4,8 @@ import { Link as RouterLink} from "react-router-dom";
 
 function CreatorPage() {
   return (
-    <div>CreatorPage
-      <Button component={RouterLink} to="/creator/account">Get me</Button>
+    <div>
+      Create project
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IconButton, InputAdornment, TextField } from "@mui/material";
+import { Box, IconButton, InputAdornment, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from '@mui/icons-material/Clear';
 
@@ -20,7 +20,7 @@ function SearchInput({ handleOnSubmit }) {
     setSearch(event.target.value);
   }
   return (
-   <div>
+   <Box>
     <form onSubmit={onSubmit}>
       <TextField
         value={search}
@@ -49,7 +49,7 @@ function SearchInput({ handleOnSubmit }) {
         }}
       />
     </form>
-    </div>
+  </Box>
   );
 }
 

@@ -20,7 +20,7 @@ function HomePage() {
           <Typography variant="h6" >Our platform build is to help the founder of any project can create their own community grants.</Typography>
           <Typography variant="h6">We help the project out to solve their fundrasing problem. </Typography>
           <Typography variant="h6" mb={3}>Donate to the project you love to support them or create your powerful idea with us!</Typography>
-          <Button variant="contained" component={Link} to="/project">Explore Projects</Button>
+          <Button variant="contained" component={Link} to="/projects">Explore Projects</Button>
         </Box>
         <Box width="70vw" height="60vh">
           <img src={background} alt="background" width="100%" height="100%" />

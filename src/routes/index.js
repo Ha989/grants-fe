@@ -7,21 +7,21 @@ import BlankLayout from "../layouts/BlankLayout";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import NotFoundPage from "../pages/NotFoundPage";
-import ProjectListPage from "../pages/ProjectListPage";
-import ProjectDetailPage from "../pages/ProjectDetailPage";
 import AuthLayout from "../layouts/AuthLayout";
 import AuthRequired from "./AuthRequired";
 import CreatorPage from "../pages/CreatorPage";
 import VerificationPage from "../pages/VerificationPage";
 import CreateDetailPage from "../pages/CreateDetailPage";
 import ProjectList from "../features/project/ProjectList";
+import SingleProject from "../features/project/SingleProject";
 
 function Router() {
   return (
     <Routes>
       <Route path="/" element={<MainLayout />}>
         <Route index element={<HomePage />} />
-        <Route path="project" element={<ProjectList />} />
+        <Route path="/projects" element={<ProjectList />} />
+        <Route path="/projects/:id" element={<SingleProject />} />
       </Route>
       <Route
         element={
@@ -32,8 +32,7 @@ function Router() {
       >
         <Route path="/creator" element={<CreatorPage />} />
         <Route path="/user/account" element={<UserPage />} />
-        <Route path="/:projectId" element={<ProjectDetailPage />} />
-        <Route path="/creator/account" element={<CreateDetailPage />}/>
+        <Route path="/creator/account" element={<CreateDetailPage />} />
       </Route>
       <Route element={<BlankLayout />}>
         <Route path="/auth/login" element={<LoginPage />} />

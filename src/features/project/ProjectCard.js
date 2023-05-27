@@ -1,15 +1,20 @@
-import { Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
+import { Avatar, Button, Card, CardContent, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
 import TextTruncate from 'react-text-truncate';
+import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
 import React from 'react'
 import { useDispatch } from 'react-redux';
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import StarIcon from '@mui/icons-material/Star';
 
 function ProjectCard({ project }) {
-    const dispatch = useDispatch();
-    
+    const navigate = useNavigate();
+
+    const handleExplore = () => {
+      const projectId = project._id;
+      navigate(`/projects/${projectId}`)
+    };
     
   return (
-    <Card sx={{ maxWidth: 345, backgroundColor: "#f1f2f6", height: 550, border: "1px solid green"}} >
+    <Card sx={{ maxWidth: 345, backgroundColor: "#f1f2f6", minHeight: 550, border: "1px solid green"}} >
       <CardHeader
         avatar={
           <Avatar src={project?.logo} alt={project?.name}/>
@@ -23,16 +28,20 @@ function ProjectCard({ project }) {
         image={project?.banner}
         alt={project?.name}
       />
-      <CardContent display="flex" flexDirection="row">
-        <TextTruncate variant="body2" color="text.secondary" line={3} 
+      <CardContent>
+        <IconButton color='error' size='small'>
+          <StarIcon />
+          {project?.totalBookmarks}
+        </IconButton>
+        <TextTruncate variant="body2" color="text.secondary" line={2} 
             element="p"
             truncateText="…"
             text={project?.description} />
-        <Button variant="contained">Explore more</Button>
+        <Button variant="contained" onClick={handleExplore}>Explore more</Button>
       </CardContent>
      
     </Card>
   )
 }
 
-export default ProjectCard
+export default ProjectCard;

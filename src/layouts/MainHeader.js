@@ -72,9 +72,8 @@ function MainHeader() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const user = auth.user;
-  console.log("user", user);
   const creator = auth.user?.creator;
-  console.log("creator", creator);
+
 
   
 

@@ -17,7 +17,6 @@ function ProjectList() {
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("");
   const projects = useSelector((state) => state.project.project);
-  console.log("projects", projects);
 
   const handleOnSubmit = (search) => {
     setSearch(search);

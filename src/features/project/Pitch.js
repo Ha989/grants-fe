@@ -50,10 +50,14 @@ function Pitch() {
         <Typography variant="h5" fontWeight="bolder" color="primary">Team</Typography>
         <List sx={{ width: '100%', maxWidth: 360}}>
         {project?.team.map((team, index) => {
+          return (
           <ListItem key={index}>
-            <ListItemText primary={`${team}`} />
+          <ListItemText>
+
+            <Link href={team}>{team}</Link>
+          </ListItemText>
           </ListItem>
-          console.log("team", team)        })}
+         )})}
         </List>
       </Box>
       </Stack>

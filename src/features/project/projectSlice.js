@@ -19,7 +19,6 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
-
     getProjectSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
@@ -69,5 +68,16 @@ export const getSingleProject = (id) => async (dispatch) => {
     toast.error(error.message);
   }
 };
+
+// export const createDonation = ({ projectId, userId, amount }) => async (dispatch) => {
+//   try {
+//     dispatch(slice.actions.startLoading());
+
+//     const params =
+//   } catch (error) {
+//     dispatch(slice.actions.hasError(error.message));
+//     toast.error(error.message);
+//   }
+// }
 
 export default slice.reducer;

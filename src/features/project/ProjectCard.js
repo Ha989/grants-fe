@@ -1,8 +1,7 @@
 import { Avatar, Button, Card, CardContent, CardHeader, CardMedia, IconButton, Typography } from '@mui/material';
 import TextTruncate from 'react-text-truncate';
-import { Link as RouterLink, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import React from 'react'
-import { useDispatch } from 'react-redux';
 import StarIcon from '@mui/icons-material/Star';
 
 function ProjectCard({ project }) {

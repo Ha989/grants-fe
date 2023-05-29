@@ -2,7 +2,6 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import MainLayout from "../layouts/MainLayout";
-import UserPage from "../pages/UserPage";
 import BlankLayout from "../layouts/BlankLayout";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
@@ -14,6 +13,8 @@ import VerificationPage from "../pages/VerificationPage";
 import CreateDetailPage from "../pages/CreateDetailPage";
 import ProjectList from "../features/project/ProjectList";
 import SingleProject from "../features/project/SingleProject";
+import Donation from "../features/project/Donation";
+import UserPanel from "../features/user/UserPanel";
 
 function Router() {
   return (
@@ -29,10 +30,10 @@ function Router() {
             <AuthLayout />
           </AuthRequired>
         }
-      >
-        <Route path="/creator" element={<CreatorPage />} />
-        <Route path="/user/account" element={<UserPage />} />
-        <Route path="/creator/account" element={<CreateDetailPage />} />
+      > <Route path="/projects/:id/donation/:id" element={<Donation />}/>
+        <Route path="/creators" element={<CreatorPage />} />
+        <Route path="/users/account" element={<UserPanel />} />
+        <Route path="/creators/account" element={<CreateDetailPage />} />
       </Route>
       <Route element={<BlankLayout />}>
         <Route path="/auth/login" element={<LoginPage />} />

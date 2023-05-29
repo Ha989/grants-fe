@@ -2,9 +2,6 @@ import { createContext, useReducer, useEffect } from "react";
 import apiService from "../app/apiService";
 import isValidToken from "../utils/jwt";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { act } from "react-dom/test-utils";
 
 const initialState = {
   isInitialized: false,
@@ -26,17 +23,14 @@ const reducer = (state, action) => {
         isInitialized: true,
         isAuthenticated: action.payload,
         user: action.payload.user || null,
-        // creator: action.payload.creator || null
+        creator: action.payload.creator || null,
       };
     case LOGIN_SUCCESS:
       return {
         ...state,
         isAuthenticated: true,
-        user : {
-          user: action.payload.user || null,
-          creator: action.payload.creator || null,
-        }
-       
+        user: action.payload.user || null,
+        creator: action.payload.creator || null,
       };
     case REGISTER_SUCCESS:
       return {
@@ -80,48 +74,40 @@ function AuthProvider({ children }) {
 
         if (accessToken && isValidToken(accessToken)) {
           setSession(accessToken);
+          const response = await apiService.get("/auth/me");
 
-          //   let userData = null;
-          // let creatorData = null;
-          const creatorResponse = await apiService.get("/creator/me");
-          if (creatorResponse.data) {
+          const { creator, user } = response.data;
+          console.log("response", response.data);
+          if (user) {
+            const userResponse = await apiService.get("/users/me");
             dispatch({
               type: INITIALIZE,
-              payload: {
-                user: null,
-                creator: creatorResponse.data,
-              },
+              payload: { isAuthenticated: true, user: userResponse.data },
+            });
+          } else if (creator) {
+            // const creatorResponse = await apiService.get("/creators/me");
+            dispatch({
+              type: INITIALIZE,
+              payload: { isAuthenticated: true, creator },
             });
           } else {
-            const userResponse = await apiService.get("/user/me");
+            setSession(null);
             dispatch({
               type: INITIALIZE,
-              payload: {
-                user: userResponse.data,
-                creator: null,
-              },
+              payload: { isAuthenticated: true, user: null, creator: null },
             });
           }
         }
       } catch (error) {
-        console.log(error);
         setSession(null);
         dispatch({
           type: INITIALIZE,
-          payload: {
-            isAuthenticated: false,
-            user: {
-              user: null,
-              creator: null,
-            },
-          },
+          payload: { isAuthenticated: true, user: null, creator: null },
         });
       }
     };
     initialize();
   }, []);
-
-
 
   const login = async ({ email, password }, callback) => {
     const response = await apiService.post("/auth/login", {
@@ -131,11 +117,12 @@ function AuthProvider({ children }) {
     const { creator, user, accessToken } = response.data;
 
     if (creator !== null) {
-      navigate("/creator", { replace: true });
+      navigate("/creators", { replace: true });
+      setSession(accessToken);
     } else if (user !== null) {
       navigate("/", { replace: true });
+      setSession(accessToken);
     }
-    setSession(accessToken);
     dispatch({
       type: LOGIN_SUCCESS,
       payload: {

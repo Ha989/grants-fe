@@ -13,11 +13,13 @@ function Pitch() {
   useEffect(() => {
     dispatch(getSingleProject(id));
   }, [dispatch, id]);
+
+
   return (
     <Container>
-      <Stack direction="column">
-      <Stack direction="row" mt={3} padding={1} justifyContent="space-between">
-        <Box width="80%" padding={1}>
+      <Stack direction="column" padding={1} justifyContent="space-between">
+      <Stack direction="row" mt={3} justifyContent="space-between">
+        <Box width="80%">
           <Typography variant="h5" fontWeight="bolder" color="primary">
             Description
           </Typography>
@@ -41,20 +43,20 @@ function Pitch() {
         </Box>
       </Stack>
        <Box>
-        <IconButton size="small">
+        <Typography variant="h5" color="primary" fontWeight="bolder">Visit our website</Typography>
+        <IconButton size="small" color="success">
           <LanguageIcon />
         </IconButton>
           <Link variant="body2" href={project?.website}>{project?.website}</Link>
       </Box>
       <Box>
-        <Typography variant="h5" fontWeight="bolder" color="primary">Team</Typography>
-        <List sx={{ width: '100%', maxWidth: 360}}>
+        <Typography variant="h5" fontWeight="bolder" color="primary">Our Team</Typography>
+        <List sx={{ width: '50%', maxWidth: 200}}>
         {project?.team.map((team, index) => {
           return (
           <ListItem key={index}>
           <ListItemText>
-
-            <Link href={team}>{team}</Link>
+            <Link variant="body2" href={team}>{team}</Link>
           </ListItemText>
           </ListItem>
          )})}

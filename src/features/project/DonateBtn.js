@@ -1,7 +1,20 @@
-import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import React from "react";
+import { Box, Button, Divider, Stack, Typography } from "@mui/material";
+import useAuth from '../../hooks/useAuth';
+import { useNavigate } from "react-router-dom";
+
 
 function DonateBtn({ project }) {
+  const auth = useAuth();
+  const navigate = useNavigate();
+
+  const handleDonate = () => {
+    auth?.user ? (
+      navigate(`/projects/${project._id}/donation/${auth.user._id}`)
+    ) : (
+      navigate("/auth/login")
+    )
+  }
   return (
     <Stack
       width={{ xs: "100%", md: "25%" }}
@@ -18,14 +31,14 @@ function DonateBtn({ project }) {
         Raised
       </Typography>
       <Typography variant="h4" fontWeight="bolder" color="primary">
-        435
+        {project?.totalDonations}
       </Typography>
       <Typography variant="subtitle1" mb={3} >
         Donors/Investors: 
       </Typography>
       <Divider />
       </Box>
-      <Button size="large" variant="contained">Donate</Button>
+      <Button size="large" variant="contained" onClick={handleDonate}>Donate</Button>
     </Stack>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, Card, Divider, Stack, Tab, Tabs } from "@mui/material";
+import { Box, Divider, Stack, Tab, Tabs } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getSingleProject } from "./projectSlice";
@@ -82,7 +82,7 @@ function SingleProject() {
 
         <Box
           width="100%"
-          height="100vh"
+          minheight="50vh"
           sx={{ border: "1px solid black", padding: 1 }}
         >
           <Box sx={{ mb: 3, height: 50, position: "relative" }}>

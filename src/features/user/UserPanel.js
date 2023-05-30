@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   Tab,
   Tabs,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-
-import { getCurrentUser } from "./userSlice";
 import UserDonations from "./UserDonations";
 import UserBookmarked from "./UserBookmarked";
 import UserSetting from "./UserSetting";
+import { useDispatch, useSelector } from "react-redux";
+import { getCurrentUser } from "./userSlice";
+import useAuth from '../../hooks/useAuth'
 
 const TabWrapperStyle = styled("div")(({ theme }) => ({
   display: "flex",
@@ -29,17 +29,20 @@ const TabWrapperStyle = styled("div")(({ theme }) => ({
 }));
 
 function UserPanel() {
-  const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
+  // const dispatch = useDispatch();
+  // const user = useSelector((state) => state.user.user)
+  // const auth = useAuth();
+  // const user = auth?.user;
+  // console.log("user", user)
   const [currentTab, setCurrentTab] = useState("donations");
 
   const handleChangeTab = (newValue) => {
     setCurrentTab(newValue);
   };
 
-  useEffect(() => {
-    dispatch(getCurrentUser());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getCurrentUser());
+  // }, [dispatch]);
 
   const USER_TAB = [
     {
@@ -48,11 +51,11 @@ function UserPanel() {
     },
     {
       value: "bookmarked",
-      component: <UserBookmarked user={user} />,
+      component: <UserBookmarked />,
     },
     {
       value: "settings",
-      component: <UserSetting user={user} />,
+      component: <UserSetting />,
     },
   ];
 

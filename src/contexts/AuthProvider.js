@@ -85,16 +85,16 @@ function AuthProvider({ children }) {
               payload: { isAuthenticated: true, user: userResponse.data },
             });
           } else if (creator) {
-            // const creatorResponse = await apiService.get("/creators/me");
+            const creatorResponse = await apiService.get("/creators/me");
             dispatch({
               type: INITIALIZE,
-              payload: { isAuthenticated: true, creator },
+              payload: { isAuthenticated: true, creator: creatorResponse.data },
             });
           } else {
             setSession(null);
             dispatch({
               type: INITIALIZE,
-              payload: { isAuthenticated: true, user: null, creator: null },
+              payload: { isAuthenticated: false, user: null, creator: null },
             });
           }
         }
@@ -102,7 +102,7 @@ function AuthProvider({ children }) {
         setSession(null);
         dispatch({
           type: INITIALIZE,
-          payload: { isAuthenticated: true, user: null, creator: null },
+          payload: { isAuthenticated: false, user: null, creator: null },
         });
       }
     };

@@ -1,40 +1,48 @@
-import React, { useEffect } from "react";
-import { Container, Divider, Stack, Typography } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 import { getDonationsOfUser } from "./userSlice";
+// import { Container, Divider, Stack, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { Container, Divider, Stack, Typography } from "@mui/material";
+import { FormProvider } from "../../components/form";
+import { useForm } from "react-hook-form";
+import FilterBtn from "../../components/FilterBtn";
 
 // import FilterBtn from "../../components/FilterBtn";
 // import { FormProvider } from "../../components/form";
 // import { useForm } from "react-hook-form";
-import Pagination from "../../components/Pagination";
+// import Pagination from "../../components/Pagination";
 
 function UserDonations({ user }) {
   const dispatch = useDispatch();
   const donations = useSelector((state) => state.user.donation);
-  // const [page, setPage] = useState("1");
+  console.log("donation", donations)
+  const [page, setPage] = useState("1");
+  const [limit, setLimit] = useState(10);
   // const [totalPage, setTotalPage] = useState("");
-  // const [filter, setFilter] = useState("");
+  const [status, setStatus] = useState("");
 
-  // const handleFilter = (filterValue) => {
-  //   setFilter(filterValue);
-  // };
-  // const methods = useForm();
+  const handleFilter = (statusValue) => {
+    setStatus(statusValue);
+  };
+  const methods = useForm();
 
-  // const { handleSubmit } = methods;
+  const { handleSubmit } = methods;
 
-  // const onSubmit = (formData) => {
-  //   setFilter(formData.filter);
-  // };
+  const onSubmit = (formData) => {
+    setStatus(formData.status);
+  };
 
   useEffect(() => {
-    dispatch(getDonationsOfUser());
-  }, [dispatch]);
+    dispatch(getDonationsOfUser({
+      page, limit, status
+    }));
+  }, [dispatch, page, limit, status]);
   return (
     <Container>
       <Stack border="1px solid green" padding={1}>
-        {/* <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-          <FilterBtn />
-        </FormProvider> */}
+        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+          <FilterBtn handleFilter={handleFilter} />
+        </FormProvider>
       </Stack>
       <Stack border="1px solid green" width="90vw" padding={1}>
         <Stack
@@ -87,10 +95,9 @@ function UserDonations({ user }) {
             </>
           );
         })}
-        <Pagination />
       </Stack>
     </Container>
-  );
-}
+  )};
 
-export default UserDonations;
+  export default UserDonations;
+  

@@ -2,7 +2,14 @@ import React, { useEffect, useState } from "react";
 import { getDonationsOfUser } from "./userSlice";
 // import { Container, Divider, Stack, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { Container, Divider, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Divider,
+  Pagination,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { FormProvider } from "../../components/form";
 import { useForm } from "react-hook-form";
 import FilterBtn from "../../components/FilterBtn";
@@ -15,12 +22,14 @@ import FilterBtn from "../../components/FilterBtn";
 function UserDonations({ user }) {
   const dispatch = useDispatch();
   const donations = useSelector((state) => state.user.donation);
-  console.log("donation", donations)
+  const totalPage = useSelector((state) => state.user.totalPage);
   const [page, setPage] = useState("1");
   const [limit, setLimit] = useState(10);
-  // const [totalPage, setTotalPage] = useState("");
   const [status, setStatus] = useState("");
 
+  const handleChange = (e, value) => {
+    setPage(value);
+  };
   const handleFilter = (statusValue) => {
     setStatus(statusValue);
   };
@@ -33,18 +42,22 @@ function UserDonations({ user }) {
   };
 
   useEffect(() => {
-    dispatch(getDonationsOfUser({
-      page, limit, status
-    }));
+    dispatch(
+      getDonationsOfUser({
+        page,
+        limit,
+        status,
+      })
+    );
   }, [dispatch, page, limit, status]);
   return (
-    <Container>
-      <Stack border="1px solid green" padding={1}>
+    <Container> 
+      <Stack padding={1}>
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <FilterBtn handleFilter={handleFilter} />
         </FormProvider>
       </Stack>
-      <Stack border="1px solid green" width="90vw" padding={1}>
+      <Stack width="90vw" padding={1} height="55vh">
         <Stack
           padding={1}
           direction="row"
@@ -96,8 +109,16 @@ function UserDonations({ user }) {
           );
         })}
       </Stack>
+      <Stack spacing={2}>
+        <Pagination
+          count={totalPage}
+          variant="outlined"
+          shape="rounded"
+          onChange={handleChange}
+        />
+      </Stack>
     </Container>
-  )};
+  );
+}
 
-  export default UserDonations;
-  
+export default UserDonations;

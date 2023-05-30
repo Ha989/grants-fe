@@ -83,7 +83,7 @@ function SingleProject() {
         <Box
           width="100%"
           minheight="50vh"
-          sx={{ border: "1px solid black", padding: 1 }}
+          sx={{ padding: 1 }}
         >
           <Box sx={{ mb: 3, height: 50, position: "relative" }}>
             <TabWrapperStyle>

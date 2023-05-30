@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import { toast } from "react-toastify";
 
@@ -22,8 +22,9 @@ const slice = createSlice({
     getProjectSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const { projects } = action.payload;
+      const { projects, totalPage } = action.payload;
       state.project = projects;
+      state.totalPage = totalPage;
     },
     getSingleProjectSuccess(state, action) {
       state.isLoading = false;
@@ -49,13 +50,14 @@ export const getProjects =
       const response = await apiService.get(`/projects`, {
         params,
       });
-
       dispatch(slice.actions.getProjectSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);
     }
   };
+
+
 
 export const getSingleProject = (id) => async (dispatch) => {
   try {
@@ -68,6 +70,8 @@ export const getSingleProject = (id) => async (dispatch) => {
     toast.error(error.message);
   }
 };
+
+
 
 // export const createDonation = ({ projectId, userId, amount }) => async (dispatch) => {
 //   try {

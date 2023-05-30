@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import {
   Box,
+  Container,
+  Stack,
   Tab,
   Tabs,
 } from "@mui/material";
@@ -8,9 +10,6 @@ import { styled } from "@mui/material/styles";
 import UserDonations from "./UserDonations";
 import UserBookmarked from "./UserBookmarked";
 import UserSetting from "./UserSetting";
-import { useDispatch, useSelector } from "react-redux";
-import { getCurrentUser } from "./userSlice";
-import useAuth from '../../hooks/useAuth'
 
 const TabWrapperStyle = styled("div")(({ theme }) => ({
   display: "flex",
@@ -29,20 +28,12 @@ const TabWrapperStyle = styled("div")(({ theme }) => ({
 }));
 
 function UserPanel() {
-  // const dispatch = useDispatch();
-  // const user = useSelector((state) => state.user.user)
-  // const auth = useAuth();
-  // const user = auth?.user;
-  // console.log("user", user)
+
   const [currentTab, setCurrentTab] = useState("donations");
 
   const handleChangeTab = (newValue) => {
     setCurrentTab(newValue);
   };
-
-  // useEffect(() => {
-  //   dispatch(getCurrentUser());
-  // }, [dispatch]);
 
   const USER_TAB = [
     {
@@ -60,12 +51,13 @@ function UserPanel() {
   ];
 
   return (
-    <Box width="100%"
-    minheight="90vh"
+    <Stack width="100%"
+    minHeight="90vh"
+    mt={10}
     sx={{ border: "1px solid black", padding: 1 }}>
     <Box
       width="100%"
-      height="70vh"
+      minHeight="70vh"
       display="flex"
       sx={{ border: "1px solid black"}}
     >
@@ -93,7 +85,7 @@ function UserPanel() {
         return isMatched && <Box key={tab.value}>{tab.component}</Box>;
       })}
     </Box>
-   </Box>
+   </Stack>
   );
 }
 

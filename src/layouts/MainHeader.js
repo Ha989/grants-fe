@@ -71,7 +71,8 @@ function MainHeader() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  
+  const user = auth?.user;
+  console.log("user", user);
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjects } from "./projectSlice";
-import { Box, Container, Grid, Stack, Typography } from "@mui/material";
+import { Box, Container, Grid, Pagination, Stack, Typography } from "@mui/material";
 import { FormProvider } from "../../components/form";
 import SearchInput from "../../components/SearchInput";
 import SortProject from "../../components/SortProject";
@@ -16,10 +16,15 @@ function ProjectList() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("");
-  const projects = useSelector((state) => state.project.project);
+  const  projects = useSelector((state) => state.project.project);
+  const  totalPage = useSelector((state) => state.project.totalPage);
 
   const handleOnSubmit = (search) => {
     setSearch(search);
+  };
+
+  const handleChange = (e, value) => {
+    setPage(value);
   };
 
   const handleSortChange = (sortValue) => {
@@ -89,6 +94,9 @@ function ProjectList() {
       </Grid>
         ))}
       </Grid>
+      <Stack spacing={2} mt={5} justifyContent="center" alignItems="center">
+      <Pagination count={totalPage} variant="outlined" shape="rounded" onChange={handleChange} />
+    </Stack>
     </Container>
   );
 }

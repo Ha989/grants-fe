@@ -21,7 +21,7 @@ function UserBookmarked() {
         columns={{ xs: 12, sm: 8, md: 12 }}
       >
         {projects?.map((project, index) => (
-          <Grid item xs={12} sm={6} md={6} key={index}>
+          <Grid item xs={12} sm={6} md={6} key={project._id}>
             <ProjectCard key={project._id} project={project} />
           </Grid>
         ))}

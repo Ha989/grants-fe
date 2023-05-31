@@ -57,7 +57,7 @@ function UserDonations({ user }) {
           <FilterBtn handleFilter={handleFilter} />
         </FormProvider>
       </Stack>
-      <Stack width="90vw" padding={1} height="55vh">
+      <Stack width={{ xs: "100vw", md: "60vw"}} padding={1} height="55vh">
         <Stack
           padding={1}
           direction="row"
@@ -82,11 +82,10 @@ function UserDonations({ user }) {
                 padding={1}
                 direction="row"
                 justifyContent="space-between"
-                key={donation?._id}
                 mb={1}
                 alignItems="center"
               >
-                <Stack direction="row" alignItems="center">
+                <Stack direction="row" alignItems="center" key={donation?._id}>
                   <img
                     width={40}
                     height={40}

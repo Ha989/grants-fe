@@ -19,51 +19,52 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
+import Avatar from "@mui/material/Avatar";
+import { Stack } from "@mui/material";
+import ContactMailIcon from "@mui/icons-material/ContactMail";
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.primary.main, 0.25),
-  "&:hover": {
-    backgroundColor: alpha(theme.palette.primary.main, 0.35),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(3),
-    width: "auto",
-  },
-}));
+// const Search = styled("div")(({ theme }) => ({
+//   position: "relative",
+//   borderRadius: theme.shape.borderRadius,
+//   backgroundColor: alpha(theme.palette.primary.main, 0.25),
+//   "&:hover": {
+//     backgroundColor: alpha(theme.palette.primary.main, 0.35),
+//   },
+//   marginRight: theme.spacing(2),
+//   marginLeft: 0,
+//   width: "100%",
+//   [theme.breakpoints.up("sm")]: {
+//     marginLeft: theme.spacing(3),
+//     width: "auto",
+//   },
+// }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  color: "green"
-}));
+// const SearchIconWrapper = styled("div")(({ theme }) => ({
+//   padding: theme.spacing(0, 2),
+//   height: "100%",
+//   position: "absolute",
+//   pointerEvents: "none",
+//   display: "flex",
+//   alignItems: "center",
+//   justifyContent: "center",
+//   color: "green",
+// }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "primary",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
-    },
-  },
-}));
-
-
+// const StyledInputBase = styled(InputBase)(({ theme }) => ({
+//   color: "primary",
+//   "& .MuiInputBase-input": {
+//     padding: theme.spacing(1, 1, 1, 0),
+//     // vertical padding + font size from searchIcon
+//     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+//     transition: theme.transitions.create("width"),
+//     width: "100%",
+//     [theme.breakpoints.up("md")]: {
+//       width: "20ch",
+//     },
+//   },
+// }));
 
 function MainHeader() {
   const auth = useAuth();
@@ -72,7 +73,7 @@ function MainHeader() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const user = auth?.user;
-  console.log("user", user);
+  const creator = auth?.creator;
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -112,33 +113,52 @@ function MainHeader() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem component={RouterLink} to={ auth?.creator ?  "/creators/account" : "/users/account" }>
-      <IconButton
-                  size="large"
-                  color="primary"
-                  disableRipple={true}
-                  children={<AssignmentIndIcon />}
-                />
-        Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-      <IconButton
-                  size="large"
-                  color="primary"
-                  disableRipple={true}
-                  children={<AccountCircleIcon />}
-                />
-        My account</MenuItem>
+      {auth?.user ? (
+        <MenuItem onClick={handleMenuClose}>
+          <IconButton
+            size="large"
+            color="primary"
+            disableRipple={true}
+            children={<ContactMailIcon />}
+          />
+          {user?.email}
+        </MenuItem>
+      ) : (
+        <MenuItem onClick={handleMenuClose}>
+          <IconButton
+            size="large"
+            color="primary"
+            disableRipple={true}
+            children={<ContactMailIcon />}
+          />
+          {creator?.email}
+        </MenuItem>
+      )}
+
+      <MenuItem
+        component={RouterLink}
+        to={auth?.creator ? "/creators/account" : "/users/account"}
+      >
+        <IconButton
+          size="large"
+          color="primary"
+          disableRipple={true}
+          children={<AssignmentIndIcon />}
+        />
+        Profile
+      </MenuItem>
+
       <MenuItem onClick={() => handleLogout()}>
-                <IconButton
-                  size="large"
-                  color="primary"
-                  disableRipple={true}
-                  children={<LogoutIcon />}
-                />
-                Logout
-              </MenuItem>
+        <IconButton
+          size="large"
+          color="primary"
+          disableRipple={true}
+          children={<LogoutIcon />}
+        />
+        Logout
+      </MenuItem>
     </Menu>
-  )
+  );
 
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
@@ -156,8 +176,8 @@ function MainHeader() {
       }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
-    > 
-      { auth?.user || auth?.creator ? (
+    >
+      {auth?.user || auth?.creator ? (
         <div>
           <MenuItem>
             <IconButton
@@ -169,22 +189,37 @@ function MainHeader() {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            <p>Notifications</p>
+            <Typography color="primary">Notifications</Typography>
           </MenuItem>
           <MenuItem onClick={handleProfileMenuOpen}>
-            <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="primary-search-account-menu"
-              aria-haspopup="true"
-              color="primary"
-            >
-              <AccountCircle />
-            </IconButton>
-            <p>Profile</p>
+            {auth?.user ? (
+              <Stack direction="row" alignItems="center">
+                <Avatar
+                  onClick={handleProfileMenuOpen}
+                  src={user.avatarUrl}
+                  alt={user.name}
+                  sx={{ width: 40, height: 40 }}
+                />
+                <Typography color="primary" ml={3}>
+                  {user?.name}
+                </Typography>
+              </Stack>
+            ) : (
+              <Stack direction="row" alignItems="center">
+                <Avatar
+                  onClick={handleProfileMenuOpen}
+                  src={creator?.avatarUrl}
+                  alt={creator?.name}
+                  sx={{ width: 40, height: 40 }}
+                />
+                <Typography color="primary" ml={3}>
+                  {creator?.name}
+                </Typography>
+              </Stack>
+            )}
           </MenuItem>
-          </div>
-        ) : (
+        </div>
+      ) : (
         <MenuItem component={RouterLink} to="/auth/login">
           <IconButton
             size="large"
@@ -195,13 +230,12 @@ function MainHeader() {
           Login
         </MenuItem>
       )}
-      </Menu>
-    );
-
+    </Menu>
+  );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static" sx={{ backgroundColor: "#fff"}}>
+      <AppBar position="static" sx={{ backgroundColor: "#fff" }}>
         <Toolbar>
           <IconButton
             size="large"
@@ -221,7 +255,7 @@ function MainHeader() {
           >
             Grants
           </Typography>
-          <Search>
+          {/* <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -229,11 +263,11 @@ function MainHeader() {
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
             />
-          </Search>
+          </Search> */}
           <Box sx={{ flexGrow: 1 }} />
-          { auth?.user || auth?.creator ? (
+          {auth?.user || auth?.creator ? (
             <div>
-              <Box sx={{ display: { xs: "none", md: "flex" } }}>
+              <Box sx={{ display: { xs: "none", md: "flex" } }} mr={1}>
                 <IconButton
                   size="large"
                   aria-label="show 1 new notifications"
@@ -243,7 +277,7 @@ function MainHeader() {
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>
-                <IconButton
+                {/* <IconButton
                   size="large"
                   edge="end"
                   aria-label="account of current user"
@@ -253,7 +287,24 @@ function MainHeader() {
                   color="primary"
                 >
                   <AccountCircle />
-                </IconButton>
+                </IconButton> */}
+                <Box>
+                  {auth?.user ? (
+                    <Avatar
+                      onClick={handleProfileMenuOpen}
+                      src={user.avatarUrl}
+                      alt={user.name}
+                      sx={{ width: 40, height: 40 }}
+                    />
+                  ) : (
+                    <Avatar
+                      onClick={handleProfileMenuOpen}
+                      src={creator?.avatarUrl}
+                      alt={creator?.name}
+                      sx={{ width: 40, height: 40 }}
+                    />
+                  )}
+                </Box>
               </Box>
               <Box sx={{ display: { xs: "flex", md: "none" } }}>
                 <IconButton
@@ -267,7 +318,7 @@ function MainHeader() {
                   <MoreIcon />
                 </IconButton>
               </Box>
-              </div>
+            </div>
           ) : (
             <MenuItem component={RouterLink} to="/auth/login">
               <IconButton

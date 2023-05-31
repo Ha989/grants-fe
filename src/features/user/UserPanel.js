@@ -51,15 +51,14 @@ function UserPanel() {
   ];
 
   return (
-    <Stack width="100%"
+    <Stack width="98vw"
     minHeight="90vh"
-    mt={10}
-    sx={{ border: "1px solid black", padding: 1 }}>
+    mt={10}>
     <Box
       width="100%"
       minHeight="70vh"
       display="flex"
-      sx={{ border: "1px solid black"}}
+      justifyContent="center"
     >
       <TabWrapperStyle>
         <Tabs

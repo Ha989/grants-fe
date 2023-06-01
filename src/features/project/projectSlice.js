@@ -6,7 +6,8 @@ const initialState = {
   isLoading: false,
   error: null,
   project: [],
-};
+  donation: null,
+}
 
 const slice = createSlice({
   name: "project",
@@ -32,6 +33,20 @@ const slice = createSlice({
       const currentProject = action.payload;
       state.currentProject = currentProject;
     },
+    createDonationSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const {donation} = action.payload;
+      state.donation = donation;
+      console.log("donation", donation)
+    },
+    bookmarkProjectSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const bookmark  = action.payload.user;
+      state.bookmark = bookmark.bookmarked;
+      console.log("bookmark", bookmark.bookmarked);
+    }
   },
 });
 
@@ -62,7 +77,7 @@ export const getProjects =
 export const getSingleProject = (id) => async (dispatch) => {
   try {
     dispatch(slice.actions.startLoading());
-
+   
     const response = await apiService.get(`projects/${id}`);
     dispatch(slice.actions.getSingleProjectSuccess(response.data));
   } catch (error) {
@@ -73,15 +88,30 @@ export const getSingleProject = (id) => async (dispatch) => {
 
 
 
-// export const createDonation = ({ projectId, userId, amount }) => async (dispatch) => {
-//   try {
-//     dispatch(slice.actions.startLoading());
+export const createDonation = ({ projectId, userId, amount }) => async (dispatch) => {
+  try {
+    dispatch(slice.actions.startLoading());
+    const response = await apiService.post(`/projects/${projectId}/donation/${userId}`, {amount});
+    dispatch(slice.actions.createDonationSuccess(response.data));
+    toast.success("Sent donation successfully! Please wait for project owner to confirm!");
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+    toast.error(error.message);
+  }
+}
 
-//     const params =
-//   } catch (error) {
-//     dispatch(slice.actions.hasError(error.message));
-//     toast.error(error.message);
-//   }
-// }
+
+export const bookmarkProject = ({ projectId, userId }) => async (dispatch) => {
+  try {
+    dispatch(slice.actions.startLoading());
+    const response = await apiService.put(`/projects/${projectId}/bookmark/${userId}`);
+    console.log("res", response.data)
+    dispatch(slice.actions.bookmarkProjectSuccess(response.data));
+    toast.success(response.message)
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+    toast.error(error.message)
+  }
+}
 
 export default slice.reducer;

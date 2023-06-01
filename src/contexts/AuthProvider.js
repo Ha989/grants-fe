@@ -2,6 +2,7 @@ import { createContext, useReducer, useEffect } from "react";
 import apiService from "../app/apiService";
 import isValidToken from "../utils/jwt";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const initialState = {
   isInitialized: false,
@@ -14,6 +15,7 @@ const INITIALIZE = "AUTH.INITIALIZE";
 const LOGIN_SUCCESS = "AUTH.LOGIN_SUCCESS";
 const REGISTER_SUCCESS = "AUTH.REGISTER_SUCCESS";
 const LOGOUT = "AUTH.LOGOUT";
+const UPDATED_PROFILE = "AUTH.UPDATED_PROFILE";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -45,6 +47,14 @@ const reducer = (state, action) => {
         user: null,
         creator: null,
       };
+      case UPDATED_PROFILE: {
+        const { name, avatarUrl, bio } = action.payload;
+        return {
+          ...state,
+          user: { ...state.user, name, avatarUrl, bio} || null,
+          creator: { ...state.creator, name, avatarUrl, bio } || null
+        }
+      }
 
     default:
       return state;
@@ -66,6 +76,7 @@ const AuthContext = createContext({ ...initialState });
 function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
+  const updatedProfile = useSelector((state) => state.user.updatedProfile);
 
   useEffect(() => {
     const initialize = async () => {
@@ -77,7 +88,6 @@ function AuthProvider({ children }) {
           const response = await apiService.get("/auth/me");
 
           const { creator, user } = response.data;
-          console.log("response", response.data);
           if (user) {
             const userResponse = await apiService.get("/users/me");
             dispatch({
@@ -108,6 +118,12 @@ function AuthProvider({ children }) {
     };
     initialize();
   }, []);
+
+  useEffect(() => {
+    if (updatedProfile) 
+      dispatch({ type: UPDATED_PROFILE, payload: updatedProfile});
+      // if ( creatorUpdatedProfole) 
+  }, [updatedProfile]);
 
   const login = async ({ email, password }, callback) => {
     const response = await apiService.post("/auth/login", {

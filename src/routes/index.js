@@ -30,7 +30,8 @@ function Router() {
             <AuthLayout />
           </AuthRequired>
         }
-      > <Route path="/projects/:id/donation/:id" element={<Donation />}/>
+      > 
+      <Route path="/projects/:projectId/donation/:userId" element={<Donation />}/>
         <Route path="/creators" element={<CreatorPage />} />
         <Route path="/users/account" element={<UserPanel />} />
         <Route path="/creators/account" element={<CreateDetailPage />} />

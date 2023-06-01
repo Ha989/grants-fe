@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import React from "react";
+import ReactPlayer from 'react-player'
 
 function ProjectBanner({ project }) {
   return (
@@ -8,11 +9,10 @@ function ProjectBanner({ project }) {
       height={360}
       padding={1}
     >
-      <img
-        width="100%"
-        height={340}
-        src={project?.banner}
-        alt={project?.name}
+      <ReactPlayer 
+      width="100%"
+      height={350}
+      url={project?.video}
       />
     </Box>
   );

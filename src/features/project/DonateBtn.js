@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import useAuth from '../../hooks/useAuth';
 import { useNavigate } from "react-router-dom";
+import Donation from "./Donation";
 
 
 function DonateBtn({ project }) {
@@ -10,7 +11,7 @@ function DonateBtn({ project }) {
 
   const handleDonate = () => {
     auth?.user ? (
-      navigate(`/projects/${project._id}/donation/${auth.user._id}`)
+     navigate(`/projects/${project._id}/donation/${auth?.user?._id}`)
     ) : (
       navigate("/auth/login")
     )

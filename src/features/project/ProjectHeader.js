@@ -1,6 +1,7 @@
 import { Box, IconButton, Stack, Typography } from '@mui/material';
 import React from 'react';
 import StarIcon from '@mui/icons-material/Star';
+import BookmarkProject from './BookmarkProject';
 
 function ProjectHeader({ project }) {
   return (
@@ -45,9 +46,7 @@ function ProjectHeader({ project }) {
               </Stack>
             </Stack>
             <Box width="20%" height={40} textAlign="end">
-              <IconButton>
-                <StarIcon />
-              </IconButton>
+              <BookmarkProject project={project}/>
             </Box>
           </Stack>
     

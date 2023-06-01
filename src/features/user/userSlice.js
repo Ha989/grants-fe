@@ -38,8 +38,9 @@ const slice = createSlice({
     updateUserProfileSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const updatedUser = action.payload;
+      const updatedUser = action.payload.user;
       state.updatedProfile = updatedUser;
+      console.log("update", updatedUser)
     }
   },
 });
@@ -86,7 +87,6 @@ export const updateUserProfile = ({
       console.log("image", imageUrl)
     }
     const response = await apiService.put(`/users/settings/${userId}`, data);
-    console.log("resp", response)
     dispatch(slice.actions.updateUserProfileSuccess(response.data));
     toast.success("Update Profile Successfully");
   } catch (error) {

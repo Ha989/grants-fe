@@ -8,13 +8,13 @@ import RegisterPage from "../pages/RegisterPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import AuthLayout from "../layouts/AuthLayout";
 import AuthRequired from "./AuthRequired";
-import CreatorPage from "../pages/CreatorPage";
 import VerificationPage from "../pages/VerificationPage";
 import CreateDetailPage from "../pages/CreateDetailPage";
 import ProjectList from "../features/project/ProjectList";
 import SingleProject from "../features/project/SingleProject";
 import Donation from "../features/project/Donation";
 import UserPanel from "../features/user/UserPanel";
+import CreateProject from "../features/creator/CreateProject";
 
 function Router() {
   return (
@@ -32,7 +32,7 @@ function Router() {
         }
       > 
       <Route path="/projects/:projectId/donation/:userId" element={<Donation />}/>
-        <Route path="/creators" element={<CreatorPage />} />
+        <Route path="/creators" element={<CreateProject />} />
         <Route path="/users/account" element={<UserPanel />} />
         <Route path="/creators/account" element={<CreateDetailPage />} />
       </Route>

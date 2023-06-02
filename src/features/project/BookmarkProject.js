@@ -3,27 +3,26 @@ import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
 import { bookmarkProject } from "./projectSlice";
 import { Box, IconButton } from "@mui/material";
-import StarIcon from '@mui/icons-material/Star';
-
+import StarIcon from "@mui/icons-material/Star";
 
 function BookmarkProject({ project }) {
   const auth = useAuth();
   const user = auth?.user;
-  const userId = user?._id
+  const userId = user?._id;
   const projectId = project?._id;
   const dispatch = useDispatch();
   const bookmarkProjects = useSelector((state) => state.project.bookmark);
-  
+
   const isBookmarked = bookmarkProjects.includes(project._id);
 
-const handleBookmarkClick = () => {
-    dispatch(bookmarkProject({ projectId, userId }))
-}
+  const handleBookmarkClick = () => {
+    dispatch(bookmarkProject({ projectId, userId }));
+  };
   return (
-    <Box  onClick={handleBookmarkClick} >
-    <IconButton sx={{ color: isBookmarked ? "red" : "inherit" }}> 
-      <StarIcon />
-    </IconButton>
+    <Box onClick={handleBookmarkClick}>
+      <IconButton sx={{ color: isBookmarked ? "red" : "inherit" }}>
+        <StarIcon />
+      </IconButton>
     </Box>
   );
 }

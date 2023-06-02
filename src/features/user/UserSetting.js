@@ -64,7 +64,7 @@ function UserSetting() {
 
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Box width={{ xs: "90vw", md: "60vw"}}>
+      <Box width={{ xs: "90vw", md: "60vw" }}>
         <Card sx={{ py: 10, px: 3, textAlign: "center" }} width={300}>
           <FUpLoadAvatar
             name="avatarUrl"
@@ -92,15 +92,15 @@ function UserSetting() {
           <FTextField name="name" label="Your Name" />
           <FTextField name="bio" multiline rows={4} label="Your Bio" />
         </Stack>
-        <Box mt={3} textAlign="center" >
-        <LoadingButton
-        mt={3}
-          type="submit"
-          variant="contained"
-          loading={isSubmitting || isLoading}
-        >
-          Save Changes
-        </LoadingButton>
+        <Box mt={3} textAlign="center">
+          <LoadingButton
+            mt={3}
+            type="submit"
+            variant="contained"
+            loading={isSubmitting || isLoading}
+          >
+            Save Changes
+          </LoadingButton>
         </Box>
       </Box>
     </FormProvider>

@@ -7,6 +7,7 @@ const initialState = {
   error: null,
   project: [],
   donation: null,
+  bookmark: []
 }
 
 const slice = createSlice({
@@ -38,14 +39,14 @@ const slice = createSlice({
       state.error = null;
       const {donation} = action.payload;
       state.donation = donation;
-      console.log("donation", donation)
+  
     },
     bookmarkProjectSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
       const bookmark  = action.payload.user;
       state.bookmark = bookmark.bookmarked;
-      console.log("bookmark", bookmark.bookmarked);
+    
     }
   },
 });

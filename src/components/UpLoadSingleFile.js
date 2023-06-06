@@ -19,7 +19,7 @@ const DropZoneStyle = styled("div")(({ theme }) => ({
   "&:hover": { opacity: 0.72, cursor: "pointer" },
 }));
 
-function UploadSingleFile({ error = false, file, helperText, sx, ...other }) {
+function UpLoadSingleFile({ error = false, file, helperText, sx, ...other }) {
   const {
     getRootProps,
     getInputProps,
@@ -97,4 +97,4 @@ function UploadSingleFile({ error = false, file, helperText, sx, ...other }) {
   );
 }
 
-export default UploadSingleFile;
+export default UpLoadSingleFile;

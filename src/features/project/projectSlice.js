@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import { toast } from "react-toastify";
+import { PROJECTS_LIMIT_PER_PAGE } from "../../app/config";
 
 const initialState = {
   isLoading: false,
   error: null,
   project: [],
   donation: null,
-  bookmark: []
 }
 
 const slice = createSlice({
@@ -33,6 +33,7 @@ const slice = createSlice({
       state.error = null;
       const currentProject = action.payload;
       state.currentProject = currentProject;
+      console.log("current", state.currentProject);
     },
     createDonationSuccess(state, action) {
       state.isLoading = false;
@@ -41,18 +42,11 @@ const slice = createSlice({
       state.donation = donation;
   
     },
-    bookmarkProjectSuccess(state, action) {
-      state.isLoading = false;
-      state.error = null;
-      const bookmark  = action.payload.user;
-      state.bookmark = bookmark.bookmarked;
-    
-    }
   },
 });
 
 export const getProjects =
-  ({ page, limit = 10, search, sortBy }) =>
+  ({ page, limit = PROJECTS_LIMIT_PER_PAGE, search, sortBy }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
@@ -102,17 +96,17 @@ export const createDonation = ({ projectId, userId, amount }) => async (dispatch
 }
 
 
-export const bookmarkProject = ({ projectId, userId }) => async (dispatch) => {
-  try {
-    dispatch(slice.actions.startLoading());
-    const response = await apiService.put(`/projects/${projectId}/bookmark/${userId}`);
-    console.log("res", response.data)
-    dispatch(slice.actions.bookmarkProjectSuccess(response.data));
-    toast.success(response.message)
-  } catch (error) {
-    dispatch(slice.actions.hasError(error.message));
-    toast.error(error.message)
-  }
-}
+// export const bookmarkProject = ({ projectId, userId }) => async (dispatch) => {
+//   try {
+//     dispatch(slice.actions.startLoading());
+//     const response = await apiService.put(`/projects/${projectId}/bookmark/${userId}`);
+//     console.log("res", response.data)
+//     dispatch(slice.actions.bookmarkProjectSuccess(response.data));
+//     toast.success(response.message)
+//   } catch (error) {
+//     dispatch(slice.actions.hasError(error.message));
+//     toast.error(error.message)
+//   }
+// }
 
 export default slice.reducer;

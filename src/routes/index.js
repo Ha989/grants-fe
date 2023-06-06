@@ -15,6 +15,12 @@ import SingleProject from "../features/project/SingleProject";
 import Donation from "../features/project/Donation";
 import UserPanel from "../features/user/UserPanel";
 import CreateProject from "../features/creator/CreateProject";
+import CreatorDashboard from "../features/creator/CreatorPanel";
+import CreatorLayout from "../layouts/CreatorLayout";
+import CreatorSettings from "../features/creator/CreatorSettings";
+import CreatorDonations from "../features/creator/CreatorDonations";
+import CreatorProjects from "../features/creator/CreatorProjects";
+import CreatorPanel from "../features/creator/CreatorPanel";
 
 function Router() {
   return (
@@ -30,11 +36,26 @@ function Router() {
             <AuthLayout />
           </AuthRequired>
         }
-      > 
-      <Route path="/projects/:projectId/donation/:userId" element={<Donation />}/>
+      >
+        <Route
+          path="/projects/:projectId/donation/:userId"
+          element={<Donation />}
+        />
         <Route path="/creators" element={<CreateProject />} />
         <Route path="/users/account" element={<UserPanel />} />
-        <Route path="/creators/account" element={<CreateDetailPage />} />
+      </Route>
+      <Route
+        element={
+          <AuthRequired>
+            <CreatorLayout />
+          </AuthRequired>
+        }
+      >
+        <Route path="/creators/account" element={<CreatorPanel />} />
+        <Route path="/creators/dashboard" element={<CreatorDashboard />} />
+        <Route path="/creators/settings" element={<CreatorSettings />} />
+        <Route path="/creators/donations" element={<CreatorDonations />} />
+        <Route path="/creators/projects" element={<CreatorProjects />} />
       </Route>
       <Route element={<BlankLayout />}>
         <Route path="/auth/login" element={<LoginPage />} />

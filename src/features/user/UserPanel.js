@@ -10,6 +10,9 @@ import { styled } from "@mui/material/styles";
 import UserDonations from "./UserDonations";
 import UserBookmarked from "./UserBookmarked";
 import UserSetting from "./UserSetting";
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 const TabWrapperStyle = styled("div")(({ theme }) => ({
   display: "flex",
@@ -39,14 +42,17 @@ function UserPanel() {
     {
       value: "donations",
       component: <UserDonations />,
+      icon: <ReceiptLongIcon />
     },
     {
       value: "bookmarked",
       component: <UserBookmarked />,
+      icon: <FavoriteBorderIcon />
     },
     {
       value: "settings",
       component: <UserSetting />,
+      icon: <SettingsIcon />
     },
   ];
 
@@ -59,6 +65,7 @@ function UserPanel() {
       minHeight="70vh"
       display="flex"
       justifyContent="center"
+      mt={10}
     >
       <TabWrapperStyle>
         <Tabs

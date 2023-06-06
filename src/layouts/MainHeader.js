@@ -255,15 +255,6 @@ function MainHeader() {
           >
             Grants
           </Typography>
-          {/* <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search> */}
           <Box sx={{ flexGrow: 1 }} />
           {auth?.user || auth?.creator ? (
             <div>
@@ -277,17 +268,6 @@ function MainHeader() {
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>
-                {/* <IconButton
-                  size="large"
-                  edge="end"
-                  aria-label="account of current user"
-                  aria-controls={menuId}
-                  aria-haspopup="true"
-                  onClick={handleProfileMenuOpen}
-                  color="primary"
-                >
-                  <AccountCircle />
-                </IconButton> */}
                 <Box>
                   {auth?.user ? (
                     <Avatar

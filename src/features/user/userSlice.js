@@ -2,13 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import { toast } from "react-toastify";
 import { cloudinaryUpload } from "../../utils/cloudinary";
+import { DONATIONS_LIMIT_PER_PAGE } from "../../app/config";
 
 const initialState = {
   isLoading: false,
   error: null,
   donation: [],
   bookmarked: [],
-  updatedProfile: null
+  updatedProfile: null,
+  bookmark: [],
 };
 
 const slice = createSlice({
@@ -41,16 +43,25 @@ const slice = createSlice({
       const updatedUser = action.payload.user;
       state.updatedProfile = updatedUser;
       console.log("update", updatedUser)
+    },
+    bookmarkProjectSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const bookmark  = action.payload.user;
+      state.bookmark = bookmark.bookmarked;
+      console.log("bookmark", bookmark.bookmarked)
+    
     }
   },
 });
 
 export const getDonationsOfUser =
-  ({ limit = 10, page, status }) =>
+  ({ limit = DONATIONS_LIMIT_PER_PAGE, page, status }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
       const params = { page, limit };
+      console.log("params", params)
       if (status) {
         params.status = status;
       }
@@ -83,8 +94,8 @@ export const updateUserProfile = ({
     };
     if(avatarUrl instanceof File) {
       const imageUrl = await cloudinaryUpload(avatarUrl);
-      data.avatarUrl = imageUrl;
       console.log("image", imageUrl)
+      data.avatarUrl = imageUrl;
     }
     const response = await apiService.put(`/users/settings/${userId}`, data);
     dispatch(slice.actions.updateUserProfileSuccess(response.data));
@@ -92,6 +103,19 @@ export const updateUserProfile = ({
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
     toast.error(error.message);
+  }
+};
+
+export const bookmarkProject = ({ projectId, userId }) => async (dispatch) => {
+  try {
+    dispatch(slice.actions.startLoading());
+    const response = await apiService.put(`/projects/${projectId}/bookmark/${userId}`);
+    console.log("res", response.data)
+    dispatch(slice.actions.bookmarkProjectSuccess(response.data));
+    toast.success(response.message)
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+    toast.error(error.message)
   }
 }
 

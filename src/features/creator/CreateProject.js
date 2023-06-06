@@ -14,7 +14,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import useAuth from "../../hooks/useAuth";
 import FUpLoadAvatar from "../../components/form/FUpLoadAvatar";
-import FUploadImage from "../../components/form/FUpLoadImage";
+import FUpLoadImage from "../../components/form/FUpLoadImage";
 import { fData } from "../../utils/numberFormat";
 import { FTextField, FormProvider } from "../../components/form";
 import { LoadingButton } from "@mui/lab";
@@ -28,12 +28,23 @@ const CreateProjectSchema = yup.object().shape({
   description: yup.string().required("description is required"),
   website: yup.string().url().nullable().required("Website is required"),
   team: yup.string().required("Team is required"),
-  logo: yup
-    .string()
-    .required("Logo is required"),
+  logo: yup.mixed()
+  .required("Logo is required")
+  .test("fileType", "Invalid file format", (value) => {
+    if (value && value instanceof File) {
+      return true;
+    }
+    return false;
+  }),
   banner: yup
-    .string()
-    .required("Banner is required"),
+  .mixed()
+  .required("Banner is required")
+  .test("fileType", "Invalid file format", (value) => {
+    if (value && value instanceof File) {
+      return true;
+    }
+    return false;
+  }),
   video: yup
     .string()
     .url("Video must be a valid video link")
@@ -69,45 +80,49 @@ function CreateProject() {
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
-
-  const onSubmit = ({ creatorId, name, title, description, website, team, logo, banner, video, bankDetail }) => {
+ 
+  const onSubmit = ({creatorId, name, title, description, website, banner, logo, team, video, bankDetail}) => {
     dispatch(
       createProject({
-        creatorId: creator._id,
-        name, title, description, website, team, logo, banner, video, bankDetail
-     })
+        creatorId: creator._id, 
+        name, title, description, website, banner, logo, team, video, bankDetail
+     }),
     );
   };
   const handleDrop = useCallback(
     (acceptedFiles, type) => {
       const file = acceptedFiles[0];
+     
       if (file) {
-        if (type === "logo") {
+           if (type === "logo") {
          setValue(
             "logo",
             Object.assign(file, {
               preview: URL.createObjectURL(file),
             })
           );
-        } 
-         if (type === "banner") {
-          setValue(
-            "banner",
-            Object.assign(file, {
-              preview: URL.createObjectURL(file),
-            })
-          );
         }
-      }
+           
+        if (type === "banner") {
+            setValue(
+              "banner",
+              Object.assign(file, {
+                preview: URL.createObjectURL(file),
+              }),
+            );
+          }
+        } 
     },
     [setValue]
   );
-
+  
+  
   return (
     <Container>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+          <Typography variant="h5" mt={5} textAlign="center" fontWeight="bolder" color="primary">SUBMIT YOUR PROJECT</Typography>
         <Stack mt={10}
-        >
+        > 
           <Box>
             <Typography variant="subtitle1"  fontFamily="sans-serif">Upload Your Logo</Typography>
             <FUpLoadAvatar
@@ -135,7 +150,7 @@ function CreateProject() {
           <Divider />
           <Box sx={{ mt:5}}>
             <Typography variant="subtitle1" fontFamily="sans-serif">Upload your Banner</Typography>
-            <FUploadImage
+            <FUpLoadImage
               name="banner"
               accept="image/*"
               maxSize={3145728}

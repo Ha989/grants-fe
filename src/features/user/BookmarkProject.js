@@ -1,7 +1,7 @@
 import React from "react";
 import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
-import { bookmarkProject } from "./projectSlice";
+import { bookmarkProject } from "./userSlice";
 import { Box, IconButton } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 
@@ -11,9 +11,10 @@ function BookmarkProject({ project }) {
   const userId = user?._id;
   const projectId = project?._id;
   const dispatch = useDispatch();
-  const bookmarkProjects = useSelector((state) => state.project.bookmark);
+  const bookmarkProjects = useSelector((state) => state.user.bookmark);
 
-  const isBookmarked = bookmarkProjects.includes(project._id);
+  const isBookmarked = bookmarkProjects?.includes(project._id);
+  console.log("isBookmark", isBookmarked)
 
   const handleBookmarkClick = () => {
     dispatch(bookmarkProject({ projectId, userId }));

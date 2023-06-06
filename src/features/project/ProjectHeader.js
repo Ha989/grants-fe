@@ -1,7 +1,7 @@
 import { Box, IconButton, Stack, Typography } from '@mui/material';
 import React from 'react';
 import StarIcon from '@mui/icons-material/Star';
-import BookmarkProject from './BookmarkProject';
+import BookmarkProject from '../user/BookmarkProject';
 
 function ProjectHeader({ project }) {
   return (

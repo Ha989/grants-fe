@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ReactPlayer from 'react-player'
+import ReactPlayer from "react-player";
 import { Box, Divider, Stack, Tab, Tabs } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -68,24 +68,22 @@ function SingleProject() {
         direction="column"
         justifyContent="space-between"
       >
-        <Box width="100%" minheight="80vh" padding={1}>
-          <ProjectHeader project={project} />
-          <Divider />
-          <Stack
-            direction={{ xs: "column", md: "row" }}
-            spacing={2}
-            padding={1}
-          >
-            <ProjectBanner project={project} />
-            <DonateBtn project={project} />
-          </Stack>
-        </Box>
+        {project && (
+          <Box width="100%" minheight="80vh" padding={1}>
+            <ProjectHeader project={project} />
+            <Divider />
+            <Stack
+              direction={{ xs: "column", md: "row" }}
+              spacing={2}
+              padding={1}
+            >
+              <ProjectBanner project={project} />
+              <DonateBtn project={project} />
+            </Stack>
+          </Box>
+        )}
 
-        <Box
-          width="100%"
-          minheight="50vh"
-          sx={{ padding: 1 }}
-        >
+        <Box width="100%" minheight="50vh" sx={{ padding: 1 }}>
           <Box sx={{ mb: 3, height: 50, position: "relative" }}>
             <TabWrapperStyle>
               <Tabs

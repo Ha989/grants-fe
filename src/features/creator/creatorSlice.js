@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import apiService from "../../app/apiService";
 import { cloudinaryUpload } from "../../utils/cloudinary";
-// import apiService from "../../app/apiService";
 
 const initialState = {
   isLoading: false,
@@ -14,20 +13,39 @@ const slice = createSlice({
   initialState,
   reducers: {
     startLoading(state) {
-        state.isLoading = true;
-      },
-      hasError(state, action) {
-        state.isLoading = false;
-        state.error = action.payload;
-      },
+      state.isLoading = true;
+    },
+    hasError(state, action) {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
 
-      createProjectSuccess(state, action) {
-        state.isLoading = false;
+    createProjectSuccess(state, action) {
+      state.isLoading = false;
       state.error = null;
       const { project } = action.payload;
       state.project = project;
-      console.log("project", project);
-      }
+    },
+    getDonationsByCreatorsSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const { donations } = action.payload;
+      state.donations = donations;
+      console.log("donations", donations);
+    },
+    getSingleDonationSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const { donation } = action.payload;
+      state.donation = donation;
+    },
+    confirmDonationSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const { confirmDonation } = action.payload;
+      state.donation = confirmDonation;
+      console.log("do", confirmDonation);
+    }
   },
 });
 
@@ -47,22 +65,26 @@ export const createProject =
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-        const bannerUrl = await cloudinaryUpload(banner);
-        console.log("banner", bannerUrl);
-        // const logoUrl = await cloudinaryUpload(logo);
-        // console.log("logo", logoUrl)
+      const bannerUrl = await cloudinaryUpload(banner);
+
+      const logoUrl = await cloudinaryUpload(logo);
+
       const body = {
         name,
         title,
-        description,
-        website,
-        team,
-        logo,
+        logo: logoUrl,
         banner: bannerUrl,
+        website,
+        description,
+        team,
         video,
         bankDetail,
       };
-      const response = await apiService.post(`/creators/${creatorId}/create`, body );
+
+      const response = await apiService.post(
+        `/creators/${creatorId}/create`,
+        body
+      );
       console.log("res", response.data);
       dispatch(slice.actions.createProjectSuccess(response.data));
       toast.success(response.message);
@@ -72,4 +94,41 @@ export const createProject =
     }
   };
 
+export const getDonationsByCreator = () => async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    const response = await apiService.get(`/creators/donations`);
+    dispatch(slice.actions.getDonationsByCreatorsSuccess(response.data));
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+    toast.error(error.message);
+  }
+};
+
+
+export const getSingleDonation = (id) => async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    const response = await apiService.get(`/creators/donations/${id}`);
+    console.log("res", response);
+    dispatch(slice.actions.getSingleDonationSuccess(response.data));
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+    toast.error(error.message);
+  }
+};
+
+
+export const confirmDonation = (donationId ) => async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    const response = await apiService.put(`/creators/donations/${donationId}`);
+    console.log("res", response);
+    dispatch(slice.actions.confirmDonationSuccess(response.data));
+    toast.success(response.message);
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+    toast.error(error.message);
+  }
+}
 export default slice.reducer;

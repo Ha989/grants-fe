@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getProjects } from "./projectSlice";
-import { Box, Container, Grid, Pagination, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Grid,
+  Pagination,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { FormProvider } from "../../components/form";
 import SearchInput from "../../components/SearchInput";
 import SortProject from "../../components/SortProject";
@@ -16,8 +23,8 @@ function ProjectList() {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("");
-  const  projects = useSelector((state) => state.project.project);
-  const  totalPage = useSelector((state) => state.project.totalPage);
+  const projects = useSelector((state) => state.project.project);
+  const totalPage = useSelector((state) => state.project.totalPage);
 
   const handleOnSubmit = (search) => {
     setSearch(search);
@@ -63,10 +70,12 @@ function ProjectList() {
         color="primary"
         textAlign="center"
         variant="h4"
+        fontFamily="sans-serif"
+        fontWeight="bolder"
         mt="10px"
-        mb="20px"
+        mb="50px"
       >
-        Projects List
+        Browse current Start Up opportunities on Grants.
       </Typography>
       <Stack
         display="flex"
@@ -86,17 +95,23 @@ function ProjectList() {
       <Grid
         container
         direction="row"
-        spacing={{ xs: 2, md: 3 }} columns={{ xs: 12, sm: 8, md: 12 }}
+        spacing={{ xs: 2, md: 3 }}
+        columns={{ xs: 12, sm: 8, md: 12 }}
       >
         {projects?.map((project, index) => (
-          <Grid item xs={12} sm={6} md={6} key={index}>
+          <Grid item xs={12} sm={4} md={4} key={index}>
             <ProjectCard key={project._id} project={project} />
-      </Grid>
+          </Grid>
         ))}
       </Grid>
       <Stack spacing={2} mt={5} justifyContent="center" alignItems="center">
-      <Pagination count={totalPage} variant="outlined" shape="rounded" onChange={handleChange} />
-    </Stack>
+        <Pagination
+          count={totalPage}
+          variant="outlined"
+          shape="rounded"
+          onChange={handleChange}
+        />
+      </Stack>
     </Container>
   );
 }

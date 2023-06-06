@@ -3,7 +3,6 @@ import { getDonationsOfUser } from "./userSlice";
 // import { Container, Divider, Stack, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  Box,
   Container,
   Divider,
   Pagination,
@@ -14,18 +13,21 @@ import { FormProvider } from "../../components/form";
 import { useForm } from "react-hook-form";
 import FilterBtn from "../../components/FilterBtn";
 
-// import FilterBtn from "../../components/FilterBtn";
-// import { FormProvider } from "../../components/form";
-// import { useForm } from "react-hook-form";
-// import Pagination from "../../components/Pagination";
+// const useStyles = makeStyles({
+//   dateText: {
+//     fontWeight: 'bold',
+//     fontSize: '1.5rem',
+//   },
+// });
 
 function UserDonations({ user }) {
   const dispatch = useDispatch();
   const donations = useSelector((state) => state.user.donation);
   const totalPage = useSelector((state) => state.user.totalPage);
   const [page, setPage] = useState("1");
-  const [limit, setLimit] = useState(10);
   const [status, setStatus] = useState("");
+
+
 
   const handleChange = (e, value) => {
     setPage(value);
@@ -45,11 +47,18 @@ function UserDonations({ user }) {
     dispatch(
       getDonationsOfUser({
         page,
-        limit,
         status,
       })
     );
-  }, [dispatch, page, limit, status]);
+  }, [dispatch, page, status]);
+ 
+  const extractDate = (response) => {
+    const date = new Date(response);
+    const formattedDate = date.toISOString().slice(0, 10);
+    return formattedDate;
+  };
+
+
   return (
     <Container> 
       <Stack padding={1}>
@@ -100,7 +109,7 @@ function UserDonations({ user }) {
                   $ {donation?.amount}
                 </Typography>
                 <Typography variant="h7" fontFamily="Arial" color="primary">
-                  {donation?.createAt}
+                  {extractDate(donation?.createdAt)}
                 </Typography>
               </Stack>
               <Divider />

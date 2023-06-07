@@ -51,12 +51,12 @@ function DonationModel({ donationId }) {
           </Typography>
           <Box display="flex" justifyContent="center" alignItems="center">
           <Avatar
-                  src={donation?.projectId.logo}
-                  alt={donation?.projectId.name}
+                  src={donation?.projectId?.logo}
+                  alt={donation?.projectId?.name}
                   sx={{ width: 40, height: 40 }}
                 />
           <Typography variant='h5' ml={2}>
-          { donation?.projectId.name }
+          { donation?.projectId?.name }
           </Typography>
           </Box>
           <Typography color="primary"  id="keep-mounted-modal-description" sx={{ mt: 2 }}>
@@ -64,12 +64,12 @@ function DonationModel({ donationId }) {
           </Typography>
           <Box display="flex" justifyContent="center" alignItems="center">
           <Avatar
-                  src={donation?.userId.avatarUrl}
-                  alt={donation?.userId.name}
+                  src={donation?.userId?.avatarUrl}
+                  alt={donation?.userId?.name}
                   sx={{ width: 40, height: 40 }}
                 />
           <Typography variant='h5' ml={2}>
-          { donation?.userId.name }
+          { donation?.userId?.name }
           </Typography>
           </Box>
           <Typography color="primary"  id="keep-mounted-modal-description" sx={{ mt: 2 }}>

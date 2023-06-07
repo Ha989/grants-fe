@@ -6,6 +6,10 @@ import { cloudinaryUpload } from "../../utils/cloudinary";
 const initialState = {
   isLoading: false,
   error: null,
+  donations: [],
+  donation: {},
+  updatedCreatorProfile: null,
+  projects: []
 };
 
 const slice = createSlice({
@@ -29,9 +33,9 @@ const slice = createSlice({
     getDonationsByCreatorsSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const { donations } = action.payload;
+      const { donations, ...isConfirm } = action.payload;
       state.donations = donations;
-      console.log("donations", donations);
+      state.donations.isConfirm = isConfirm;
     },
     getSingleDonationSuccess(state, action) {
       state.isLoading = false;
@@ -44,7 +48,18 @@ const slice = createSlice({
       state.error = null;
       const { confirmDonation } = action.payload;
       state.donation = confirmDonation;
-      console.log("do", confirmDonation);
+    },
+    updateCreatorProfileSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const updatedCreator = action.payload.creator;
+      state.updatedCreatorProfile = updatedCreator;
+    },
+    getProjectsByCreatorSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const projects = action.payload;
+      state.projects = projects;
     }
   },
 });
@@ -110,7 +125,6 @@ export const getSingleDonation = (id) => async (dispatch) => {
   dispatch(slice.actions.startLoading());
   try {
     const response = await apiService.get(`/creators/donations/${id}`);
-    console.log("res", response);
     dispatch(slice.actions.getSingleDonationSuccess(response.data));
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
@@ -119,13 +133,45 @@ export const getSingleDonation = (id) => async (dispatch) => {
 };
 
 
-export const confirmDonation = (donationId ) => async (dispatch) => {
+export const confirmDonation = ( donationId ) => async (dispatch) => {
   dispatch(slice.actions.startLoading());
   try {
     const response = await apiService.put(`/creators/donations/${donationId}`);
-    console.log("res", response);
     dispatch(slice.actions.confirmDonationSuccess(response.data));
     toast.success(response.message);
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+    toast.error(error.message);
+  }
+};
+
+export const updateCreatorProfile = ({
+  creatorId, name, avatarUrl, bio
+}) => async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    const data = {
+      name, avatarUrl, bio
+    };
+    if(avatarUrl instanceof File) {
+      const imageUrl = await cloudinaryUpload(avatarUrl);
+      data.avatarUrl = imageUrl;
+    }
+    const response = await apiService.put(`/creators/settings/${creatorId}`, data);
+    dispatch(slice.actions.updateCreatorProfileSuccess(response.data));
+    toast.success("Update Profile Successfully");
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+    toast.error(error.message);
+  }
+};
+
+
+export const getProjectsByCreator = () => async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    const response = await apiService.get("/creators/projects");
+    dispatch(slice.actions.getProjectsByCreatorSuccess(response.data));
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
     toast.error(error.message);

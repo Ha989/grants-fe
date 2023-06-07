@@ -77,6 +77,7 @@ function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
   const updatedProfile = useSelector((state) => state.user.updatedProfile);
+  const updatedCreatorProfile = useSelector((state) => state.creator.updatedCreatorProfile)
 
   useEffect(() => {
     const initialize = async () => {
@@ -122,8 +123,9 @@ function AuthProvider({ children }) {
   useEffect(() => {
     if (updatedProfile) 
       dispatch({ type: UPDATED_PROFILE, payload: updatedProfile});
-      // if ( creatorUpdatedProfole) 
-  }, [updatedProfile]);
+    if (updatedCreatorProfile)
+    dispatch({ type: UPDATED_PROFILE, payload: updatedCreatorProfile})
+  }, [updatedCreatorProfile, updatedProfile]);
 
   const login = async ({ email, password }, callback) => {
     const response = await apiService.post("/auth/login", {

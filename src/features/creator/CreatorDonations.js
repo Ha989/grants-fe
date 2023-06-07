@@ -1,6 +1,6 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Modal, Typography } from "@mui/material";
+import { Box, Container, Modal, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getDonationsByCreator } from "./creatorSlice";
@@ -43,15 +43,21 @@ function CreatorDonations() {
     {
       field: "userId.name",
       headerName: "Name",
-      width: 180,
+      minWidth: 180,
       valueGetter: (params) => params.row.userId.name,
     },
-    { field: "amount", headerName: "Amount in $", type: "number", width: 180 },
+    {
+      field: "userId.email",
+      headerName: "Email",
+      minWidth: 200,
+      valueGetter: (params) => params.row.userId.email,
+    },
+    { field: "amount", headerName: "Amount in $", type: "number", width: 150 },
     {
       field: "createdAt",
       headerName: "Date",
       type: "datetime",
-      width: 180,
+      width: 150,
       valueGetter: (params) => formatDate(params.row.createdAt),
     },
     {
@@ -63,16 +69,16 @@ function CreatorDonations() {
     {
       field: "isConfirm",
       headerName: "Status",
-      width: 180,
+      width: 150,
       valueFormatter: (params) => (params.value ? "Confirmed" : "Unconfirmed"),
     },
   ];
 
   return (
+    <Container>
+    <Typography variant="h5" color="primary" mb={5} ml={6}>Donation Receipts Table</Typography>
     <Box
-      style={{ height: 400, width: "70vw" }}
-      ml={10}
-      border="1px solid green"
+      style={{ height: 400, width: "70vw" }} ml={6}
     >
       {donations && (
         <DataGrid
@@ -95,6 +101,7 @@ function CreatorDonations() {
         <DonationModel donationId={selectedDonation}/>
       </Modal>
     </Box>
+    </Container>
   );
 }
 

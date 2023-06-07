@@ -19,7 +19,7 @@ import ProjectCard from "./ProjectCard";
 
 function ProjectList() {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
+  // const [limit, setLimit] = useState(6);
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("");
@@ -49,12 +49,11 @@ function ProjectList() {
     dispatch(
       getProjects({
         page,
-        limit,
         search,
         sortBy,
       })
     );
-  }, [dispatch, page, limit, search, sortBy]);
+  }, [dispatch, page, search, sortBy]);
 
   return (
     <Container

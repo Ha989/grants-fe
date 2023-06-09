@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import { getDonationsByCreator } from "./creatorSlice";
 import { useState } from "react";
 import DonationModel from "./DonationModel";
+import { green, red } from "@mui/material/colors";
+import "./style.css";
 
 
 
@@ -44,12 +46,15 @@ function CreatorDonations() {
       field: "userId.name",
       headerName: "Name",
       minWidth: 180,
+      headerClassName: "header-name",
+      headerCellClassName: "header-name",
       valueGetter: (params) => params.row.userId.name,
     },
     {
       field: "userId.email",
       headerName: "Email",
       minWidth: 200,
+      headerClassName: "bold-header",
       valueGetter: (params) => params.row.userId.email,
     },
     { field: "amount", headerName: "Amount in $", type: "number", width: 150 },
@@ -70,7 +75,12 @@ function CreatorDonations() {
       field: "isConfirm",
       headerName: "Status",
       width: 150,
-      valueFormatter: (params) => (params.value ? "Confirmed" : "Unconfirmed"),
+      renderCell: (params) => (
+        <div style={{ color: params.value ? green[500] : red[500] }}>
+          {params.value ? "Confirmed" : "Unconfirmed"}
+        </div>
+      ),
+      // valueFormatter: (params) => (params.value ? "Confirmed" : "Unconfirmed"),
     },
   ];
 
@@ -78,7 +88,7 @@ function CreatorDonations() {
     <Container>
     <Typography variant="h5" color="primary" mb={5} ml={6}>Donation Receipts Table</Typography>
     <Box
-      style={{ height: 400, width: "70vw" }} ml={6}
+      style={{ height: 400, width: "100%" }} ml={6}
     >
       {donations && (
         <DataGrid

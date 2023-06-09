@@ -51,7 +51,7 @@ function Router() {
           </AuthRequired>
         }
       >
-        <Route path="/creators/account" element={<CreatorPanel />} />
+        <Route path="/creators/account" element={<CreatorLayout />} />
         <Route path="/creators/dashboard" element={<CreatorDashboard />} />
         <Route path="/creators/settings" element={<CreatorSettings />} />
         <Route path="/creators/donations" element={<CreatorDonations />} />

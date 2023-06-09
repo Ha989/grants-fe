@@ -5,16 +5,16 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
-export default function ConfirmModal({ open, handleClose, name, action }) {
+export default function ConfirmModal({ open, handleClose, action }) {
 	const handleConfirm = () => {
 		action();
 		handleClose();
 	};
 	return (
 		<Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-			<DialogTitle id="alert-dialog-title">{`Delete ${name}?`}</DialogTitle>
+			<DialogTitle id="alert-dialog-title">{`Delete ?`}</DialogTitle>
 			<DialogContent>
-				<DialogContentText id="alert-dialog-description">Are you sure you want to delete the {name}? This action is irreversible.</DialogContentText>
+				<DialogContentText id="alert-dialog-description">Are you sure you want to delete this project? This action is irreversible.</DialogContentText>
 			</DialogContent>
 			<DialogActions>
 				<Button onClick={handleClose}>Cancel</Button>

@@ -4,8 +4,6 @@ import MainFooter from "./MainFooter";
 import AlertMsg from "../components/AlertMsg";
 import CreatorPanel from "../features/creator/CreatorPanel";
 
-
-
 function CreatorLayout() {
   return (
     <Stack sx={{ minHeight: "100vh" }}>

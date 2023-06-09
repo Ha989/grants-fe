@@ -9,9 +9,6 @@ import { FTextField, FormProvider } from "../../components/form";
 import {
   Box,
   Card,
-  Container,
-  Grid,
-  Paper,
   Stack,
   Typography,
 } from "@mui/material";
@@ -47,6 +44,7 @@ function UserSetting() {
 
   const onSubmit = (data) => {
     dispatch(updateUserProfile({ userId: user._id, ...data }));
+    console.log("data", data)
   };
 
   const handleDrop = useCallback(

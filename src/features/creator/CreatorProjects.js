@@ -1,24 +1,28 @@
-import { Container, IconButton } from "@mui/material";
+import { Box, Container, IconButton, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProjectsByCreator } from "./creatorSlice";
+import { deleteProject, getProjectsByCreator } from "./creatorSlice";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DataGrid } from "@mui/x-data-grid";
 import ConfirmModal from "./ConfirmDelete";
+import EditModal from "./EditModal";
 
 function CreatorProjects() {
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.creator.projects);
   const [openForm, setOpenForm] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
-  const [selectedProject, setSelectedProject] = useState();
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [editProject, setEditProject] = useState(null);
+ 
+
   
   useEffect(() => {
     dispatch(getProjectsByCreator());
   }, [dispatch]);
-
+  
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString();
@@ -31,13 +35,15 @@ function CreatorProjects() {
   };
   const handleEditClick = (params) => {
     setOpenForm(true);
-    const projectId = params?.row?._id;
-    setSelectedProject(projectId);
+    const projectId = params?.row._id;
+    const project = projects.find((project) => project._id === projectId);
+    setEditProject(project)
   };
   
   const handleDelete = () => {
-    console.log("ok");
-  };
+    dispatch(deleteProject({projectId: selectedProject}));
+  }
+
   
   const columns = [
     {
@@ -106,15 +112,22 @@ function CreatorProjects() {
 
   return (
     <Container>
+      <Typography variant="h5" color="primary" mb={5} ml={6}>Projects Control</Typography>
       <ConfirmModal
         open={confirmModal}
-        // name={name}
         handleClose={() => {
           setConfirmModal(false);
         }}
         action={handleDelete}
       />
-      <div style={{ height: 400, width: "100%" }}>
+      <EditModal
+        open={openForm}
+        handleClose={() => {
+          setOpenForm(false);
+        }}
+        project={editProject}
+      />
+      <Box style={{ height: 400, width: "100%" }} ml={6}>
         {projects && (
           <DataGrid
             rows={projects}
@@ -128,7 +141,7 @@ function CreatorProjects() {
             pageSizeOptions={[5, 10]}
           />
         )}
-      </div>
+      </Box>
     </Container>
   );
 }

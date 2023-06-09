@@ -4,7 +4,7 @@ import { Controller, useFormContext } from "react-hook-form";
 
 
 function FTextField({ name, ...other }) {
-    const { control } = useFormContext;
+    const { control } = useFormContext();
 
     return (
         <Controller 

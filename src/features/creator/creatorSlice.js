@@ -9,7 +9,7 @@ const initialState = {
   donations: [],
   donation: {},
   updatedCreatorProfile: null,
-  projects: []
+  projects: [],
 };
 
 const slice = createSlice({
@@ -60,7 +60,23 @@ const slice = createSlice({
       state.error = null;
       const projects = action.payload;
       state.projects = projects;
-    }
+    },
+    editProjectSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.updatedProject = action.payload.project;
+      console.log("update", state.updatedProject)
+    },
+    deleteProjectSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const { projectId } = action.payload;
+      delete state.projects[projectId];
+      state.projects = state.projects.filter(
+        (projectId) => projectId !== action.payload.projectId
+      );
+      console.log("proj", state.projects);
+    },
   },
 });
 
@@ -120,7 +136,6 @@ export const getDonationsByCreator = () => async (dispatch) => {
   }
 };
 
-
 export const getSingleDonation = (id) => async (dispatch) => {
   dispatch(slice.actions.startLoading());
   try {
@@ -132,40 +147,44 @@ export const getSingleDonation = (id) => async (dispatch) => {
   }
 };
 
-
-export const confirmDonation = ( donationId ) => async (dispatch) => {
+export const confirmDonation = (donationId) => async (dispatch) => {
   dispatch(slice.actions.startLoading());
   try {
     const response = await apiService.put(`/creators/donations/${donationId}`);
     dispatch(slice.actions.confirmDonationSuccess(response.data));
     toast.success(response.message);
+    dispatch(getDonationsByCreator());
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
     toast.error(error.message);
   }
 };
 
-export const updateCreatorProfile = ({
-  creatorId, name, avatarUrl, bio
-}) => async (dispatch) => {
-  dispatch(slice.actions.startLoading());
-  try {
-    const data = {
-      name, avatarUrl, bio
-    };
-    if(avatarUrl instanceof File) {
-      const imageUrl = await cloudinaryUpload(avatarUrl);
-      data.avatarUrl = imageUrl;
+export const updateCreatorProfile =
+  ({ creatorId, name, avatarUrl, bio }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const data = {
+        name,
+        avatarUrl,
+        bio,
+      };
+      if (avatarUrl instanceof File) {
+        const imageUrl = await cloudinaryUpload(avatarUrl);
+        data.avatarUrl = imageUrl;
+      }
+      const response = await apiService.put(
+        `/creators/settings/${creatorId}`,
+        data
+      );
+      dispatch(slice.actions.updateCreatorProfileSuccess(response.data));
+      toast.success("Update Profile Successfully");
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
     }
-    const response = await apiService.put(`/creators/settings/${creatorId}`, data);
-    dispatch(slice.actions.updateCreatorProfileSuccess(response.data));
-    toast.success("Update Profile Successfully");
-  } catch (error) {
-    dispatch(slice.actions.hasError(error.message));
-    toast.error(error.message);
-  }
-};
-
+  };
 
 export const getProjectsByCreator = () => async (dispatch) => {
   dispatch(slice.actions.startLoading());
@@ -176,5 +195,57 @@ export const getProjectsByCreator = () => async (dispatch) => {
     dispatch(slice.actions.hasError(error.message));
     toast.error(error.message);
   }
-}
+};
+
+export const updateProject = ({
+  projectId,
+  name, title, description, website, logo, banner, bankDetail, team }
+) => async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+      const data = { name, title, description, website, logo, banner, bankDetail, team }
+      console.log('data', data)
+
+      if (data.logo instanceof File) {
+        const logoUrl = await cloudinaryUpload(data.logo);
+        data.logo = logoUrl;
+      }
+      if (data.banner instanceof File) {
+        const bannerUrl = await cloudinaryUpload(data.banner);
+        data.banner = bannerUrl;
+      }
+      const response = await apiService.put(
+        `/creators/projects/${projectId}`,
+        data
+      );
+      console.log("res", response.data);
+      dispatch(slice.actions.editProjectSuccess(response.data));
+      toast.success(response.message);
+      dispatch(getProjectsByCreator())
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+  }
+};
+
+
+
+export const deleteProject =
+  ({ projectId }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await apiService.delete(
+        `creators/projects/${projectId}`
+      );
+      dispatch(
+        slice.actions.deleteProjectSuccess({ ...response.data, projectId })
+      );
+      toast.success("Deleted success");
+      dispatch(getProjectsByCreator());
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
 export default slice.reducer;

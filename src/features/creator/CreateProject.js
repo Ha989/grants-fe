@@ -120,7 +120,7 @@ function CreateProject() {
   return (
     <Container>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-          <Typography variant="h5" mt={5} textAlign="center" fontWeight="bolder" color="primary">SUBMIT YOUR PROJECT</Typography>
+          <Typography variant="h5" mt={5} textAlign="center" fontWeight="bolder" color="primary">SUBMIT YOUR PROJECT<Divider /></Typography>
         <Stack mt={10}
         > 
           <Box>

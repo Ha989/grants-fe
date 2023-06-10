@@ -9,6 +9,7 @@ import {
   Box,
   Card,
   Container,
+  Divider,
   Stack,
   Typography,
 } from "@mui/material";
@@ -64,7 +65,7 @@ function CreatorSetting() {
   return (
     <Container>
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Box width={{ xs: "90vw", md: "60vw" }} ml={6}>
+      <Box width={{ xs: "90vw", md: "60vw" }}>
         <Card sx={{ py: 10, px: 3, textAlign: "center" }} width={300}>
           <FUpLoadAvatar
             name="avatarUrl"

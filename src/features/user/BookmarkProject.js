@@ -14,7 +14,6 @@ function BookmarkProject({ project }) {
   const bookmarkProjects = useSelector((state) => state.user.bookmark);
 
   const isBookmarked = bookmarkProjects?.includes(project._id);
-  console.log("isBookmark", isBookmarked)
 
   const handleBookmarkClick = () => {
     dispatch(bookmarkProject({ projectId, userId }));

@@ -9,18 +9,17 @@ import NotFoundPage from "../pages/NotFoundPage";
 import AuthLayout from "../layouts/AuthLayout";
 import AuthRequired from "./AuthRequired";
 import VerificationPage from "../pages/VerificationPage";
-import CreateDetailPage from "../pages/CreateDetailPage";
 import ProjectList from "../features/project/ProjectList";
 import SingleProject from "../features/project/SingleProject";
 import Donation from "../features/project/Donation";
 import UserPanel from "../features/user/UserPanel";
 import CreateProject from "../features/creator/CreateProject";
-import CreatorDashboard from "../features/creator/CreatorPanel";
+import CreatorDashboard from "../features/creator/CreatorDashboard";
 import CreatorLayout from "../layouts/CreatorLayout";
 import CreatorSettings from "../features/creator/CreatorSettings";
 import CreatorDonations from "../features/creator/CreatorDonations";
 import CreatorProjects from "../features/creator/CreatorProjects";
-import CreatorPanel from "../features/creator/CreatorPanel";
+import CreatorPage from "../features/creator/CreatorPage";
 
 function Router() {
   return (
@@ -51,7 +50,7 @@ function Router() {
           </AuthRequired>
         }
       >
-        <Route path="/creators/account" element={<CreatorLayout />} />
+        <Route path="/creators/account" element={<CreatorPage />} />
         <Route path="/creators/dashboard" element={<CreatorDashboard />} />
         <Route path="/creators/settings" element={<CreatorSettings />} />
         <Route path="/creators/donations" element={<CreatorDonations />} />

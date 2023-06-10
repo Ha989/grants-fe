@@ -159,6 +159,7 @@ function EditModal({ open, handleClose, project }) {
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <DialogTitle color="primary" textAlign="center">
             EDIT YOUR PROJECT
+            <Divider />
           </DialogTitle>
             <DialogContent>
               <Stack>

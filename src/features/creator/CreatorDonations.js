@@ -1,6 +1,6 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Container, Modal, Typography } from "@mui/material";
+import { Box, Container, Divider, Modal, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getDonationsByCreator } from "./creatorSlice";
@@ -9,23 +9,18 @@ import DonationModel from "./DonationModel";
 import { green, red } from "@mui/material/colors";
 import "./style.css";
 
-
-
 function CreatorDonations() {
   const dispatch = useDispatch();
   const donations = useSelector((state) => state.creator.donations);
   const [handleOpen, setHandleOpen] = useState(false);
   const [selectedDonation, setSelectedDonation] = useState();
 
-
-
   useEffect(() => {
     dispatch(getDonationsByCreator());
   }, [dispatch]);
 
-
   const handleDonation = (params) => {
-    const donationId = params.row._id
+    const donationId = params.row._id;
     setHandleOpen(true);
     setSelectedDonation(donationId);
   };
@@ -33,7 +28,6 @@ function CreatorDonations() {
   const closeModal = () => {
     setHandleOpen(false);
   };
-
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -86,31 +80,39 @@ function CreatorDonations() {
 
   return (
     <Container>
-    <Typography variant="h5" color="primary" mb={5} ml={6}>Donation Receipts Table</Typography>
-    <Box
-      style={{ height: 400, width: "100%" }} ml={6}
-    >
-      {donations && (
-        <DataGrid
-          rows={donations}
-          columns={columns}
-          getRowId={(row) => row._id}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 5 },
-            },
+      <Typography variant="h5" color="primary" mb={5}>
+        Donation Receipts Table
+        <Divider />
+      </Typography>
+      <Box style={{ height: 400, width: "100%" }}>
+        {donations && (
+          <DataGrid
+            rows={donations}
+            columns={columns}
+            getRowId={(row) => row._id}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 5 },
+              },
+            }}
+            pageSizeOptions={[5, 10]}
+            checkboxSelection
+            onRowClick={handleDonation}
+          />
+        )}
+
+        <Modal
+          open={handleOpen}
+          onClose={closeModal}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
-          pageSizeOptions={[5, 10]}
-          checkboxSelection
-          onRowClick={handleDonation}
-        />
-      )}
-
-
-       <Modal open={handleOpen} onClose={closeModal} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <DonationModel donationId={selectedDonation}/>
-      </Modal>
-    </Box>
+        >
+          <DonationModel donationId={selectedDonation} />
+        </Modal>
+      </Box>
     </Container>
   );
 }

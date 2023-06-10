@@ -1,4 +1,4 @@
-import { Box, Container, IconButton, Typography } from "@mui/material";
+import { Box, Container, Divider, IconButton, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,13 +16,11 @@ function CreatorProjects() {
   const [confirmModal, setConfirmModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [editProject, setEditProject] = useState(null);
- 
 
-  
   useEffect(() => {
     dispatch(getProjectsByCreator());
   }, [dispatch]);
-  
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString();
@@ -37,14 +35,13 @@ function CreatorProjects() {
     setOpenForm(true);
     const projectId = params?.row._id;
     const project = projects.find((project) => project._id === projectId);
-    setEditProject(project)
+    setEditProject(project);
   };
-  
-  const handleDelete = () => {
-    dispatch(deleteProject({projectId: selectedProject}));
-  }
 
-  
+  const handleDelete = () => {
+    dispatch(deleteProject({ projectId: selectedProject }));
+  };
+
   const columns = [
     {
       field: "_id",
@@ -112,7 +109,10 @@ function CreatorProjects() {
 
   return (
     <Container>
-      <Typography variant="h5" color="primary" mb={5} ml={6}>Projects Control</Typography>
+      <Typography variant="h5" color="primary" mb={5}>
+        Projects Control
+        <Divider />
+      </Typography>
       <ConfirmModal
         open={confirmModal}
         handleClose={() => {
@@ -127,7 +127,7 @@ function CreatorProjects() {
         }}
         project={editProject}
       />
-      <Box style={{ height: 400, width: "100%" }} ml={6}>
+      <Box style={{ height: 400, width: "100%" }}>
         {projects && (
           <DataGrid
             rows={projects}

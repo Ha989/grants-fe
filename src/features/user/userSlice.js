@@ -42,7 +42,6 @@ const slice = createSlice({
       state.error = null;
       const updatedUser = action.payload.user;
       state.updatedProfile = updatedUser;
-      console.log("update", updatedUser)
     },
     bookmarkProjectSuccess(state, action) {
       state.isLoading = false;

@@ -2,14 +2,14 @@ import { Outlet } from "react-router-dom";
 import { Box, Stack } from "@mui/material";
 import MainFooter from "./MainFooter";
 import AlertMsg from "../components/AlertMsg";
-import CreatorPanel from "../features/creator/CreatorPanel";
+import CreatorPage from "../features/creator/CreatorPage";
 
 function CreatorLayout() {
   return (
     <Stack sx={{ minHeight: "100vh" }}>
-      <CreatorPanel />
+      <CreatorPage />
       <AlertMsg />
- 
+
       <Outlet />
 
       <Box sx={{ flexGrow: 1 }} />
@@ -17,6 +17,6 @@ function CreatorLayout() {
       <MainFooter />
     </Stack>
   );
-};
+}
 
 export default CreatorLayout;

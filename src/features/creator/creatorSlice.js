@@ -58,14 +58,13 @@ const slice = createSlice({
     getProjectsByCreatorSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const projects = action.payload;
+      const projects  = action.payload;
       state.projects = projects;
     },
     editProjectSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
       state.updatedProject = action.payload.project;
-      console.log("update", state.updatedProject)
     },
     deleteProjectSuccess(state, action) {
       state.isLoading = false;
@@ -116,7 +115,6 @@ export const createProject =
         `/creators/${creatorId}/create`,
         body
       );
-      console.log("res", response.data);
       dispatch(slice.actions.createProjectSuccess(response.data));
       toast.success(response.message);
     } catch (error) {
@@ -218,7 +216,6 @@ export const updateProject = ({
         `/creators/projects/${projectId}`,
         data
       );
-      console.log("res", response.data);
       dispatch(slice.actions.editProjectSuccess(response.data));
       toast.success(response.message);
       dispatch(getProjectsByCreator())

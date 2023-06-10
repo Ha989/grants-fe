@@ -1,9 +1,23 @@
 import { Box, Button, Container, Stack, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import background from "../images/background.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import useAuth from "../hooks/useAuth";
 
 function HomePage() {
+  const auth = useAuth();
+  const navigate = useNavigate();
+  console.log("aut", auth)
+
+  useEffect(() => {
+    if (auth?.user?.role === 'user') {
+     navigate("/")
+    }
+    if (auth?.creator?.role === 'creator') {
+      navigate("/creators/account")
+    }
+  },[])
+
   return (
     <Container maxWidth="100vw" maxheight="100vh">
       <Box

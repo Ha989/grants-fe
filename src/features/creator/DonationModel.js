@@ -35,7 +35,6 @@ function DonationModel({ donationId }) {
 
     const handleConfirmDonation = () => {
         dispatch(confirmDonation(donationId));
-        console.log("donationId", donationId)
     }
     
   return (

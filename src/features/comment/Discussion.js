@@ -1,10 +1,4 @@
-import {
-  Box,
-  Container,
-  List,
-  Link,
-  Typography,
-} from "@mui/material";
+import { Box, Container, List, Link, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -36,15 +30,17 @@ function Discussion() {
         <Typography textAlign="center" variant="subtitle2" color="#495057">
           Ask questions and share feedback with the {project?.name} team below.
           If you have support related questions for Grants, please contact at{" "}
-          <Link href={`mailto:${email}`} color="primary"> {email}</Link>
+          <Link href={`mailto:${email}`} color="primary">
+            {" "}
+            {email}
+          </Link>
         </Typography>
-        <CommentForm projectId={id}/>
+        <CommentForm projectId={id} />
         <List>
-          {project && 
+          {project &&
             project.comments.map((comment) => (
               <CommentCard comment={comment} />
-            ))
-          }
+            ))}
         </List>
       </Box>
     </Container>

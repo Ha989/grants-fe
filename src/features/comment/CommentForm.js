@@ -1,15 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import React from "react";
 import { useCallback } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { createComment } from "./commentSlice";
-import { Box, Stack, TextField, alpha } from "@mui/material";
+import { Box, Stack, alpha } from "@mui/material";
 import { FTextField, FormProvider } from "../../components/form";
 import FUpLoadImage from "../../components/form/FUpLoadImage";
 import { LoadingButton } from "@mui/lab";
-import { useParams } from "react-router-dom";
 
 const yupSchema = Yup.object().shape({
   content: Yup.string().required("Content is required"),
@@ -19,9 +18,11 @@ const defaultValues = {
   content: "",
   image: "",
 };
-function CommentForm({ projectId }) {
+function CommentForm({ projectId, parentId, onClose }) {
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.comment.isLoading);
+  console.log("pd", projectId);
+  console.log("pa", parentId);
 
   const methods = useForm({
     resolver: yupResolver(yupSchema),
@@ -35,11 +36,12 @@ function CommentForm({ projectId }) {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = ({ data }) => {
-    dispatch(createComment({ projectId, ...data })).then(() => reset());
+  const onSubmit = async (data) => {
+    console.log("p", data);
+    dispatch(createComment({ projectId, parentId, ...data }));
+    reset();
     console.log("check");
   };
-  console.log("d", projectId);
 
   const handleDrop = useCallback(
     (acceptedFiles) => {
@@ -58,9 +60,9 @@ function CommentForm({ projectId }) {
   );
 
   return (
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Box border="1px solid green" maxHeight={300}>
-        <Stack spacing={2}>
+    <Box border="1px solid green" maxHeight={350} mt={5}>
+      <Stack spacing={2}>
+        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <FUpLoadImage
             name="image"
             accept="image/*"
@@ -87,19 +89,20 @@ function CommentForm({ projectId }) {
               alignItems: "center",
               justifyContent: "flex-end",
             }}
+            mt={2}
           >
             <LoadingButton
               type="submit"
               variant="contained"
               size="small"
-              loading={isSubmitting}
+              loading={isSubmitting || isLoading}
             >
               Post
             </LoadingButton>
           </Box>
-        </Stack>
-      </Box>
-    </FormProvider>
+        </FormProvider>
+      </Stack>
+    </Box>
   );
 }
 

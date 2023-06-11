@@ -31,19 +31,21 @@ const slice = createSlice({
 });
 
 export const createComment =
-  ({ projectId, content, image }) =>
+  ({ projectId, parentId, content, image }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
       const imageUrl = await cloudinaryUpload(image);
       const response = await apiService.post("/comments", {
         projectId,
+        parentId,
         content,
         image: imageUrl,
       });
       console.log("res", response.data)
       dispatch(slice.actions.createCommentSuccess(response.data));
       toast.success(response.message);
+      dispatch(getSingleProject(projectId))
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);

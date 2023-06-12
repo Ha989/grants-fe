@@ -5,10 +5,11 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { createComment } from "./commentSlice";
-import { Box, Stack, alpha } from "@mui/material";
+import { Box, IconButton, Stack, alpha } from "@mui/material";
 import { FTextField, FormProvider } from "../../components/form";
 import FUpLoadImage from "../../components/form/FUpLoadImage";
 import { LoadingButton } from "@mui/lab";
+import SendIcon from '@mui/icons-material/Send';
 
 const yupSchema = Yup.object().shape({
   content: Yup.string().required("Content is required"),
@@ -21,9 +22,6 @@ const defaultValues = {
 function CommentForm({ projectId, parentId, onClose }) {
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.comment.isLoading);
-  console.log("pd", projectId);
-  console.log("pa", parentId);
-
   const methods = useForm({
     resolver: yupResolver(yupSchema),
     defaultValues,
@@ -60,7 +58,7 @@ function CommentForm({ projectId, parentId, onClose }) {
   );
 
   return (
-    <Box border="1px solid green" maxHeight={350} mt={5}>
+    <Box maxHeight={350} mt={5}>
       <Stack spacing={2}>
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <FUpLoadImage
@@ -89,16 +87,15 @@ function CommentForm({ projectId, parentId, onClose }) {
               alignItems: "center",
               justifyContent: "flex-end",
             }}
-            mt={2}
           >
-            <LoadingButton
+            <IconButton
               type="submit"
               variant="contained"
-              size="small"
+              color="info"
               loading={isSubmitting || isLoading}
             >
-              Post
-            </LoadingButton>
+             <SendIcon fontSize="large"/>
+            </IconButton>
           </Box>
         </FormProvider>
       </Stack>

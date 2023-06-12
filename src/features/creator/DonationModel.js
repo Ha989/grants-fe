@@ -21,14 +21,13 @@ const style = {
   };
 
 
-function DonationModel({ donationId }) {
+function DonationModel({ donationId, onClose }) {
     const dispatch = useDispatch();
     const donation = useSelector((state) => state.creator.donation);
     
    
     useEffect(() => {
         dispatch(getSingleDonation(donationId));
-        console.log("donationId", donationId)
     }, [dispatch, donationId])
     
     const isConfirm = donation?.isConfirm;

@@ -28,23 +28,24 @@ const CreateProjectSchema = yup.object().shape({
   description: yup.string().required("description is required"),
   website: yup.string().url().nullable().required("Website is required"),
   team: yup.string().required("Team is required"),
-  logo: yup.mixed()
-  .required("Logo is required")
-  .test("fileType", "Invalid file format", (value) => {
-    if (value && value instanceof File) {
-      return true;
-    }
-    return false;
-  }),
+  logo: yup
+    .mixed()
+    .required("Logo is required")
+    .test("fileType", "Invalid file format", (value) => {
+      if (value && value instanceof File) {
+        return true;
+      }
+      return false;
+    }),
   banner: yup
-  .mixed()
-  .required("Banner is required")
-  .test("fileType", "Invalid file format", (value) => {
-    if (value && value instanceof File) {
-      return true;
-    }
-    return false;
-  }),
+    .mixed()
+    .required("Banner is required")
+    .test("fileType", "Invalid file format", (value) => {
+      if (value && value instanceof File) {
+        return true;
+      }
+      return false;
+    }),
   video: yup
     .string()
     .url("Video must be a valid video link")
@@ -80,51 +81,79 @@ function CreateProject() {
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
- 
-  const onSubmit = ({creatorId, name, title, description, website, banner, logo, team, video, bankDetail}) => {
+
+  const onSubmit = ({
+    creatorId,
+    name,
+    title,
+    description,
+    website,
+    banner,
+    logo,
+    team,
+    video,
+    bankDetail,
+  }) => {
     dispatch(
       createProject({
-        creatorId: creator._id, 
-        name, title, description, website, banner, logo, team, video, bankDetail
-     }),
+        creatorId: creator._id,
+        name,
+        title,
+        description,
+        website,
+        banner,
+        logo,
+        team,
+        video,
+        bankDetail,
+      })
     );
   };
   const handleDrop = useCallback(
     (acceptedFiles, type) => {
       const file = acceptedFiles[0];
-     
+
       if (file) {
-           if (type === "logo") {
-         setValue(
+        if (type === "logo") {
+          setValue(
             "logo",
             Object.assign(file, {
               preview: URL.createObjectURL(file),
             })
           );
         }
-           
+
         if (type === "banner") {
-            setValue(
-              "banner",
-              Object.assign(file, {
-                preview: URL.createObjectURL(file),
-              }),
-            );
-          }
-        } 
+          setValue(
+            "banner",
+            Object.assign(file, {
+              preview: URL.createObjectURL(file),
+            })
+          );
+        }
+      }
     },
     [setValue]
   );
-  
-  
+
   return (
     <Container>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-          <Typography variant="h5" mt={5} textAlign="center" fontWeight="bolder" color="primary">SUBMIT YOUR PROJECT<Divider /></Typography>
-        <Stack mt={10}
-        > 
+        <Typography
+          variant="h5"
+          mt={5}
+          textAlign="center"
+          fontWeight="bolder"
+          color="primary"
+        >
+          SUBMIT YOUR PROJECT
+          <Divider />
+        </Typography>
+        <Stack mt={10}>
           <Box>
-            <Typography variant="subtitle1"  fontFamily="sans-serif">Upload Your Logo</Typography>
+            <Typography variant="subtitle1" fontFamily="sans-serif">
+              Upload Your Logo
+            </Typography>
             <FUpLoadAvatar
               name="logo"
               accept="image/*"
@@ -148,8 +177,10 @@ function CreateProject() {
             />
           </Box>
           <Divider />
-          <Box sx={{ mt:5}}>
-            <Typography variant="subtitle1" fontFamily="sans-serif">Upload your Banner</Typography>
+          <Box sx={{ mt: 5 }}>
+            <Typography variant="subtitle1" fontFamily="sans-serif">
+              Upload your Banner
+            </Typography>
             <FUpLoadImage
               name="banner"
               accept="image/*"
@@ -190,10 +221,12 @@ function CreateProject() {
             <FTextField name="bankDetail" label="Bank Detail" />
           </Box>
         </Box>
-        <LoadingButton  mt={3}
+        <LoadingButton
+          mt={3}
           type="submit"
           variant="contained"
-          loading={isSubmitting || isLoading} >
+          loading={isSubmitting || isLoading}
+        >
           Create
         </LoadingButton>
       </FormProvider>

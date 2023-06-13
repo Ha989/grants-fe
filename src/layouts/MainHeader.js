@@ -22,8 +22,10 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import Avatar from "@mui/material/Avatar";
-import { Stack } from "@mui/material";
+import { DialogContent, Popover, Stack } from "@mui/material";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
+import { useState } from "react";
+import NotificationCard from "../features/notification/NotificationCard";
 
 // const Search = styled("div")(({ theme }) => ({
 //   position: "relative",
@@ -72,8 +74,15 @@ function MainHeader() {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const [notificationEl, setNotificationEl] = React.useState(null);
+  const [notifiDialog, setnotifiDialog] = useState(false);
   const user = auth?.user;
   const creator = auth?.creator;
+
+  const handleDialogOpen = (event) => {
+    setNotificationEl(event.currentTarget);
+    setnotifiDialog(true);
+  };
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -263,6 +272,7 @@ function MainHeader() {
                   size="large"
                   aria-label="show 1 new notifications"
                   color="primary"
+                  onClick={handleDialogOpen}
                 >
                   <Badge badgeContent={1} color="error">
                     <NotificationsIcon />
@@ -314,6 +324,21 @@ function MainHeader() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      <Popover
+        open={notifiDialog}
+        onClose={() => setnotifiDialog(false)}
+        anchorEl={notificationEl}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <NotificationCard />
+      </Popover>
     </Box>
   );
 }

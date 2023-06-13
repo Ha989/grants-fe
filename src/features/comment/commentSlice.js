@@ -40,7 +40,7 @@ const slice = createSlice({
       const { comment } = action.payload;
       delete state.comment;
     },
-}
+  },
 });
 
 export const createComment =
@@ -65,32 +65,36 @@ export const createComment =
     }
   };
 
-  export const updateComment = ({ id, projectId, content, image}) => async (dispatch) => {
+export const updateComment =
+  ({ id, projectId, content, image }) =>
+  async (dispatch) => {
     dispatch(slice.actions.startLoading());
     try {
-      const data = { content, image }
-      const response = await apiService.put(`comments/${id}`, data);
-      dispatch(slice.actions.updateCommentSuccess(response.data))
+      const data = { content, image };
+      const response = await apiService.put(`/comments/${id}`, data);
+      dispatch(slice.actions.updateCommentSuccess(response.data));
       toast.success(response.message);
-      dispatch(getSingleProject(projectId))
+      dispatch(getSingleProject(projectId));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
-    toast.error(error.message);
+      toast.error(error.message);
     }
   };
 
-export const deleteComment = ({id, projectId}) => async (dispatch) => {
-  dispatch(slice.actions.startLoading());
-  try {
-    const response = await apiService.delete(`/comments/${id}`);
-    console.log("res", response);
-    dispatch(slice.actions.deleteCommentSuccess(response.data));
-    toast.success(response.data);
-    dispatch(getSingleProject(projectId));
-  } catch (error) {
-    dispatch(slice.actions.hasError(error.message));
-    toast.error(error.message);
-  }
-};
+export const deleteComment =
+  ({ id, projectId }) =>
+  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await apiService.delete(`/comments/${id}`);
+      console.log("res", response);
+      dispatch(slice.actions.deleteCommentSuccess(response.data));
+      toast.success(response.data);
+      dispatch(getSingleProject(projectId));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
 
 export default slice.reducer;

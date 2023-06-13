@@ -20,6 +20,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteComment from "./DeleteComment";
+import EditComment from "./EditComment";
 
 const HtmlTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -40,6 +41,7 @@ const CommentCard = ({ comment, projectId }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
 
   const handleReplyClick = (id) => {
     setParentId(id);
@@ -55,9 +57,14 @@ const CommentCard = ({ comment, projectId }) => {
     setOpenDialog(true);
   };
 
-  const handleEdit = () => {
-    console.log("edit");
+  const handleEditBtnClick = () => {
+    setOpenDialog(false);
+    setOpenEditDialog(true)
   };
+
+  const editDialogClose = () => {
+    setOpenEditDialog(false);
+  }
 
   const handleDeleteBtnClick = () => {
     setOpenDialog(false);
@@ -180,7 +187,7 @@ const CommentCard = ({ comment, projectId }) => {
                 <Stack
                   flexDirection="row"
                   alignItems="center"
-                  onClick={handleEdit}
+                  onClick={handleEditBtnClick}
                 >
                   <IconButton>
                     <EditIcon />
@@ -200,6 +207,7 @@ const CommentCard = ({ comment, projectId }) => {
                 </Stack>
               </DialogContent>
             </Popover>
+            <EditComment comment={comment} openEditDialog={openEditDialog} editDialogClose={editDialogClose} projectId={projectId}/>
             <DeleteComment
               id={comment._id}
               projectId={projectId}
@@ -235,7 +243,7 @@ const CommentCard = ({ comment, projectId }) => {
               }}
             >
               <CommentForm
-                projectId={projectId.id}
+                projectId={projectId}
                 parentId={parentId}
                 onClose={handleClose}
               />

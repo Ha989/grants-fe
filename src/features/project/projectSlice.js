@@ -33,7 +33,6 @@ const slice = createSlice({
       state.error = null;
       const currentProject = action.payload;
       state.currentProject = currentProject;
-      console.log("current", state.currentProject);
     },
     createDonationSuccess(state, action) {
       state.isLoading = false;
@@ -95,18 +94,5 @@ export const createDonation = ({ projectId, userId, amount }) => async (dispatch
   }
 }
 
-
-// export const bookmarkProject = ({ projectId, userId }) => async (dispatch) => {
-//   try {
-//     dispatch(slice.actions.startLoading());
-//     const response = await apiService.put(`/projects/${projectId}/bookmark/${userId}`);
-//     console.log("res", response.data)
-//     dispatch(slice.actions.bookmarkProjectSuccess(response.data));
-//     toast.success(response.message)
-//   } catch (error) {
-//     dispatch(slice.actions.hasError(error.message));
-//     toast.error(error.message)
-//   }
-// }
 
 export default slice.reducer;

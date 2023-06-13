@@ -10,15 +10,14 @@ function Discussion() {
   const { id } = useParams();
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.currentProject);
-  // const email = "@info.grants.io";
-  console.log("commens", project?.comments);
+
   useEffect(() => {
     dispatch(getSingleProject(id));
   }, [dispatch, id]);
 
   return (
-    <Container>
-      <Box>
+    <Container >
+      <Box mt={1}>
         <Typography
           textAlign="center"
           variant="h5"
@@ -28,12 +27,7 @@ function Discussion() {
           DISCUSSION
         </Typography>
         <Typography textAlign="center" variant="subtitle2" color="#495057">
-          Ask questions and share feedback with the {project?.name} team below.
-          {/* If you have support related questions, please contact at{" "}
-          <Link href={`mailto:${project?.email}`} color="primary">
-            {" "}
-            {project?.email}
-          </Link> */}
+          Share feedback or suggestions with the {project?.name} team below.
         </Typography>
         <CommentForm projectId={id} />
         <List>

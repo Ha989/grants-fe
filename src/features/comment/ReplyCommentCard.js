@@ -15,12 +15,14 @@ import DeleteComment from "./DeleteComment";
 import { useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditComment from "./EditComment";
 
 function ReplyCommentCard({ reply, HtmlTooltip, projectId }) {
 
   const [openDialog, setOpenDialog] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
 
 
   const handleDialogOpen = (event) => {
@@ -29,13 +31,17 @@ function ReplyCommentCard({ reply, HtmlTooltip, projectId }) {
   };
 
   const handleEdit = () => {
-    console.log("edit");
+    setOpenDialog(false);
+    setOpenEditDialog(true)
   };
+
+  const editDialogClose = () => {
+    setOpenEditDialog(false)
+  }
 
   const handleDeleteBtnClick = () => {
     setOpenDialog(false);
     setOpenDeleteDialog(true)
-    console.log("id", reply?._id)
   };
 
   const deleteDialogClose = () => {
@@ -153,6 +159,7 @@ function ReplyCommentCard({ reply, HtmlTooltip, projectId }) {
             </DialogContent>
           </Popover>
           <DeleteComment id={reply?._id} openDeleteDialog={openDeleteDialog} deleteDialogClose={deleteDialogClose} projectId={projectId}/>
+          <EditComment comment={reply} openEditDialog={openEditDialog} editDialogClose={editDialogClose} projectId={projectId}/>
       </Box>
     </>
   );

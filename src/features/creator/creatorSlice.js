@@ -74,7 +74,6 @@ const slice = createSlice({
       state.projects = state.projects.filter(
         (projectId) => projectId !== action.payload.projectId
       );
-      console.log("proj", state.projects);
     },
   },
 });

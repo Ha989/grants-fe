@@ -8,6 +8,7 @@ const initialState = {
   isLoading: false,
   error: null,
   newComment: {},
+  updatedComment: {},
 };
 
 const slice = createSlice({
@@ -26,7 +27,12 @@ const slice = createSlice({
       state.error = null;
       const comment = action.payload;
       state.newComment = comment;
-      console.log("new comment", comment);
+    },
+    updateCommentSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const updatedComment = action.payload;
+      state.updatedComment = updatedComment;
     },
     deleteCommentSuccess(state, action) {
       state.isLoading = false;
@@ -56,6 +62,20 @@ export const createComment =
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);
+    }
+  };
+
+  export const updateComment = ({ id, projectId, content, image}) => async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const data = { content, image }
+      const response = await apiService.put(`comments/${id}`, data);
+      dispatch(slice.actions.updateCommentSuccess(response.data))
+      toast.success(response.message);
+      dispatch(getSingleProject(projectId))
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+    toast.error(error.message);
     }
   };
 

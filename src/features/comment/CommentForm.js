@@ -38,7 +38,6 @@ function CommentForm({ projectId, parentId, onClose }) {
     console.log("p", data);
     dispatch(createComment({ projectId, parentId, ...data }));
     reset();
-    console.log("check");
   };
 
   const handleDrop = useCallback(
@@ -72,7 +71,7 @@ function CommentForm({ projectId, parentId, onClose }) {
             multiline
             fullWidth
             rows={2}
-            placeholder="Post a new question or comment"
+            placeholder="Post a feedback or comment"
             sx={{
               "& fieldset": {
                 borderWidth: `1px !important`,

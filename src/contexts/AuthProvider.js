@@ -2,7 +2,8 @@ import { createContext, useReducer, useEffect } from "react";
 import apiService from "../app/apiService";
 import isValidToken from "../utils/jwt";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../features/user/userSlice";
 
 const initialState = {
   isInitialized: false,
@@ -47,14 +48,14 @@ const reducer = (state, action) => {
         user: null,
         creator: null,
       };
-      case UPDATED_PROFILE: {
-        const { name, avatarUrl, bio } = action.payload;
-        return {
-          ...state,
-          user: { ...state.user, name, avatarUrl, bio} || null,
-          creator: { ...state.creator, name, avatarUrl, bio } || null
-        }
-      }
+    case UPDATED_PROFILE: {
+      const { name, avatarUrl, bio } = action.payload;
+      return {
+        ...state,
+        user: { ...state.user, name, avatarUrl, bio } || null,
+        creator: { ...state.creator, name, avatarUrl, bio } || null,
+      };
+    }
 
     default:
       return state;
@@ -77,7 +78,10 @@ function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const navigate = useNavigate();
   const updatedProfile = useSelector((state) => state.user.updatedProfile);
-  const updatedCreatorProfile = useSelector((state) => state.creator.updatedCreatorProfile)
+  const updatedCreatorProfile = useSelector(
+    (state) => state.creator.updatedCreatorProfile
+  );
+  const dispatchRedux = useDispatch();
 
   useEffect(() => {
     const initialize = async () => {
@@ -95,6 +99,10 @@ function AuthProvider({ children }) {
               type: INITIALIZE,
               payload: { isAuthenticated: true, user: userResponse.data },
             });
+            const { bookmarked, updatedProfile, bookmark, donation } = user;
+            dispatchRedux(
+              getUser({ bookmarked, updatedProfile, bookmark, donation })
+            );
           } else if (creator) {
             const creatorResponse = await apiService.get("/creators/me");
             dispatch({
@@ -121,10 +129,10 @@ function AuthProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    if (updatedProfile) 
-      dispatch({ type: UPDATED_PROFILE, payload: updatedProfile});
+    if (updatedProfile)
+      dispatch({ type: UPDATED_PROFILE, payload: updatedProfile });
     if (updatedCreatorProfile)
-    dispatch({ type: UPDATED_PROFILE, payload: updatedCreatorProfile})
+      dispatch({ type: UPDATED_PROFILE, payload: updatedCreatorProfile });
   }, [updatedCreatorProfile, updatedProfile]);
 
   const login = async ({ email, password }, callback) => {

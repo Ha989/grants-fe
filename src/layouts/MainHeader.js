@@ -85,11 +85,11 @@ function MainHeader() {
   const notifications = useSelector(
     (state) => state.notification.notifications
   );
-  
-  useEffect(() => {
-      dispatch(getAllNotificationOfUser())
-  }, []);
 
+  useEffect(() => {
+    if(auth?.user || auth?.creator)
+    dispatch(getAllNotificationOfUser());
+  }, []);
 
   const handleDialogOpen = (event) => {
     setNotificationEl(event.currentTarget);
@@ -350,7 +350,7 @@ function MainHeader() {
         }}
       >
         <Paper style={{ minHeight: 400, width: 350 }}>
-          <NotificationCard notifications={notifications}/>
+          <NotificationCard notifications={notifications} />
         </Paper>
       </Popover>
     </Box>

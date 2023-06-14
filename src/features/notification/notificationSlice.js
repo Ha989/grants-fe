@@ -9,7 +9,7 @@ const initialState = {
 };
 
 const slice = createSlice({
-  name: "comment",
+  name: "notification",
   initialState,
   reducers: {
     startLoading(state) {

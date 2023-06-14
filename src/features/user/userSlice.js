@@ -48,8 +48,13 @@ const slice = createSlice({
       state.error = null;
       const bookmark  = action.payload.user;
       state.bookmark = bookmark.bookmarked;
-      console.log("bookmark", bookmark.bookmarked)
-    
+    },
+    getUser(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.donation = action.payload.donation;
+      state.bookmarked = action.payload.bookmarked;
+      console.log("bookmarked", state.bookmarked)
     }
   },
 });
@@ -75,7 +80,7 @@ export const getDonationsOfUser =
 export const getBookmarkedOfUser = () => async (dispatch) => {
   dispatch(slice.actions.startLoading());
   try {
-    const response = await apiService.get("/users/bookmarks");
+    const response = await apiService.get("/users/bookmarks");    
     dispatch(slice.actions.getBookmarkedOfUserSuccess(response.data));
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
@@ -109,7 +114,6 @@ export const bookmarkProject = ({ projectId, userId }) => async (dispatch) => {
   try {
     dispatch(slice.actions.startLoading());
     const response = await apiService.put(`/projects/${projectId}/bookmark/${userId}`);
-    console.log("res", response.data)
     dispatch(slice.actions.bookmarkProjectSuccess(response.data));
     toast.success(response.message)
   } catch (error) {
@@ -117,5 +121,9 @@ export const bookmarkProject = ({ projectId, userId }) => async (dispatch) => {
     toast.error(error.message)
   }
 }
+
+export const { getUser } = slice.actions;
+
+
 
 export default slice.reducer;

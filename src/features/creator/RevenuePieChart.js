@@ -62,7 +62,7 @@ const RevenuePieChart = ({ projects }) => {
         chartInstance.destroy();
       }
     };
-  }, [projects]);
+  }, []);
 
   const getRandomColor = () => {
     const letters = '0123456789ABCDEF';

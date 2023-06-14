@@ -22,10 +22,13 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import Avatar from "@mui/material/Avatar";
-import { DialogContent, Popover, Stack } from "@mui/material";
+import { DialogContent, Paper, Popover, Stack } from "@mui/material";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import { useState } from "react";
 import NotificationCard from "../features/notification/NotificationCard";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { getAllNotificationOfUser } from "../features/notification/notificationSlice";
 
 // const Search = styled("div")(({ theme }) => ({
 //   position: "relative",
@@ -78,6 +81,15 @@ function MainHeader() {
   const [notifiDialog, setnotifiDialog] = useState(false);
   const user = auth?.user;
   const creator = auth?.creator;
+  const dispatch = useDispatch();
+  const notifications = useSelector(
+    (state) => state.notification.notifications
+  );
+  
+  useEffect(() => {
+      dispatch(getAllNotificationOfUser())
+  }, []);
+
 
   const handleDialogOpen = (event) => {
     setNotificationEl(event.currentTarget);
@@ -188,13 +200,13 @@ function MainHeader() {
     >
       {auth?.user || auth?.creator ? (
         <div>
-          <MenuItem>
+          <MenuItem onClick={handleDialogOpen}>
             <IconButton
               size="large"
               aria-label="show 1 new notifications"
               color="primary"
             >
-              <Badge badgeContent={1} color="error">
+              <Badge badgeContent={notifications.length} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -274,7 +286,7 @@ function MainHeader() {
                   color="primary"
                   onClick={handleDialogOpen}
                 >
-                  <Badge badgeContent={1} color="error">
+                  <Badge badgeContent={notifications.length} color="error">
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>
@@ -337,7 +349,9 @@ function MainHeader() {
           horizontal: "right",
         }}
       >
-        <NotificationCard />
+        <Paper style={{ minHeight: 400, width: 350 }}>
+          <NotificationCard notifications={notifications}/>
+        </Paper>
       </Popover>
     </Box>
   );

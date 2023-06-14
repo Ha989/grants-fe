@@ -85,7 +85,7 @@ const EarningGraph = ({ projects }) => {
         chartInstance.destroy();
       }
     };
-  }, [projects]);
+  }, []);
 
   // Calculate the monthly earnings based on the projects data
   const calculateMonthlyEarnings = () => {
@@ -94,7 +94,7 @@ const EarningGraph = ({ projects }) => {
     const currentMonthEnd = endOfMonth(currentDate);
 
     const months = eachMonthOfInterval({
-      start: startOfMonth(new Date(2023, 0)), // Set the desired start month here
+      start: startOfMonth(new Date(2023, 0)), // Set the desired start month
       end: currentMonthEnd,
     });
 

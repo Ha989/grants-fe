@@ -35,7 +35,7 @@ const defaultValues = {
   email: "",
   password: "",
   passwordConfirmation: "",
-  role: ""
+  role: "user"
 
 }
 

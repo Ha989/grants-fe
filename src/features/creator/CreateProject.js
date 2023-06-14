@@ -6,7 +6,9 @@ import {
   Button,
   Container,
   Divider,
+  Fab,
   Stack,
+  TextField,
   Typography,
 } from "@mui/material";
 import * as yup from "yup";
@@ -18,6 +20,8 @@ import FUpLoadImage from "../../components/form/FUpLoadImage";
 import { fData } from "../../utils/numberFormat";
 import { FTextField, FormProvider } from "../../components/form";
 import { LoadingButton } from "@mui/lab";
+import { useState } from "react";
+import AddIcon from "@mui/icons-material/Add";
 
 const CreateProjectSchema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -27,7 +31,12 @@ const CreateProjectSchema = yup.object().shape({
     .max(100, "Title must be less than 100 words"),
   description: yup.string().required("description is required"),
   website: yup.string().url().nullable().required("Website is required"),
-  team: yup.string().required("Team is required"),
+  team: yup
+    .mixed()
+    .test("is-array-or-string", "Team must be an array or string", (value) => {
+      return Array.isArray(value) || typeof value === "string";
+    })
+    .required("Team is required"),
   logo: yup
     .mixed()
     .required("Logo is required")
@@ -71,6 +80,28 @@ function CreateProject() {
     bankDetail: "",
   };
 
+  const [teamMembers, setTeamMembers] = useState([]);
+
+  const handleAddMember = () => {
+    setTeamMembers((prevMembers) => [...prevMembers, ""]);
+  };
+
+  const handleRemoveMember = (index) => {
+    setTeamMembers((prevMembers) => {
+      const updatedMembers = [...prevMembers];
+      updatedMembers.splice(index, 1);
+      return updatedMembers;
+    });
+  };
+
+  const handleMemberChange = (index, value) => {
+    setTeamMembers((prevMembers) => {
+      const updatedMembers = [...prevMembers];
+      updatedMembers[index] = value;
+      return updatedMembers;
+    });
+  };
+
   const methods = useForm({
     resolver: yupResolver(CreateProjectSchema),
     defaultValues,
@@ -103,7 +134,7 @@ function CreateProject() {
         website,
         banner,
         logo,
-        team,
+        team: teamMembers,
         video,
         bankDetail,
       })
@@ -207,11 +238,27 @@ function CreateProject() {
             <FTextField name="website" label="Website" />
           </Box>
           <Box mt={5}>
-            <FTextField name="team" label="Team" />
-            <Button>Add More</Button>
+          <Typography variant="subtitle2" mb={1}>
+             Click Add Team to add your team member
+            </Typography>
+            {teamMembers.map((member, index) => (
+              <Box key={index} display="flex" alignItems="center" mt={2}>
+                <FTextField
+                  name="team"
+                  type="text"
+                  value={member}
+                  onChange={(e) => handleMemberChange(index, e.target.value)}
+                  placeholder={`Team Member ${index + 1}`}
+                />
+                <Button onClick={() => handleRemoveMember(index)}>
+                  Remove
+                </Button>
+              </Box>
+            ))}
+            <Button onClick={handleAddMember}>Add Team</Button>
           </Box>
-          <Box mt={5}>
-            <Typography variant="subtitle2">
+          <Box mt={2}>
+            <Typography variant="subtitle2" mb={1}>
               Please record your project pitch video then upload it on your
               youtube channel then paste the link here
             </Typography>
@@ -221,14 +268,15 @@ function CreateProject() {
             <FTextField name="bankDetail" label="Bank Detail" />
           </Box>
         </Box>
-        <LoadingButton
-          mt={3}
-          type="submit"
-          variant="contained"
-          loading={isSubmitting || isLoading}
-        >
-          Create
-        </LoadingButton>
+        <Box mt={3}>
+          <LoadingButton
+            type="submit"
+            variant="contained"
+            loading={isSubmitting || isLoading}
+          >
+            Create
+          </LoadingButton>
+        </Box>
       </FormProvider>
     </Container>
   );

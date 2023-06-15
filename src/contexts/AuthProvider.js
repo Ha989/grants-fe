@@ -99,10 +99,10 @@ function AuthProvider({ children }) {
               type: INITIALIZE,
               payload: { isAuthenticated: true, user: userResponse.data },
             });
-            const { bookmarked, updatedProfile, bookmark, donation } = user;
-            dispatchRedux(
-              getUser({ bookmarked, updatedProfile, bookmark, donation })
-            );
+            // const { bookmarked, updatedProfile, bookmark, donation } = user;
+            // dispatchRedux(
+            //   getUser({ bookmarked, updatedProfile, bookmark, donation })
+            // );
           } else if (creator) {
             const creatorResponse = await apiService.get("/creators/me");
             dispatch({

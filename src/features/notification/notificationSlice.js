@@ -23,8 +23,9 @@ const slice = createSlice({
     getNotificationSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const { notifications } = action.payload;
-      state.notifications = notifications;
+      const newNotifications = action.payload.notifications;
+      state.notifications = [...state.notifications, ...newNotifications];
+      console.log("state", state.notifications)
     },
     countNewNotificationSuccess(state, action) {
       state.isLoading = false;
@@ -40,9 +41,8 @@ export const getAllNotificationOfUser = ({ limit = 10, skip }) => async (dispatc
   dispatch(slice.actions.startLoading());
   try {
     const params = { limit, skip }
-    console.log("params", params)
-     
-    const response = await apiService.get(`/notifications`, params);
+    console.log("params", params);
+    const response = await apiService.get(`/notifications`, { params });
     console.log("res", response.data);
     dispatch(slice.actions.getNotificationSuccess(response.data));
   } catch (error) {

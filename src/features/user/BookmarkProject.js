@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
-import { bookmarkProject, getBookmarkedOfUser, getUser } from "./userSlice";
+import { bookmarkProject, getBookmarkedOfUser } from "./userSlice";
 import { Box, IconButton } from "@mui/material";
 import StarIcon from "@mui/icons-material/Star";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import { useState } from "react";
 
 function BookmarkProject({ project }) {
   const auth = useAuth();
@@ -15,12 +13,8 @@ function BookmarkProject({ project }) {
   const projectId = project._id;
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const bookmarkProjects = useSelector((state) => state.user.bookmarked);
-  console.log("bookmark", bookmarkProjects);
-
-  const isBookmarked = bookmarkProjects?.includes(project._id);
-  console.log("is", isBookmarked);
+  const [starColor, setStarColor] = useState("inherit");
 
   const handleBookmarkClick = () => {
     if (user) {
@@ -30,9 +24,23 @@ function BookmarkProject({ project }) {
     }
   };
 
+  useEffect(() => {
+    if (user) {
+      dispatch(getBookmarkedOfUser());
+    }
+  }, [dispatch, user]);
+
+  useEffect(() => {
+    // Check if the current project is bookmarked and update the star color
+    const isProjectBookmarked = bookmarkProjects.some(
+      (project) => project._id === projectId
+    );
+    setStarColor(isProjectBookmarked ? "red" : "inherit");
+  }, [bookmarkProjects, projectId]);
+
   return (
     <Box onClick={handleBookmarkClick}>
-      <IconButton sx={{ color: isBookmarked ? "red" : "inherit" }}>
+      <IconButton sx={{ color: starColor }}>
         <StarIcon />
       </IconButton>
     </Box>

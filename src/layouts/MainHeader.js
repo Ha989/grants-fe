@@ -28,11 +28,11 @@ import { useState } from "react";
 import NotificationCard from "../features/notification/NotificationCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { countNewNotifications, getAllNotificationOfUser, updateNotification } from "../features/notification/notificationSlice";
-
-
-
-
+import {
+  countNewNotifications,
+  getAllNotificationOfUser,
+  updateNotification,
+} from "../features/notification/notificationSlice";
 
 function MainHeader() {
   const auth = useAuth();
@@ -45,36 +45,35 @@ function MainHeader() {
   const [skip, setSkip] = useState(0);
   const user = auth?.user;
   const creator = auth?.creator;
-  
-  
+
   const dispatch = useDispatch();
   const notifications = useSelector(
     (state) => state.notification.notifications
   );
   const count = useSelector((state) => state.notification.count);
-  console.log("count", count)
-
 
   useEffect(() => {
-    const fetchNewNotifications = async () => {
-      try {
-        dispatch(countNewNotifications());
-      } catch (error) {
-        console.error("Error fetching new notifications count:", error);
-      }
-    };
+    if (auth?.user || auth?.creator) {
+      const fetchNewNotifications = async () => {
+        try {
+          dispatch(countNewNotifications());
+        } catch (error) {
+          console.error("Error fetching new notifications count:", error);
+        }
+      };
       setTimeout(async () => {
         await fetchNewNotifications();
       }, 60000); // 1 minute
 
-    return () => {
-      clearTimeout(fetchNewNotifications);
-    };
-}, [dispatch])
+      return () => {
+        clearTimeout(fetchNewNotifications);
+      };
+    }
+  }, [dispatch, auth?.user, auth?.creator]);
 
   useEffect(() => {
-    if(auth?.user || auth?.creator)
-    dispatch(getAllNotificationOfUser({ skip }));
+    if (auth?.user || auth?.creator)
+      dispatch(getAllNotificationOfUser({ skip }));
   }, [auth, dispatch, skip]);
 
   const handleLoadMore = () => {
@@ -82,7 +81,7 @@ function MainHeader() {
   };
 
   const handleDialogOpen = (event) => {
-    dispatch(updateNotification())
+    dispatch(updateNotification());
     setNotificationEl(event.currentTarget);
     setnotifiDialog(true);
   };

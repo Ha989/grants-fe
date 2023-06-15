@@ -10,7 +10,7 @@ const initialState = {
   donation: [],
   bookmarked: [],
   updatedProfile: null,
-  bookmark: {},
+  bookmark: [],
 };
 
 const slice = createSlice({
@@ -36,6 +36,7 @@ const slice = createSlice({
       state.error = null;
       const bookmarked = action.payload.bookmarkedProjects;
       state.bookmarked = bookmarked;
+      console.log("userBo", bookmarked);
     },
     updateUserProfileSuccess(state, action) {
       state.isLoading = false;
@@ -48,13 +49,15 @@ const slice = createSlice({
       state.error = null;
       const bookmark = action.payload.user;
       state.bookmark = bookmark.bookmarked;
+      console.log("bookmark", bookmark.bookmarked);
     },
-    getUser(state, action) {
-      state.isLoading = false;
-      state.error = null;
-      state.donation = action.payload.donation;
-      state.bookmarked = action.payload.bookmarked;
-    },
+    // getUser(state, action) {
+    //   state.isLoading = false;
+    //   state.error = null;
+    //   state.donation = action.payload.donation;
+    //   state.bookmarked = action.payload.bookmarked;
+    //   console.log("bookmarked", state.bookmarked)
+    // },
   },
 });
 
@@ -118,15 +121,16 @@ export const bookmarkProject =
       const response = await apiService.put(
         `/projects/${projectId}/bookmark/${userId}`
       );
+      console.log("response", response.data)
       dispatch(slice.actions.bookmarkProjectSuccess(response.data));
       toast.success(response.message);
-      dispatch(getUser(userId));
+      dispatch(getBookmarkedOfUser())
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);
     }
   };
 
-export const { getUser } = slice.actions;
+// export const { getUser } = slice.actions;
 
 export default slice.reducer;

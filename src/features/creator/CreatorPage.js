@@ -19,9 +19,11 @@ import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import {
   Avatar,
   Badge,
+  Button,
   Divider,
   Paper,
   Popover,
+  Stack,
   Typography,
 } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
@@ -32,7 +34,7 @@ import { useEffect } from "react";
 import NotificationCard from "../notification/NotificationCard";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllNotificationOfUser } from "../notification/notificationSlice";
+import { countNewNotifications, getAllNotificationOfUser } from "../notification/notificationSlice";
 const drawerWidth = 180;
 
 function CreatorPage(props) {
@@ -40,21 +42,46 @@ function CreatorPage(props) {
   const navigate = useNavigate();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
   const [notificationEl, setNotificationEl] = React.useState(null);
   const [notifiDialog, setnotifiDialog] = useState(false);
   const creator = auth?.creator;
+  const [skip, setSkip] = useState(0)
 
   const dispatch = useDispatch();
   const notifications = useSelector(
     (state) => state.notification.notifications
   );
   console.log("noti", notifications)
-  
+  const count = useSelector((state) => state.notification.count);
+  console.log("count", count)
+
+
+  useEffect(() => {
+    const fetchNewNotifications = async () => {
+      try {
+        dispatch(countNewNotifications());
+      } catch (error) {
+        console.error("Error fetching new notifications count:", error);
+      }
+    };
+      setTimeout(async () => {
+        await fetchNewNotifications();
+      }, 60000); // 1 minute
+
+    return () => {
+      clearTimeout(fetchNewNotifications);
+    };
+}, [dispatch])
+
+
   useEffect(() => {
     if(creator)
-    dispatch(getAllNotificationOfUser());
+    dispatch(getAllNotificationOfUser({ skip }));
   }, [dispatch,creator]);
+  
+  const handleLoadMore = () => {
+    setSkip((prevSkip) => prevSkip + 10);
+  };
 
   const handleDialogOpen = (event) => {
     setNotificationEl(event.currentTarget);
@@ -166,7 +193,7 @@ function CreatorPage(props) {
           <Box flexGrow={1} />
           <Box mr={2} onClick={handleDialogOpen}>
             <IconButton aria-label="show 1 new notifications" color="inherit">
-              <Badge badgeContent={1} color="error">
+              <Badge badgeContent={count} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -184,9 +211,10 @@ function CreatorPage(props) {
               horizontal: "right",
             }}
           >
-            <Paper style={{ minHeight: 400, width: 350 }}>
+            <Stack style={{ minHeight: 400, width: 350 }} alignItems="center">
               <NotificationCard notifications={notifications} />
-            </Paper>
+              <Button onClick={handleLoadMore}>Load more</Button>
+            </Stack>
           </Popover>
           <Box>
             <Avatar

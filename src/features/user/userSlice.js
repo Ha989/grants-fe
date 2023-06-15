@@ -10,7 +10,7 @@ const initialState = {
   donation: [],
   bookmarked: [],
   updatedProfile: null,
-  bookmark: [],
+  bookmark: {},
 };
 
 const slice = createSlice({
@@ -46,7 +46,7 @@ const slice = createSlice({
     bookmarkProjectSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const bookmark  = action.payload.user;
+      const bookmark = action.payload.user;
       state.bookmark = bookmark.bookmarked;
     },
     getUser(state, action) {
@@ -54,8 +54,7 @@ const slice = createSlice({
       state.error = null;
       state.donation = action.payload.donation;
       state.bookmarked = action.payload.bookmarked;
-      console.log("bookmarked", state.bookmarked)
-    }
+    },
   },
 });
 
@@ -65,7 +64,6 @@ export const getDonationsOfUser =
     dispatch(slice.actions.startLoading());
     try {
       const params = { page, limit };
-      console.log("params", params)
       if (status) {
         params.status = status;
       }
@@ -80,7 +78,7 @@ export const getDonationsOfUser =
 export const getBookmarkedOfUser = () => async (dispatch) => {
   dispatch(slice.actions.startLoading());
   try {
-    const response = await apiService.get("/users/bookmarks");    
+    const response = await apiService.get("/users/bookmarks");
     dispatch(slice.actions.getBookmarkedOfUserSuccess(response.data));
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
@@ -88,42 +86,47 @@ export const getBookmarkedOfUser = () => async (dispatch) => {
   }
 };
 
-export const updateUserProfile = ({
-  userId, name, avatarUrl, bio
-}) => async (dispatch) => {
-  dispatch(slice.actions.startLoading());
-  try {
-    const data = {
-      name, avatarUrl, bio
-    };
-    if(avatarUrl instanceof File) {
-      const imageUrl = await cloudinaryUpload(avatarUrl);
-      console.log("image", imageUrl)
-      data.avatarUrl = imageUrl;
-    }
-    const response = await apiService.put(`/users/settings/${userId}`, data);
-    dispatch(slice.actions.updateUserProfileSuccess(response.data));
-    toast.success("Update Profile Successfully");
-  } catch (error) {
-    dispatch(slice.actions.hasError(error.message));
-    toast.error(error.message);
-  }
-};
-
-export const bookmarkProject = ({ projectId, userId }) => async (dispatch) => {
-  try {
+export const updateUserProfile =
+  ({ userId, name, avatarUrl, bio }) =>
+  async (dispatch) => {
     dispatch(slice.actions.startLoading());
-    const response = await apiService.put(`/projects/${projectId}/bookmark/${userId}`);
-    dispatch(slice.actions.bookmarkProjectSuccess(response.data));
-    toast.success(response.message)
-  } catch (error) {
-    dispatch(slice.actions.hasError(error.message));
-    toast.error(error.message)
-  }
-}
+    try {
+      const data = {
+        name,
+        avatarUrl,
+        bio,
+      };
+      if (avatarUrl instanceof File) {
+        const imageUrl = await cloudinaryUpload(avatarUrl);
+        console.log("image", imageUrl);
+        data.avatarUrl = imageUrl;
+      }
+      const response = await apiService.put(`/users/settings/${userId}`, data);
+      dispatch(slice.actions.updateUserProfileSuccess(response.data));
+      toast.success("Update Profile Successfully");
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
+
+export const bookmarkProject =
+  ({ projectId, userId }) =>
+  async (dispatch) => {
+    try {
+      dispatch(slice.actions.startLoading());
+      const response = await apiService.put(
+        `/projects/${projectId}/bookmark/${userId}`
+      );
+      dispatch(slice.actions.bookmarkProjectSuccess(response.data));
+      toast.success(response.message);
+      dispatch(getUser(userId));
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
 
 export const { getUser } = slice.actions;
-
-
 
 export default slice.reducer;

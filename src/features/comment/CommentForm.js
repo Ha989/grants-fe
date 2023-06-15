@@ -19,6 +19,7 @@ const defaultValues = {
   content: "",
   image: "",
 };
+
 function CommentForm({ projectId, parentId, onClose }) {
   const dispatch = useDispatch();
   const { isLoading } = useSelector((state) => state.comment.isLoading);

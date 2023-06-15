@@ -201,7 +201,6 @@ export const updateProject = ({
   dispatch(slice.actions.startLoading());
   try {
       const data = { name, title, description, website, logo, banner, bankDetail, team }
-      console.log('data', data)
 
       if (data.logo instanceof File) {
         const logoUrl = await cloudinaryUpload(data.logo);

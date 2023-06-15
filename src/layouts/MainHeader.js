@@ -22,54 +22,17 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import Avatar from "@mui/material/Avatar";
-import { DialogContent, Paper, Popover, Stack } from "@mui/material";
+import { Button, DialogContent, Paper, Popover, Stack } from "@mui/material";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import { useState } from "react";
 import NotificationCard from "../features/notification/NotificationCard";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { getAllNotificationOfUser } from "../features/notification/notificationSlice";
+import { countNewNotifications, getAllNotificationOfUser, updateNotification } from "../features/notification/notificationSlice";
 
-// const Search = styled("div")(({ theme }) => ({
-//   position: "relative",
-//   borderRadius: theme.shape.borderRadius,
-//   backgroundColor: alpha(theme.palette.primary.main, 0.25),
-//   "&:hover": {
-//     backgroundColor: alpha(theme.palette.primary.main, 0.35),
-//   },
-//   marginRight: theme.spacing(2),
-//   marginLeft: 0,
-//   width: "100%",
-//   [theme.breakpoints.up("sm")]: {
-//     marginLeft: theme.spacing(3),
-//     width: "auto",
-//   },
-// }));
 
-// const SearchIconWrapper = styled("div")(({ theme }) => ({
-//   padding: theme.spacing(0, 2),
-//   height: "100%",
-//   position: "absolute",
-//   pointerEvents: "none",
-//   display: "flex",
-//   alignItems: "center",
-//   justifyContent: "center",
-//   color: "green",
-// }));
 
-// const StyledInputBase = styled(InputBase)(({ theme }) => ({
-//   color: "primary",
-//   "& .MuiInputBase-input": {
-//     padding: theme.spacing(1, 1, 1, 0),
-//     // vertical padding + font size from searchIcon
-//     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-//     transition: theme.transitions.create("width"),
-//     width: "100%",
-//     [theme.breakpoints.up("md")]: {
-//       width: "20ch",
-//     },
-//   },
-// }));
+
 
 function MainHeader() {
   const auth = useAuth();
@@ -79,19 +42,47 @@ function MainHeader() {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [notificationEl, setNotificationEl] = React.useState(null);
   const [notifiDialog, setnotifiDialog] = useState(false);
+  const [skip, setSkip] = useState(0);
   const user = auth?.user;
   const creator = auth?.creator;
+  
+  
   const dispatch = useDispatch();
   const notifications = useSelector(
     (state) => state.notification.notifications
   );
+  const count = useSelector((state) => state.notification.count);
+  console.log("count", count)
+
+
+  useEffect(() => {
+    const fetchNewNotifications = async () => {
+      try {
+        dispatch(countNewNotifications());
+      } catch (error) {
+        console.error("Error fetching new notifications count:", error);
+      }
+    };
+      setTimeout(async () => {
+        await fetchNewNotifications();
+      }, 60000); // 1 minute
+
+    return () => {
+      clearTimeout(fetchNewNotifications);
+    };
+}, [dispatch])
 
   useEffect(() => {
     if(auth?.user || auth?.creator)
-    dispatch(getAllNotificationOfUser());
-  }, []);
+    dispatch(getAllNotificationOfUser({ skip }));
+  }, [auth, dispatch, skip]);
+
+  const handleLoadMore = () => {
+    setSkip((prevSkip) => prevSkip + 10);
+  };
 
   const handleDialogOpen = (event) => {
+    dispatch(updateNotification())
     setNotificationEl(event.currentTarget);
     setnotifiDialog(true);
   };
@@ -206,7 +197,7 @@ function MainHeader() {
               aria-label="show 1 new notifications"
               color="primary"
             >
-              <Badge badgeContent={notifications.length} color="error">
+              <Badge badgeContent={count} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -286,7 +277,7 @@ function MainHeader() {
                   color="primary"
                   onClick={handleDialogOpen}
                 >
-                  <Badge badgeContent={notifications.length} color="error">
+                  <Badge badgeContent={count} color="error">
                     <NotificationsIcon />
                   </Badge>
                 </IconButton>
@@ -349,9 +340,10 @@ function MainHeader() {
           horizontal: "right",
         }}
       >
-        <Paper style={{ minHeight: 400, width: 350 }}>
+        <Stack style={{ minHeight: 400, width: 350 }} alignItems="center" p={1}>
           <NotificationCard notifications={notifications} />
-        </Paper>
+          <Button onClick={handleLoadMore}>Load more</Button>
+        </Stack>
       </Popover>
     </Box>
   );

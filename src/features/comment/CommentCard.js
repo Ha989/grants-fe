@@ -35,7 +35,6 @@ const HtmlTooltip = styled(({ className, ...props }) => (
 }));
 
 const CommentCard = ({ comment, projectId }) => {
-
   const [parentId, setParentId] = useState(null);
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -59,12 +58,12 @@ const CommentCard = ({ comment, projectId }) => {
 
   const handleEditBtnClick = () => {
     setOpenDialog(false);
-    setOpenEditDialog(true)
+    setOpenEditDialog(true);
   };
 
   const editDialogClose = () => {
     setOpenEditDialog(false);
-  }
+  };
 
   const handleDeleteBtnClick = () => {
     setOpenDialog(false);
@@ -207,7 +206,12 @@ const CommentCard = ({ comment, projectId }) => {
                 </Stack>
               </DialogContent>
             </Popover>
-            <EditComment comment={comment} openEditDialog={openEditDialog} editDialogClose={editDialogClose} projectId={projectId}/>
+            <EditComment
+              comment={comment}
+              openEditDialog={openEditDialog}
+              editDialogClose={editDialogClose}
+              projectId={projectId}
+            />
             <DeleteComment
               id={comment._id}
               projectId={projectId}

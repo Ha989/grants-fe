@@ -22,7 +22,6 @@ import { updateProject } from "./creatorSlice";
 import Joi from "joi";
 import * as yup from "yup";
 
-
 // const CreateProjectSchema = Joi.object({
 //     name: Joi.string().required().messages({
 //       'any.required': 'Name is required',
@@ -70,17 +69,37 @@ import * as yup from "yup";
 //       'any.required': 'Bank Detail is required',
 //     }),
 //   });
-  
 
-const updateSchema =  yup.object().shape({
+const updateSchema = yup.object().shape({
   name: yup.string().required("Name is required"),
 });
-
 
 function EditModal({ open, handleClose, project }) {
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.creator.isLoading);
-  
+
+  const [teamMembers, setTeamMembers] = useState([]);
+
+  const handleAddMember = () => {
+    setTeamMembers((prevMembers) => [...prevMembers, ""]);
+  };
+
+  const handleRemoveMember = (index) => {
+    setTeamMembers((prevMembers) => {
+      const updatedMembers = [...prevMembers];
+      updatedMembers.splice(index, 1);
+      return updatedMembers;
+    });
+  };
+
+  const handleMemberChange = (index, value) => {
+    setTeamMembers((prevMembers) => {
+      const updatedMembers = [...prevMembers];
+      updatedMembers[index] = value;
+      return updatedMembers;
+    });
+  };
+
   const defaultValues = {
     name: project?.name,
     title: project?.title,
@@ -92,7 +111,7 @@ function EditModal({ open, handleClose, project }) {
     video: project?.video,
     bankDetail: project?.bankDetail,
   };
- 
+
   const methods = useForm({
     resolver: yupResolver(updateSchema),
     defaultValues,
@@ -106,9 +125,8 @@ function EditModal({ open, handleClose, project }) {
 
   const onSubmit = (data) => {
     dispatch(updateProject({ projectId: project._id, ...data }));
-    console.log("data",data)
+    console.log("team", data.team);
   };
-
 
   useEffect(() => {
     if (defaultValues.logo) {
@@ -118,9 +136,7 @@ function EditModal({ open, handleClose, project }) {
       setValue("banner", defaultValues.banner);
     }
   }, [defaultValues.logo, setValue, defaultValues.banner]);
-  
 
- 
   const handleDrop = useCallback(
     (acceptedFiles, type) => {
       const file = acceptedFiles[0];
@@ -161,96 +177,142 @@ function EditModal({ open, handleClose, project }) {
             EDIT YOUR PROJECT
             <Divider />
           </DialogTitle>
-            <DialogContent>
-              <Stack>
-                <Box>
-                  <Typography variant="subtitle1" fontFamily="sans-serif">
-                    Upload Your Logo
-                  </Typography>
-                  <FUpLoadAvatar
-                    name="logo"
-                    accept="image/*"
-                    maxSize={3145728}
-                    onDrop={(acceptedFiles) =>
-                      handleDrop(acceptedFiles, "logo")
-                    }
-                    helperText={
-                      <Typography
-                        variant="caption"
-                        sx={{
-                          mt: 2,
-                          mx: "auto",
-                          display: "block",
-                          textAlign: "center",
-                          color: "text.secondary",
-                        }}
-                      >
-                        Allowed *.jpeg, *.jpg, *.png, *.gif
-                        <br /> max size of {fData(3145728)}
-                      </Typography>
-                    }
-                  />
-                </Box>
-                <Divider />
-                <Box sx={{ mt: 5 }}>
-                  <Typography variant="subtitle1" fontFamily="sans-serif">
-                    Upload your Banner
-                  </Typography>
-                  <FUpLoadImage
-                    name="banner"
-                    accept="image/*"
-                    maxSize={3145728}
-                    onDrop={(acceptedFiles) =>
-                      handleDrop(acceptedFiles, "banner")
-                    }
-                  />
-                </Box>
-              </Stack>
-              <Box
-                sx={{
-                  mt: 10,
-                }}
-              >
-                <Box mt={5}>
-                  <FTextField name="name" label="Name" defaultValue={defaultValues.name}/>
-                </Box>
-                <Box mt={5}>
-                  <FTextField name="title" label="Title" defaultValue={defaultValues.title}/>
-                </Box>
-                <Box mt={5}>
-                  <FTextField name="description" label="Description" defaultValue={defaultValues.description}/>
-                </Box>
-                <Box mt={5}>
-                  <FTextField name="website" label="Website" defaultValue={defaultValues.website}/>
-                </Box>
-                <Box mt={5}>
-                  <FTextField name="team" label="Team" defaultValue={defaultValues.team}/>
-                  <Button>Add More</Button>
-                </Box>
-                <Box mt={5}>
-                  <Typography variant="subtitle2" mb={1}>
-                    Please record your project pitch video then upload it on
-                    your youtube channel then paste the link here
-                  </Typography>
-                  <FTextField name="video" label="Video" defaultValue={defaultValues.video}/>
-                </Box>
-                <Box mt={5} mb={2}>
-                  <FTextField name="bankDetail" label="Bank Detail" defaultValue={defaultValues.bankDetail}/>
-                </Box>
+          <DialogContent>
+            <Stack>
+              <Box>
+                <Typography variant="subtitle1" fontFamily="sans-serif">
+                  Upload Your Logo
+                </Typography>
+                <FUpLoadAvatar
+                  name="logo"
+                  accept="image/*"
+                  maxSize={3145728}
+                  onDrop={(acceptedFiles) => handleDrop(acceptedFiles, "logo")}
+                  helperText={
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        mt: 2,
+                        mx: "auto",
+                        display: "block",
+                        textAlign: "center",
+                        color: "text.secondary",
+                      }}
+                    >
+                      Allowed *.jpeg, *.jpg, *.png, *.gif
+                      <br /> max size of {fData(3145728)}
+                    </Typography>
+                  }
+                />
               </Box>
-              <LoadingButton
-                mt={3}
-                type="submit"
-                variant="contained"
-                loading={isSubmitting || isLoading}
-              >
-                Save Change
-              </LoadingButton>
-            </DialogContent>
+              <Divider />
+              <Box sx={{ mt: 5 }}>
+                <Typography variant="subtitle1" fontFamily="sans-serif">
+                  Upload your Banner
+                </Typography>
+                <FUpLoadImage
+                  name="banner"
+                  accept="image/*"
+                  maxSize={3145728}
+                  onDrop={(acceptedFiles) =>
+                    handleDrop(acceptedFiles, "banner")
+                  }
+                />
+              </Box>
+            </Stack>
+            <Box
+              sx={{
+                mt: 10,
+              }}
+            >
+              <Box mt={5}>
+                <FTextField
+                  name="name"
+                  label="Name"
+                  defaultValue={defaultValues.name}
+                />
+              </Box>
+              <Box mt={5}>
+                <FTextField
+                  name="title"
+                  label="Title"
+                  defaultValue={defaultValues.title}
+                />
+              </Box>
+              <Box mt={5}>
+                <FTextField
+                  name="description"
+                  label="Description"
+                  defaultValue={defaultValues.description}
+                />
+              </Box>
+              <Box mt={5}>
+                <FTextField
+                  name="website"
+                  label="Website"
+                  defaultValue={defaultValues.website}
+                />
+              </Box>
+              <Box mt={5}>
+                <Typography variant="subtitle2" mb={1}>
+                  Click Add Team to add your team member
+                </Typography>
+                {teamMembers.map((member, index) => (
+                  <Box key={index} display="flex" alignItems="center" mt={2}>
+                    {/* <FTextField
+                      name="team"
+                      label="Team"
+                      defaultValue={defaultValues.team}
+                    /> */}
+                    <FTextField
+                      name="team"
+                      type="text"
+                      value={member}
+                      onChange={(e) =>
+                        handleMemberChange(index, e.target.value)
+                      }
+                      placeholder={`Team Member ${index + 1}`}
+                      defaultValue={defaultValues.team}
+                    />
+                    <Button onClick={() => handleRemoveMember(index)}>
+                      Remove
+                    </Button>
+                  </Box>
+                ))}
+                <Button onClick={handleAddMember}>Add Team</Button>
+              </Box>
+              <Box mt={5}>
+                <Typography variant="subtitle2" mb={1}>
+                  Please record your project pitch video then upload it on your
+                  youtube channel then paste the link here
+                </Typography>
+                <FTextField
+                  name="video"
+                  label="Video"
+                  defaultValue={defaultValues.video}
+                />
+              </Box>
+              <Box mt={5} mb={2}>
+                <FTextField
+                  name="bankDetail"
+                  label="Bank Detail"
+                  defaultValue={defaultValues.bankDetail}
+                />
+              </Box>
+            </Box>
+            <LoadingButton
+              mt={3}
+              type="submit"
+              variant="contained"
+              loading={isSubmitting || isLoading}
+            >
+              Save Change
+            </LoadingButton>
+          </DialogContent>
         </FormProvider>
       </Dialog>
     </>
-  )
-};
+  );
+}
 
 export default EditModal;

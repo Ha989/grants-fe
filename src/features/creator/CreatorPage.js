@@ -14,14 +14,25 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import WidgetsIcon from "@mui/icons-material/Widgets";
 import { Link, useNavigate } from "react-router-dom";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
-import CategoryIcon from '@mui/icons-material/Category';
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import { Avatar, Badge, Divider, Typography } from "@mui/material";
+import CategoryIcon from "@mui/icons-material/Category";
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import {
+  Avatar,
+  Badge,
+  Divider,
+  Paper,
+  Popover,
+  Typography,
+} from "@mui/material";
 import useAuth from "../../hooks/useAuth";
 import SettingsIcon from "@mui/icons-material/Settings";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Logo from "../../components/Logo";
 import { useEffect } from "react";
+import NotificationCard from "../notification/NotificationCard";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllNotificationOfUser } from "../notification/notificationSlice";
 const drawerWidth = 180;
 
 function CreatorPage(props) {
@@ -30,9 +41,29 @@ function CreatorPage(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  const [notificationEl, setNotificationEl] = React.useState(null);
+  const [notifiDialog, setnotifiDialog] = useState(false);
+  const creator = auth?.creator;
+
+  const dispatch = useDispatch();
+  const notifications = useSelector(
+    (state) => state.notification.notifications
+  );
+  console.log("noti", notifications)
+  
   useEffect(() => {
-    navigate("/creators/dashboard")
-  },[])
+    if(creator)
+    dispatch(getAllNotificationOfUser());
+  }, [dispatch,creator]);
+
+  const handleDialogOpen = (event) => {
+    setNotificationEl(event.currentTarget);
+    setnotifiDialog(true);
+  };
+
+  useEffect(() => {
+    navigate("/creators/dashboard");
+  }, []);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -56,7 +87,9 @@ function CreatorPage(props) {
             disableRipple={true}
             children={<HomeIcon />}
           />
-         <Typography color="primary" fontWeight="bold">Dashboard</Typography>
+          <Typography color="primary" fontWeight="bold">
+            Dashboard
+          </Typography>
         </MenuItem>
         <Divider />
         <MenuItem component={Link} to="/creators/projects">
@@ -66,7 +99,9 @@ function CreatorPage(props) {
             disableRipple={true}
             children={<CategoryIcon />}
           />
-          <Typography color="primary" fontWeight="bold">Projects</Typography>
+          <Typography color="primary" fontWeight="bold">
+            Projects
+          </Typography>
         </MenuItem>
         <Divider />
         <MenuItem component={Link} to="/creators/donations">
@@ -76,7 +111,9 @@ function CreatorPage(props) {
             disableRipple={true}
             children={<ReceiptLongIcon />}
           />
-         <Typography color="primary" fontWeight="bold">Donations</Typography>
+          <Typography color="primary" fontWeight="bold">
+            Donations
+          </Typography>
         </MenuItem>
         <Divider />
         <MenuItem component={Link} to="/creators/settings">
@@ -86,7 +123,9 @@ function CreatorPage(props) {
             disableRipple={true}
             children={<SettingsIcon />}
           />
-          <Typography color="primary" fontWeight="bold">Settings</Typography>
+          <Typography color="primary" fontWeight="bold">
+            Settings
+          </Typography>
         </MenuItem>
       </List>
     </div>
@@ -125,13 +164,30 @@ function CreatorPage(props) {
             Grants
           </Typography>
           <Box flexGrow={1} />
-          <Box mr={2}>
+          <Box mr={2} onClick={handleDialogOpen}>
             <IconButton aria-label="show 1 new notifications" color="inherit">
               <Badge badgeContent={1} color="error">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
           </Box>
+          <Popover
+            open={notifiDialog}
+            onClose={() => setnotifiDialog(false)}
+            anchorEl={notificationEl}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <Paper style={{ minHeight: 400, width: 350 }}>
+              <NotificationCard notifications={notifications} />
+            </Paper>
+          </Popover>
           <Box>
             <Avatar
               src={auth?.creator?.avatarUrl}

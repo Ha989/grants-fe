@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import { toast } from "react-toastify";
 import { PROJECTS_LIMIT_PER_PAGE } from "../../app/config";
+import { getBookmarkedOfUser } from "../user/userSlice";
 
 const initialState = {
   isLoading: false,
@@ -39,7 +40,6 @@ const slice = createSlice({
       state.error = null;
       const {donation} = action.payload;
       state.donation = donation;
-  
     },
   },
 });
@@ -93,6 +93,7 @@ export const createDonation = ({ projectId, userId, amount }) => async (dispatch
     toast.error(error.message);
   }
 }
+
 
 
 export default slice.reducer;

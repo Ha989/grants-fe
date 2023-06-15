@@ -7,11 +7,12 @@ function SingleNotification({ notification }) {
       width={300}
       height={100}
       border="1px solid #adb5bd"
-      backgroundColor="#e9ecef"
+      backgroundColor="#fff"
       justifyContent="center"
       alignItems="flex-start"
       borderRadius={1}
       padding={1}
+      mb={1}
     >
       {notification && (
         <>
@@ -39,7 +40,6 @@ function SingleNotification({ notification }) {
               <Typography variant="h7" color="primary">
                 Comment notification
               </Typography>
-              <Typography>{notification.from}</Typography>
               <Typography variant="subtitle1">
                 {notification.message}
               </Typography>

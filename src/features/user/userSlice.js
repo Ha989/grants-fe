@@ -51,13 +51,13 @@ const slice = createSlice({
       state.bookmark = bookmark.bookmarked;
       console.log("bookmark", bookmark.bookmarked);
     },
-    // getUser(state, action) {
-    //   state.isLoading = false;
-    //   state.error = null;
-    //   state.donation = action.payload.donation;
-    //   state.bookmarked = action.payload.bookmarked;
-    //   console.log("bookmarked", state.bookmarked)
-    // },
+    getUser(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      state.donation = action.payload.donation;
+      state.bookmarked = action.payload.bookmarked;
+      console.log("bookmarked", state.bookmarked)
+    },
   },
 });
 
@@ -131,6 +131,6 @@ export const bookmarkProject =
     }
   };
 
-// export const { getUser } = slice.actions;
+export const { getUser } = slice.actions;
 
 export default slice.reducer;

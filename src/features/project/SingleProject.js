@@ -10,6 +10,7 @@ import DonateBtn from "./DonateBtn";
 import { styled } from "@mui/material/styles";
 import Discussion from "../comment/Discussion";
 import Pitch from "./Pitch";
+import ScrollToTopButton from "../../components/ScrollToTopButton";
 
 const TabWrapperStyle = styled("div")(({ theme }) => ({
   display: "flex",
@@ -32,6 +33,8 @@ function SingleProject() {
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.currentProject);
   const [currentTab, setCurrentTab] = useState("pitch");
+
+
 
   useEffect(() => {
     dispatch(getSingleProject(id));
@@ -113,6 +116,7 @@ function SingleProject() {
           })}
         </Box>
       </Stack>
+      <ScrollToTopButton />
     </Stack>
   );
 }

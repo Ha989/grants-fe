@@ -21,6 +21,7 @@ import {
   Badge,
   Button,
   Divider,
+  Pagination,
   Paper,
   Popover,
   Stack,
@@ -34,7 +35,10 @@ import { useEffect } from "react";
 import NotificationCard from "../notification/NotificationCard";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { countNewNotifications, getAllNotificationOfUser } from "../notification/notificationSlice";
+import {
+  countNewNotifications,
+  getAllNotificationOfUser,
+} from "../notification/notificationSlice";
 const drawerWidth = 180;
 
 function CreatorPage(props) {
@@ -45,16 +49,21 @@ function CreatorPage(props) {
   const [notificationEl, setNotificationEl] = React.useState(null);
   const [notifiDialog, setnotifiDialog] = useState(false);
   const creator = auth?.creator;
-  const [skip, setSkip] = useState(0)
+  const [page, setPage] = useState(1);
+  const totalPage = useSelector((state) => state.notification.totalPage)
+  console.log("skip", page);
 
   const dispatch = useDispatch();
   const notifications = useSelector(
     (state) => state.notification.notifications
   );
-  console.log("noti", notifications)
-  const count = useSelector((state) => state.notification.count);
-  console.log("count", count)
 
+  const handleChange = (e, value) => {
+    setPage(value);
+  };
+  console.log("noti", notifications);
+  const count = useSelector((state) => state.notification.count);
+  console.log("count", count);
 
   useEffect(() => {
     const fetchNewNotifications = async () => {
@@ -64,24 +73,22 @@ function CreatorPage(props) {
         console.error("Error fetching new notifications count:", error);
       }
     };
-      setTimeout(async () => {
-        await fetchNewNotifications();
-      }, 60000); // 1 minute
+    setTimeout(async () => {
+      await fetchNewNotifications();
+    }, 60000); // 1 minute
 
     return () => {
       clearTimeout(fetchNewNotifications);
     };
-}, [dispatch])
-
+  }, [dispatch]);
 
   useEffect(() => {
-    if(creator)
-    dispatch(getAllNotificationOfUser({ skip }));
-  }, [dispatch,creator]);
-  
-  const handleLoadMore = () => {
-    setSkip((prevSkip) => prevSkip + 10);
-  };
+    if (creator) dispatch(getAllNotificationOfUser({ page }));
+  }, [dispatch, page]);
+
+  // const handleLoadMore = () => {
+  //   setPage((prevSkip) => prevSkip + 10);
+  // };
 
   const handleDialogOpen = (event) => {
     setNotificationEl(event.currentTarget);
@@ -213,7 +220,19 @@ function CreatorPage(props) {
           >
             <Stack style={{ minHeight: 400, width: 350 }} alignItems="center">
               <NotificationCard notifications={notifications} />
-              <Button onClick={handleLoadMore}>Load more</Button>
+              <Stack
+                spacing={2}
+                mt={1}
+                justifyContent="center"
+                alignItems="center"
+              >
+                <Pagination
+                  count={totalPage}
+                  variant="outlined"
+                  shape="rounded"
+                  onChange={handleChange}
+                />
+              </Stack>
             </Stack>
           </Popover>
           <Box>

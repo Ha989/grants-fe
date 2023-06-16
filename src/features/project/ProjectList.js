@@ -103,7 +103,7 @@ function ProjectList() {
           </Grid>
         ))}
       </Grid>
-      <Stack spacing={2} mt={5} justifyContent="center" alignItems="center">
+      <Stack spacing={2} mt={1} justifyContent="center" alignItems="center">
         <Pagination
           count={totalPage}
           variant="outlined"

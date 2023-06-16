@@ -22,7 +22,14 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import Avatar from "@mui/material/Avatar";
-import { Button, DialogContent, Paper, Popover, Stack } from "@mui/material";
+import {
+  Button,
+  DialogContent,
+  Pagination,
+  Paper,
+  Popover,
+  Stack,
+} from "@mui/material";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
 import { useState } from "react";
 import NotificationCard from "../features/notification/NotificationCard";
@@ -42,14 +49,18 @@ function MainHeader() {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const [notificationEl, setNotificationEl] = React.useState(null);
   const [notifiDialog, setnotifiDialog] = useState(false);
-  const [skip, setSkip] = useState(0);
   const user = auth?.user;
   const creator = auth?.creator;
+  const [page, setPage] = useState(1);
+  const handleChange = (e, value) => {
+    setPage(value);
+  };
 
   const dispatch = useDispatch();
   const notifications = useSelector(
     (state) => state.notification.notifications
   );
+  const totalPage = useSelector((state) => state.notification.totalPage);
   const count = useSelector((state) => state.notification.count);
 
   useEffect(() => {
@@ -73,12 +84,12 @@ function MainHeader() {
 
   useEffect(() => {
     if (auth?.user || auth?.creator)
-      dispatch(getAllNotificationOfUser({ skip }));
-  }, [auth, dispatch, skip]);
+      dispatch(getAllNotificationOfUser({ page }));
+  }, [auth, dispatch, page]);
 
-  const handleLoadMore = () => {
-    setSkip((prevSkip) => prevSkip + 10);
-  };
+  // const handleLoadMore = () => {
+  //   setSkip((prevSkip) => prevSkip + 10);
+  // };
 
   const handleDialogOpen = (event) => {
     dispatch(updateNotification());
@@ -272,7 +283,7 @@ function MainHeader() {
               <Box sx={{ display: { xs: "none", md: "flex" } }} mr={1}>
                 <IconButton
                   size="large"
-                  aria-label="show 1 new notifications"
+                  aria-label="show new notifications"
                   color="primary"
                   onClick={handleDialogOpen}
                 >
@@ -340,8 +351,12 @@ function MainHeader() {
         }}
       >
         <Stack style={{ minHeight: 400, width: 350 }} alignItems="center" p={1}>
-          <NotificationCard notifications={notifications} />
-          <Button onClick={handleLoadMore}>Load more</Button>
+          <NotificationCard notifications={notifications} totalPage={totalPage} handleChange={handleChange}/>
+          {/* <Pagination
+            variant="outlined"
+            shape="rounded"
+            onChange={handleChange}
+          /> */}
         </Stack>
       </Popover>
     </Box>

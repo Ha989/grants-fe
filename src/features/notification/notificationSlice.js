@@ -23,9 +23,10 @@ const slice = createSlice({
     getNotificationSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const newNotifications = action.payload.notifications;
-      state.notifications = [...state.notifications, ...newNotifications];
-      console.log("state", state.notifications)
+      const { notifications, totalPage } = action.payload;
+      console.log("new", notifications);
+      state.notifications = notifications;
+      state.totalPage = totalPage
     },
     countNewNotificationSuccess(state, action) {
       state.isLoading = false;
@@ -37,10 +38,10 @@ const slice = createSlice({
   },
 });
 
-export const getAllNotificationOfUser = ({ limit = 10, skip }) => async (dispatch) => {
+export const getAllNotificationOfUser = ({ limit = 10, page }) => async (dispatch) => {
   dispatch(slice.actions.startLoading());
   try {
-    const params = { limit, skip }
+    const params = { limit, page }
     console.log("params", params);
     const response = await apiService.get(`/notifications`, { params });
     console.log("res", response.data);

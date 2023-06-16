@@ -29,6 +29,7 @@ function BookmarkProject({ project }) {
       dispatch(getBookmarkedOfUser());
     }
   }, [dispatch, user]);
+  
 
   useEffect(() => {
     // Check if the current project is bookmarked and update the star color

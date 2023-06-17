@@ -87,9 +87,7 @@ function MainHeader() {
       dispatch(getAllNotificationOfUser({ page }));
   }, [auth, dispatch, page]);
 
-  // const handleLoadMore = () => {
-  //   setSkip((prevSkip) => prevSkip + 10);
-  // };
+
 
   const handleDialogOpen = (event) => {
     dispatch(updateNotification());

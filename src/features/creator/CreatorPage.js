@@ -50,8 +50,7 @@ function CreatorPage(props) {
   const [notifiDialog, setnotifiDialog] = useState(false);
   const creator = auth?.creator;
   const [page, setPage] = useState(1);
-  const totalPage = useSelector((state) => state.notification.totalPage)
-  console.log("skip", page);
+  const totalPage = useSelector((state) => state.notification.totalPage);
 
   const dispatch = useDispatch();
   const notifications = useSelector(
@@ -61,9 +60,9 @@ function CreatorPage(props) {
   const handleChange = (e, value) => {
     setPage(value);
   };
-  console.log("noti", notifications);
+
   const count = useSelector((state) => state.notification.count);
-  console.log("count", count);
+
 
   useEffect(() => {
     const fetchNewNotifications = async () => {

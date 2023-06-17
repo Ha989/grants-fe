@@ -21,6 +21,7 @@ import { useCallback } from "react";
 import { updateProject } from "./creatorSlice";
 import Joi from "joi";
 import * as yup from "yup";
+import { teal } from "@mui/material/colors";
 
 // const CreateProjectSchema = Joi.object({
 //     name: Joi.string().required().messages({
@@ -78,7 +79,20 @@ function EditModal({ open, handleClose, project }) {
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.creator.isLoading);
 
+  const defaultValues = {
+    name: project?.name,
+    title: project?.title,
+    description: project?.description,
+    team: project?.team,
+    logo: project?.logo,
+    banner: project?.banner,
+    website: project?.website,
+    video: project?.video,
+    bankDetail: project?.bankDetail,
+  };
+
   const [teamMembers, setTeamMembers] = useState([]);
+  const newTeamArray = [...(defaultValues?.team || []), ...teamMembers];
 
   const handleAddMember = () => {
     setTeamMembers((prevMembers) => [...prevMembers, ""]);
@@ -100,18 +114,6 @@ function EditModal({ open, handleClose, project }) {
     });
   };
 
-  const defaultValues = {
-    name: project?.name,
-    title: project?.title,
-    description: project?.description,
-    team: project?.team,
-    logo: project?.logo,
-    banner: project?.banner,
-    website: project?.website,
-    video: project?.video,
-    bankDetail: project?.bankDetail,
-  };
-
   const methods = useForm({
     resolver: yupResolver(updateSchema),
     defaultValues,
@@ -123,9 +125,31 @@ function EditModal({ open, handleClose, project }) {
     formState: { isSubmitting },
   } = methods;
 
-  const onSubmit = (data) => {
-    dispatch(updateProject({ projectId: project._id, ...data }));
-    console.log("team", data.team);
+  const onSubmit = ({
+    name,
+    title,
+    description,
+    website,
+    banner,
+    logo,
+    team,
+    video,
+    bankDetail,
+  }) => {
+    dispatch(
+      updateProject({
+        projectId: project._id,
+        name,
+        title,
+        description,
+        website,
+        banner,
+        logo,
+        team: newTeamArray,
+        video,
+        bankDetail,
+      })
+    );
   };
 
   useEffect(() => {
@@ -172,11 +196,11 @@ function EditModal({ open, handleClose, project }) {
           handleClose();
         }}
       >
+        <DialogTitle color="primary" textAlign="center">
+          EDIT YOUR PROJECT
+          <Divider />
+        </DialogTitle>
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-          <DialogTitle color="primary" textAlign="center">
-            EDIT YOUR PROJECT
-            <Divider />
-          </DialogTitle>
           <DialogContent>
             <Stack>
               <Box>
@@ -257,22 +281,21 @@ function EditModal({ open, handleClose, project }) {
                 <Typography variant="subtitle2" mb={1}>
                   Click Add Team to add your team member
                 </Typography>
+                <FTextField
+                  name="team"
+                  label="Team"
+                  defaultValue={defaultValues.team}
+                />
                 {teamMembers.map((member, index) => (
                   <Box key={index} display="flex" alignItems="center" mt={2}>
-                    {/* <FTextField
-                      name="team"
-                      label="Team"
-                      defaultValue={defaultValues.team}
-                    /> */}
                     <FTextField
-                      name="team"
+                      name="teamMember"
                       type="text"
                       value={member}
                       onChange={(e) =>
                         handleMemberChange(index, e.target.value)
                       }
                       placeholder={`Team Member ${index + 1}`}
-                      defaultValue={defaultValues.team}
                     />
                     <Button onClick={() => handleRemoveMember(index)}>
                       Remove

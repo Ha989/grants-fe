@@ -21,7 +21,7 @@ const style = {
   };
 
 
-function DonationModel({ donationId, onClose }) {
+function DonationModel({ donationId }) {
     const dispatch = useDispatch();
     const donation = useSelector((state) => state.creator.donation);
     

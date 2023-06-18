@@ -38,6 +38,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   countNewNotifications,
   getAllNotificationOfUser,
+  updateNotification,
 } from "../notification/notificationSlice";
 const drawerWidth = 180;
 
@@ -83,13 +84,12 @@ function CreatorPage(props) {
 
   useEffect(() => {
     if (creator) dispatch(getAllNotificationOfUser({ page }));
-  }, [dispatch, page]);
+  }, [creator, dispatch, page]);
 
-  // const handleLoadMore = () => {
-  //   setPage((prevSkip) => prevSkip + 10);
-  // };
+
 
   const handleDialogOpen = (event) => {
+    dispatch(updateNotification());
     setNotificationEl(event.currentTarget);
     setnotifiDialog(true);
   };
@@ -218,20 +218,7 @@ function CreatorPage(props) {
             }}
           >
             <Stack style={{ minHeight: 400, width: 350 }} alignItems="center">
-              <NotificationCard notifications={notifications} />
-              <Stack
-                spacing={2}
-                mt={1}
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Pagination
-                  count={totalPage}
-                  variant="outlined"
-                  shape="rounded"
-                  onChange={handleChange}
-                />
-              </Stack>
+              <NotificationCard notifications={notifications} totalPage={totalPage} handleChange={handleChange}/>
             </Stack>
           </Popover>
           <Box>

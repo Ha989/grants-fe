@@ -1,12 +1,30 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Bar } from "react-chartjs-2";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import {
   format,
   startOfMonth,
   endOfMonth,
   eachMonthOfInterval,
 } from "date-fns";
-import Chart from "chart.js/auto";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
 
 const colors = [
   "rgba(255, 99, 132, 0.8)",
@@ -24,71 +42,9 @@ const colors = [
 ];
 
 const EarningGraph = ({ projects }) => {
-  const chartRef = useRef(null);
-  const chartId = "barChart";
 
-  useEffect(() => {
-    let chartInstance = null;
-
-    const renderChart = () => {
-      if (chartInstance) {
-        chartInstance.destroy(); // Destroy the previous chart instance
-      }
-
-      const monthlyEarnings = calculateMonthlyEarnings();
-      const labels = monthlyEarnings.map((item) =>
-        format(item.month, "MMM yyyy")
-      );
-      const data = monthlyEarnings.map((item) => item.earnings);
-
-      const chartData = {
-        labels: labels,
-        datasets: [
-          {
-            label: "Monthly Earnings",
-            data: data,
-            backgroundColor: colors,
-          },
-        ],
-      };
-
-      const options = {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      };
-
-      const canvas = chartRef.current;
-
-      if (canvas) {
-        const ctx = canvas.getContext("2d");
-        chartInstance = new Chart(ctx, {
-          type: "bar",
-          data: chartData,
-          options: options,
-        });
-      }
-    };
-
-    renderChart();
-
-    return () => {
-      if (
-        chartInstance &&
-        typeof chartInstance.destroy === "function" &&
-        !chartInstance.destroyed
-      ) {
-        chartInstance.destroy();
-      }
-    };
-  }, []);
-
-  // Calculate the monthly earnings based on the projects data
-  const calculateMonthlyEarnings = () => {
+   // Calculate the monthly earnings based on the projects data
+   const calculateMonthlyEarnings = useCallback(() => {
     const currentDate = new Date();
     const currentMonthStart = startOfMonth(currentDate);
     const currentMonthEnd = endOfMonth(currentDate);
@@ -111,11 +67,43 @@ const EarningGraph = ({ projects }) => {
       return { month: month, earnings: earnings };
     });
     return monthlyEarnings;
-  };
+  }, [projects]);
+
+
+      const monthlyEarnings = calculateMonthlyEarnings();
+      const labels = monthlyEarnings.map((item) =>
+        format(item.month, "MMM yyyy")
+      );
+      const data = monthlyEarnings.map((item) => item.earnings);
+
+      const chartData = {
+        labels: labels,
+        datasets: [
+          {
+            label: "Monthly Earnings",
+            data: data,
+            backgroundColor: colors,
+          },
+        ],
+      };
+
+      const options = {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'monthly earning of all projects',
+          },
+        },
+      };
+ 
 
   return (
     <div style={{ minHeight: "400px" }}>
-      <canvas id={chartId} ref={chartRef} />
+      <Bar options={options} data={chartData} />
     </div>
   );
 };

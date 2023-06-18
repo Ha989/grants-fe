@@ -43,23 +43,22 @@ function CreatorDashboard() {
         direction={{ xs: "column", md: "row" }}
         p={1}
         justifyContent="space-between"
-        // alignItems="center"
         mt={3}
       >
-        <Box mt={2}>
+        <Box mt={2} >
           <Typography variant="h5" mb={1} textAlign="center" color="primary">
             Recent Donations
             <Divider />
           </Typography>
           <RecentDonationsCard projects={projects} />
         </Box>
-        <Box mt={2}>
+        <Stack mt={2} direction="column" justifyContent="center" alignItems="center">
           <Typography variant="h5" mb={1} textAlign="center" color="primary">
             Revenue Distribution
             <Divider />
           </Typography>
           <RevenuePieChart projects={projects} />
-        </Box>
+        </Stack>
       </Stack>
       <Stack minHeight={400} mt={3}>
         <Typography variant="h5" mb={1} textAlign="center" color="primary">

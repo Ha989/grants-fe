@@ -23,7 +23,7 @@ function RecentDonationsCard({ projects }) {
   );
 
   // Get the newest 10 donations or less if there are fewer donations
-  const recentDonations = sortedData?.slice(0, 10);
+  const recentDonations = sortedData?.slice(0, 6);
 
   return (
     <div>

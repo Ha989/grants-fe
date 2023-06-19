@@ -89,7 +89,7 @@ function CreatorPage(props) {
 
   useEffect(() => {
     navigate("/creators/dashboard");
-  }, [navigate]);
+  }, []);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);

@@ -87,11 +87,12 @@ function CreatorPage(props) {
     setnotifiDialog(true);
   };
 
-  useEffect(() => {
-    navigate("/creators/dashboard");
-  }, []);
+  // useEffect(() => {
+  //   navigate("/creators/dashboard");
+  // }, []);
 
-  const handleDrawerToggle = () => {
+  const handleDrawerToggle = (route) => {
+    navigate(route);
     setMobileOpen(!mobileOpen);
   };
 
@@ -106,7 +107,7 @@ function CreatorPage(props) {
       </Box>
       <Divider />
       <List>
-        <MenuItem component={RouterLink} to="/creators/dashboard">
+        <MenuItem component={RouterLink} to="/creators/dashboard" onClick={() => handleDrawerToggle("/creators/dashboard")}>
           <IconButton
             size="large"
             color="primary"

@@ -11,7 +11,8 @@ import MenuItem from "@mui/material/MenuItem";
 import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
 import WidgetsIcon from "@mui/icons-material/Widgets";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Link as RouterLink } from 'react-router-dom';
 import CategoryIcon from "@mui/icons-material/Category";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import {
@@ -105,7 +106,7 @@ function CreatorPage(props) {
       </Box>
       <Divider />
       <List>
-        <MenuItem component={Link} to="/creators/dashboard">
+        <MenuItem component={RouterLink} to="/creators/dashboard">
           <IconButton
             size="large"
             color="primary"
@@ -117,7 +118,7 @@ function CreatorPage(props) {
           </Typography>
         </MenuItem>
         <Divider />
-        <MenuItem component={Link} to="/creators/projects">
+        <MenuItem component={RouterLink} to="/creators/projects">
           <IconButton
             size="large"
             color="primary"
@@ -129,7 +130,7 @@ function CreatorPage(props) {
           </Typography>
         </MenuItem>
         <Divider />
-        <MenuItem component={Link} to="/creators/donations">
+        <MenuItem component={RouterLink} to="/creators/donations">
           <IconButton
             size="large"
             color="primary"
@@ -141,7 +142,7 @@ function CreatorPage(props) {
           </Typography>
         </MenuItem>
         <Divider />
-        <MenuItem component={Link} to="/creators/settings">
+        <MenuItem component={RouterLink} to="/creators/settings">
           <IconButton
             size="large"
             color="primary"

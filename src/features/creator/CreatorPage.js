@@ -59,7 +59,6 @@ function CreatorPage(props) {
 
   const count = useSelector((state) => state.notification.count);
 
-
   useEffect(() => {
     const fetchNewNotifications = async () => {
       try {
@@ -81,8 +80,6 @@ function CreatorPage(props) {
     if (creator) dispatch(getAllNotificationOfUser({ page }));
   }, [creator, dispatch, page]);
 
-
-
   const handleDialogOpen = (event) => {
     dispatch(updateNotification());
     setNotificationEl(event.currentTarget);
@@ -91,7 +88,7 @@ function CreatorPage(props) {
 
   useEffect(() => {
     navigate("/creators/dashboard");
-  }, []);
+  }, [navigate]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -213,7 +210,11 @@ function CreatorPage(props) {
             }}
           >
             <Stack style={{ minHeight: 400, width: 350 }} alignItems="center">
-              <NotificationCard notifications={notifications} totalPage={totalPage} handleChange={handleChange}/>
+              <NotificationCard
+                notifications={notifications}
+                totalPage={totalPage}
+                handleChange={handleChange}
+              />
             </Stack>
           </Popover>
           <Box>

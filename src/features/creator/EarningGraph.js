@@ -47,6 +47,7 @@ const EarningGraph = ({ projects }) => {
    const calculateMonthlyEarnings = useCallback(() => {
     const currentDate = new Date();
     const currentMonthStart = startOfMonth(currentDate);
+    console.log("current", currentMonthStart)
     const currentMonthEnd = endOfMonth(currentDate);
 
     const months = eachMonthOfInterval({

@@ -5,13 +5,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FTextField, FormProvider } from "../../components/form";
-import {
-  Box,
-  Card,
-  Container,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Card, Container, Stack, Typography } from "@mui/material";
 import { fData } from "../../utils/numberFormat";
 import FUpLoadAvatar from "../../components/form/FUpLoadAvatar";
 import { LoadingButton } from "@mui/lab";
@@ -62,49 +56,49 @@ function CreatorSetting() {
   );
 
   return (
-    <Container>
-    <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Box width={{ xs: "90vw", md: "60vw" }}>
-        <Card sx={{ py: 10, px: 3, textAlign: "center" }} width={300}>
-          <FUpLoadAvatar
-            name="avatarUrl"
-            accept="image/*"
-            maxSize={3145728}
-            onDrop={handleDrop}
-            helperText={
-              <Typography
-                variant="caption"
-                sx={{
-                  mt: 2,
-                  mx: "auto",
-                  display: "block",
-                  textAlign: "center",
-                  color: "text.secondary",
-                }}
-              >
-                Allowed *.jpeg, *.jpg, *.png, *.gif
-                <br /> max size of {fData(3145728)}
-              </Typography>
-            }
-          />
-        </Card>
-        <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
-          <FTextField name="name" label="Your Name" />
-          <FTextField name="bio" multiline rows={4} label="Your Bio" />
-        </Stack>
-        <Box mt={3} textAlign="center">
-          <LoadingButton
-            mt={3}
-            type="submit"
-            variant="contained"
-            loading={isSubmitting || isLoading}
-          >
-            Save Changes
-          </LoadingButton>
+    <Box ml={{ xs: 5, md: 30 }}>
+      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+        <Box width={{ xs: "90vw", md: "60vw" }}>
+          <Card sx={{ py: 10, px: 3, textAlign: "center" }} width={300}>
+            <FUpLoadAvatar
+              name="avatarUrl"
+              accept="image/*"
+              maxSize={3145728}
+              onDrop={handleDrop}
+              helperText={
+                <Typography
+                  variant="caption"
+                  sx={{
+                    mt: 2,
+                    mx: "auto",
+                    display: "block",
+                    textAlign: "center",
+                    color: "text.secondary",
+                  }}
+                >
+                  Allowed *.jpeg, *.jpg, *.png, *.gif
+                  <br /> max size of {fData(3145728)}
+                </Typography>
+              }
+            />
+          </Card>
+          <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
+            <FTextField name="name" label="Your Name" />
+            <FTextField name="bio" multiline rows={4} label="Your Bio" />
+          </Stack>
+          <Box mt={3} textAlign="center">
+            <LoadingButton
+              mt={3}
+              type="submit"
+              variant="contained"
+              loading={isSubmitting || isLoading}
+            >
+              Save Changes
+            </LoadingButton>
+          </Box>
         </Box>
-      </Box>
-    </FormProvider>
-    </Container>
+      </FormProvider>
+    </Box>
   );
 }
 

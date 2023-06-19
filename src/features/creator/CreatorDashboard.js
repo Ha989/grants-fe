@@ -14,7 +14,6 @@ function CreatorDashboard() {
   const navigate = useNavigate();
   const projects = useSelector((state) => state.creator.projects);
 
-
   const handleClickCreate = () => {
     navigate("/creators");
   };
@@ -24,20 +23,27 @@ function CreatorDashboard() {
   }, [dispatch]);
 
   return (
-    <Container>
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="100vh" // Adjust the height as needed
+    >
       <Typography variant="h5" color="primary" mb={2}>
         Dashboard <Divider />
       </Typography>
-
-      <Stack
-        minHeight={150}
-        direction={{ xs: "column", md: "row" }}
-        p={1}
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <TotalCalculateCard projects={projects} />
-      </Stack>
+      <Box width={{ xs: "100%", md: "65%" }}>
+        <Stack
+          minHeight={150}
+          direction={{ xs: "column", md: "row" }}
+          p={1}
+          justifyContent="space-between"
+          alignItems="center"
+        >
+          <TotalCalculateCard projects={projects} />
+        </Stack>
+      </Box>
       <Stack
         minHeight={300}
         direction={{ xs: "column", md: "row" }}
@@ -45,14 +51,19 @@ function CreatorDashboard() {
         justifyContent="space-between"
         mt={3}
       >
-        <Box mt={2} >
+        <Box mt={2}>
           <Typography variant="h5" mb={1} textAlign="center" color="primary">
             Recent Donations
             <Divider />
           </Typography>
           <RecentDonationsCard projects={projects} />
         </Box>
-        <Stack mt={2} direction="column" justifyContent="center" alignItems="center">
+        <Stack
+          mt={2}
+          direction="column"
+          justifyContent="center"
+          alignItems="center"
+        >
           <Typography variant="h5" mb={1} textAlign="center" color="primary">
             Revenue Distribution
             <Divider />
@@ -60,11 +71,16 @@ function CreatorDashboard() {
           <RevenuePieChart projects={projects} />
         </Stack>
       </Stack>
-      <Stack minHeight={400} mt={3}>
+      <Stack
+        alignItems="center"
+        minHeight={600}
+        mt={3}
+        width={{ xs: "90%", md: "70%" }}
+      >
         <Typography variant="h5" mb={1} textAlign="center" color="primary">
           Monthly Dataset
         </Typography>
-       <EarningGraph projects={projects} />
+        <EarningGraph projects={projects} />
       </Stack>
       <Fab
         variant="extended"
@@ -81,7 +97,7 @@ function CreatorDashboard() {
         <AddIcon />
         Create Your Project
       </Fab>
-    </Container>
+    </Box>
   );
 }
 

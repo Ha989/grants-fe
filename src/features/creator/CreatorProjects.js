@@ -108,7 +108,7 @@ function CreatorProjects() {
   ];
 
   return (
-    <Container>
+    <Box ml={{ xs: 5, md: 30}}>
       <Typography variant="h5" color="primary" mb={5}>
         Projects Control
         <Divider />
@@ -127,7 +127,15 @@ function CreatorProjects() {
         }}
         project={editProject}
       />
-      <Box style={{ height: 400, width: "100%" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "400px",
+          width: "90%",
+        }}
+      >
         {projects && (
           <DataGrid
             rows={projects}
@@ -142,7 +150,7 @@ function CreatorProjects() {
           />
         )}
       </Box>
-    </Container>
+    </Box>
   );
 }
 

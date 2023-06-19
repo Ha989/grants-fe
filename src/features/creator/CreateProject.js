@@ -166,7 +166,13 @@ function CreateProject() {
   );
 
   return (
-    <Container>
+    <Box
+    display="flex"
+    flexDirection="column"
+    justifyContent="center"
+    alignItems="center"
+    minHeight="100vh" // Adjust the height as needed
+  > 
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Typography
           variant="h5"
@@ -276,7 +282,7 @@ function CreateProject() {
           </LoadingButton>
         </Box>
       </FormProvider>
-    </Container>
+    </Box>
   );
 }
 

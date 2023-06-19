@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Stack, Typography } from "@mui/material";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";
@@ -28,7 +28,7 @@ function TotalCalculateCard({ projects }) {
   return (
     <>
       <Box
-        width={300}
+        width={280}
         borderRadius={1}
         textAlign="center"
         backgroundColor="#f5f5f5"
@@ -47,7 +47,7 @@ function TotalCalculateCard({ projects }) {
         </Typography>
       </Box>
       <Box
-        width={300}
+        width={280}
         borderRadius={1}
         textAlign="center"
         backgroundColor="#f5f5f5"
@@ -66,7 +66,7 @@ function TotalCalculateCard({ projects }) {
         </Typography>
       </Box>
       <Box
-        width={300}
+        width={280}
         borderRadius={1}
         textAlign="center"
         backgroundColor="#f5f5f5"

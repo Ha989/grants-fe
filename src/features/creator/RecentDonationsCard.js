@@ -68,11 +68,11 @@ function RecentDonationsCard({ projects }) {
                 onClick={() => handleClick(recent._id)}
                 key={recent._id}
               >
-                <Box display="flex" alignItems="center" flex={1}>
+                <Box display="flex" alignItems="center" flex={1} flexDirection={{ xs: "column", md: "row"}}>
                   <Avatar
                     src={recent?.userId?.avatarUrl}
                     alt={recent?.userId?.name}
-                    sx={{ width: 40, height: 40 }}
+                    sx={{ width: 35, height: 35 }}
                   />
                   <Typography color="#338fff">
                     {recent?.userId?.name}

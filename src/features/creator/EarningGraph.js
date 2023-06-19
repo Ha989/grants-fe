@@ -15,6 +15,8 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { useMediaQuery } from "@mui/material";
+import { useTheme } from "@emotion/react";
 
 ChartJS.register(
   CategoryScale,
@@ -42,6 +44,8 @@ const colors = [
 ];
 
 const EarningGraph = ({ projects }) => {
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.only('xs'));
 
    // Calculate the monthly earnings based on the projects data
    const calculateMonthlyEarnings = useCallback(() => {
@@ -99,11 +103,23 @@ const EarningGraph = ({ projects }) => {
             text: 'monthly earning of all projects',
           },
         },
+        scales: {
+          x: {
+            grid: {
+              display: false,
+            },
+          },
+          y: {
+            grid: {
+              display: true,
+            },
+          },
+        },
       };
  
 
   return (
-    <div style={{ minHeight: "400px" }}>
+    <div style={{ width: '100%', minHeight: isXs ? '300px' : '600px' }}>
       <Bar options={options} data={chartData} />
     </div>
   );

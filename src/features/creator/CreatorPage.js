@@ -92,7 +92,6 @@ function CreatorPage(props) {
   // }, []);
 
   const handleDrawerToggle = (route) => {
-    navigate(route);
     setMobileOpen(!mobileOpen);
   };
 
@@ -107,7 +106,7 @@ function CreatorPage(props) {
       </Box>
       <Divider />
       <List>
-        <MenuItem component={RouterLink} to="/creators/dashboard" onClick={() => handleDrawerToggle("/creators/dashboard")}>
+        <MenuItem component={RouterLink} to="/creators/dashboard">
           <IconButton
             size="large"
             color="primary"

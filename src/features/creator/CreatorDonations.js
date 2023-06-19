@@ -1,13 +1,12 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Container,Divider, Modal, Typography } from "@mui/material";
+import { Box, Container, Divider, Modal, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getDonationsByCreator } from "./creatorSlice";
 import { useState } from "react";
 import DonationModel from "./DonationModel";
 import { green, red } from "@mui/material/colors";
-import "./style.css";
 
 function CreatorDonations() {
   const dispatch = useDispatch();
@@ -78,12 +77,18 @@ function CreatorDonations() {
   ];
 
   return (
-    <Container>
+    <Box ml={{ xs: 5, md: 30}}>
       <Typography variant="h5" color="primary" mb={5}>
         Donation Receipts Table
         <Divider />
       </Typography>
-      <Box style={{ height: 400, width: "100%" }}>
+      <Box sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "400px",
+          width: "90%",
+        }}>
         {donations && (
           <DataGrid
             rows={donations}
@@ -95,7 +100,7 @@ function CreatorDonations() {
               },
             }}
             pageSizeOptions={[5, 10]}
-            checkboxSelection
+            // checkboxSelection
             onRowClick={handleDonation}
           />
         )}
@@ -112,7 +117,7 @@ function CreatorDonations() {
           <DonationModel donationId={selectedDonation} />
         </Modal>
       </Box>
-    </Container>
+      </Box>
   );
 }
 

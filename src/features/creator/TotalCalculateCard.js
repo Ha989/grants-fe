@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, IconButton, Stack, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import PeopleOutlineIcon from "@mui/icons-material/PeopleOutline";

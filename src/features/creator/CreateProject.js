@@ -4,7 +4,6 @@ import { createProject } from "./creatorSlice";
 import {
   Box,
   Button,
-  Container,
   Divider,
   Stack,
   Typography,
@@ -19,7 +18,6 @@ import { fData } from "../../utils/numberFormat";
 import { FTextField, FormProvider } from "../../components/form";
 import { LoadingButton } from "@mui/lab";
 import { useState } from "react";
-
 
 const CreateProjectSchema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -167,12 +165,12 @@ function CreateProject() {
 
   return (
     <Box
-    display="flex"
-    flexDirection="column"
-    justifyContent="center"
-    alignItems="center"
-    minHeight="100vh" // Adjust the height as needed
-  > 
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      minHeight="100vh" // Adjust the height as needed
+    >
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Typography
           variant="h5"
@@ -242,8 +240,8 @@ function CreateProject() {
             <FTextField name="website" label="Website" />
           </Box>
           <Box mt={5}>
-          <Typography variant="subtitle2" mb={1}>
-             Click Add Team to add your team member
+            <Typography variant="subtitle2" mb={1}>
+              Click Add Team to add your team member
             </Typography>
             {teamMembers.map((member, index) => (
               <Box key={index} display="flex" alignItems="center" mt={2}>

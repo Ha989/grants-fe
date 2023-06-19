@@ -11,7 +11,6 @@ import MenuItem from "@mui/material/MenuItem";
 import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
 import WidgetsIcon from "@mui/icons-material/Widgets";
-import { useNavigate } from "react-router-dom";
 import { Link as RouterLink } from 'react-router-dom';
 import CategoryIcon from "@mui/icons-material/Category";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";

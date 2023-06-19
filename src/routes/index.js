@@ -19,7 +19,6 @@ import CreatorLayout from "../layouts/CreatorLayout";
 import CreatorSettings from "../features/creator/CreatorSettings";
 import CreatorDonations from "../features/creator/CreatorDonations";
 import CreatorProjects from "../features/creator/CreatorProjects";
-import CreatorPage from "../features/creator/CreatorPage";
 
 function Router() {
   return (

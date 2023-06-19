@@ -1,6 +1,6 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { Box, Container, Divider, Modal, Typography } from "@mui/material";
+import { Box, Divider, Modal, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getDonationsByCreator } from "./creatorSlice";

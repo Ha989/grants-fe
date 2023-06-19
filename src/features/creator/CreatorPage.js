@@ -40,7 +40,7 @@ const drawerWidth = 180;
 
 function CreatorPage(props) {
   const auth = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [notificationEl, setNotificationEl] = React.useState(null);

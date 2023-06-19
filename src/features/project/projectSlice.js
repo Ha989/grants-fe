@@ -1,15 +1,14 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import { toast } from "react-toastify";
 import { PROJECTS_LIMIT_PER_PAGE } from "../../app/config";
-import { getBookmarkedOfUser } from "../user/userSlice";
 
 const initialState = {
   isLoading: false,
   error: null,
   project: [],
   donation: null,
-}
+};
 
 const slice = createSlice({
   name: "project",
@@ -38,7 +37,7 @@ const slice = createSlice({
     createDonationSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-      const {donation} = action.payload;
+      const { donation } = action.payload;
       state.donation = donation;
     },
   },
@@ -66,12 +65,10 @@ export const getProjects =
     }
   };
 
-
-
 export const getSingleProject = (id) => async (dispatch) => {
   try {
     dispatch(slice.actions.startLoading());
-   
+
     const response = await apiService.get(`projects/${id}`);
     dispatch(slice.actions.getSingleProjectSuccess(response.data));
   } catch (error) {
@@ -80,20 +77,23 @@ export const getSingleProject = (id) => async (dispatch) => {
   }
 };
 
-
-
-export const createDonation = ({ projectId, userId, amount }) => async (dispatch) => {
-  try {
-    dispatch(slice.actions.startLoading());
-    const response = await apiService.post(`/projects/${projectId}/donation/${userId}`, {amount});
-    dispatch(slice.actions.createDonationSuccess(response.data));
-    toast.success("Sent donation successfully! Please wait for project owner to confirm!");
-  } catch (error) {
-    dispatch(slice.actions.hasError(error.message));
-    toast.error(error.message);
-  }
-}
-
-
+export const createDonation =
+  ({ projectId, userId, amount }) =>
+  async (dispatch) => {
+    try {
+      dispatch(slice.actions.startLoading());
+      const response = await apiService.post(
+        `/projects/${projectId}/donation/${userId}`,
+        { amount }
+      );
+      dispatch(slice.actions.createDonationSuccess(response.data));
+      toast.success(
+        "Sent donation successfully! Please wait for project owner to confirm!"
+      );
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      toast.error(error.message);
+    }
+  };
 
 export default slice.reducer;

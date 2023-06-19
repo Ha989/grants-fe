@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import ReactPlayer from "react-player";
 import { Box, Divider, Stack, Tab, Tabs } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,8 +32,6 @@ function SingleProject() {
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.currentProject);
   const [currentTab, setCurrentTab] = useState("pitch");
-
-
 
   useEffect(() => {
     dispatch(getSingleProject(id));

@@ -1,4 +1,4 @@
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import { Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 
 function SingleNotification({ notification }) {
@@ -17,7 +17,7 @@ function SingleNotification({ notification }) {
           <>
             {notification.type === "donation" && (
               <>
-                <Typography variant="h7" color="primary">
+                <Typography variant="h7" color="primary" fontStyle="italic">
                   Donations notification
                 </Typography>
                 <Typography>{notification.message}</Typography>
@@ -29,7 +29,7 @@ function SingleNotification({ notification }) {
             )}
             {notification.type === "bookmark" && (
               <>
-                <Typography variant="h7" color="primary">
+                <Typography variant="h7" color="primary" fontStyle="italic">
                   Bookmark notification
                 </Typography>
                 <Typography variant="subtitle1">
@@ -39,7 +39,7 @@ function SingleNotification({ notification }) {
             )}
             {notification.type === "comment" && (
               <>
-                <Typography variant="h7" color="primary">
+                <Typography variant="h7" color="primary" fontStyle="italic">
                   Comment notification
                 </Typography>
                 <Typography variant="subtitle1">

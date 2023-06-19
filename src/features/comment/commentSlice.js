@@ -38,6 +38,7 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = null;
       const { comment } = action.payload;
+      console.log(comment)
       delete state.comment;
     },
   },

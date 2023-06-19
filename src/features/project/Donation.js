@@ -2,16 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { createDonation, getSingleProject } from "./projectSlice";
-import {
-  Alert,
-  Box,
-  Card,
-  InputAdornment,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Card, Stack, TextField, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 import SendIcon from "@mui/icons-material/Send";
 
@@ -25,14 +16,14 @@ function Donation() {
 
   useEffect(() => {
     dispatch(getSingleProject(projectId));
-  }, []);
+  }, [dispatch, projectId]);
 
   const handleClickDonation = async () => {
     try {
       dispatch(createDonation({ projectId, userId, amount: Number(amount) }));
       setTimeout(() => {
-        navigate("/users/account")
-      },3000)
+        navigate("/users/account");
+      }, 3000);
     } catch (error) {
       console.log(error);
     }
@@ -56,17 +47,6 @@ function Donation() {
             </Typography>
           </Box>
           <Box height={150}>
-            {/* <TextField
-       fullWidth
-          id="filled-number"
-          label="Amount in $"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          variant="filled"
-          onChange={handleOnChange}
-        /> */}
             <TextField
               id="standard-number"
               label="Amount must be greater than 0$"

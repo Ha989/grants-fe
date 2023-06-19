@@ -9,20 +9,15 @@ import List from "@mui/material/List";
 import Toolbar from "@mui/material/Toolbar";
 import MenuItem from "@mui/material/MenuItem";
 import HomeIcon from "@mui/icons-material/Home";
-import ExploreIcon from "@mui/icons-material/Explore";
 import LogoutIcon from "@mui/icons-material/Logout";
 import WidgetsIcon from "@mui/icons-material/Widgets";
 import { Link, useNavigate } from "react-router-dom";
-import WhatshotIcon from "@mui/icons-material/Whatshot";
 import CategoryIcon from "@mui/icons-material/Category";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import {
   Avatar,
   Badge,
-  Button,
   Divider,
-  Pagination,
-  Paper,
   Popover,
   Stack,
   Typography,

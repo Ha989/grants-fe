@@ -1,40 +1,26 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import useAuth from "../hooks/useAuth";
 import Logo from "../components/Logo";
 import { Link as RouterLink } from "react-router-dom";
 
-import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import Avatar from "@mui/material/Avatar";
-import {
-  Button,
-  DialogContent,
-  Pagination,
-  Paper,
-  Popover,
-  Stack,
-} from "@mui/material";
+import { Popover, Stack } from "@mui/material";
 import ContactMailIcon from "@mui/icons-material/ContactMail";
-import { useState } from "react";
 import NotificationCard from "../features/notification/NotificationCard";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import {
   countNewNotifications,
   getAllNotificationOfUser,
@@ -86,8 +72,6 @@ function MainHeader() {
     if (auth?.user || auth?.creator)
       dispatch(getAllNotificationOfUser({ page }));
   }, [auth, dispatch, page]);
-
-
 
   const handleDialogOpen = (event) => {
     dispatch(updateNotification());
@@ -349,12 +333,11 @@ function MainHeader() {
         }}
       >
         <Stack style={{ minHeight: 400, width: 350 }} alignItems="center" p={1}>
-          <NotificationCard notifications={notifications} totalPage={totalPage} handleChange={handleChange}/>
-          {/* <Pagination
-            variant="outlined"
-            shape="rounded"
-            onChange={handleChange}
-          /> */}
+          <NotificationCard
+            notifications={notifications}
+            totalPage={totalPage}
+            handleChange={handleChange}
+          />
         </Stack>
       </Popover>
     </Box>

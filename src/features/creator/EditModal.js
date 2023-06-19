@@ -19,9 +19,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback } from "react";
 import { updateProject } from "./creatorSlice";
-import Joi from "joi";
 import * as yup from "yup";
-import { teal } from "@mui/material/colors";
 
 // const CreateProjectSchema = Joi.object({
 //     name: Joi.string().required().messages({

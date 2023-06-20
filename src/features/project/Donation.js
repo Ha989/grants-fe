@@ -53,7 +53,7 @@ function Donation() {
             <TextField
               id="standard-number"
               label="Amount must be greater than 0$"
-              // type="number"
+              type="number"
               InputLabelProps={{
                 shrink: true,
               }}

@@ -21,13 +21,13 @@ function DonateBtn({ project }) {
       justifyContent="space-between"
     >
       <Box>
-        <Typography variant="h3" fontWeight="bolder" color="primary.dark">
+        <Typography variant="h4" fontWeight="bolder" color="primary.dark">
           ${project?.currentRaised.toFixed(2)}
         </Typography>
         <Typography variant="subtitle1" mb={3}>
           Raised
         </Typography>
-        <Typography variant="h4" fontWeight="bolder" color="primary">
+        <Typography variant="h5" fontWeight="bolder" color="primary">
           {project?.totalDonations}
         </Typography>
         <Typography variant="subtitle1" mb={3}>

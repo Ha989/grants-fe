@@ -30,7 +30,10 @@ function Donation() {
   };
 
   const handleOnChange = (e) => {
-    setAmount(e.target.value);
+    const { value } = e.target;
+    const sanitizedValue = value.replace(/[^0-9.]/g, "");
+    const roundedValue = parseFloat(sanitizedValue).toFixed(2);
+    setAmount(roundedValue);
   };
 
   return (
@@ -50,13 +53,16 @@ function Donation() {
             <TextField
               id="standard-number"
               label="Amount must be greater than 0$"
-              type="number"
+              // type="number"
               InputLabelProps={{
                 shrink: true,
               }}
               variant="standard"
               onChange={handleOnChange}
               helperText="0.00$"
+              inputProps={{
+                step: '0.01'
+              }}
             />
           </Box>
 

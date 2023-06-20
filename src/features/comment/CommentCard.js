@@ -21,6 +21,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DeleteComment from "./DeleteComment";
 import EditComment from "./EditComment";
+import useAuth from "../../hooks/useAuth";
 
 const HtmlTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -41,6 +42,7 @@ const CommentCard = ({ comment, projectId }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  const auth = useAuth();
 
   const handleReplyClick = (id) => {
     setParentId(id);
@@ -137,11 +139,13 @@ const CommentCard = ({ comment, projectId }) => {
                   </HtmlTooltip>
                 </Stack>
                 <Box flexGrow={1} />
+                {comment?.author._id === auth?.user?._id && (
                 <Box>
                   <IconButton onClick={handleDialogOpen}>
                     <MoreVertIcon fontSize="medium" />
                   </IconButton>
                 </Box>
+                )}
               </Stack>
               <Typography variant="body2" color="textPrimary" mb={1}>
                 {comment?.content}
@@ -169,6 +173,7 @@ const CommentCard = ({ comment, projectId }) => {
                 </Typography>
               </IconButton>
             </Box>
+            {comment?.author._id === auth?.user?._id && (
             <Popover
               open={openDialog}
               onClose={() => setOpenDialog(false)}
@@ -206,6 +211,7 @@ const CommentCard = ({ comment, projectId }) => {
                 </Stack>
               </DialogContent>
             </Popover>
+            )}
             <EditComment
               comment={comment}
               openEditDialog={openEditDialog}

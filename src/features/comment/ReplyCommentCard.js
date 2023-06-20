@@ -16,14 +16,16 @@ import { useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditComment from "./EditComment";
+import useAuth from "../../hooks/useAuth";
 
 function ReplyCommentCard({ reply, HtmlTooltip, projectId }) {
-
   const [openDialog, setOpenDialog] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
-
+  const auth = useAuth();
+  console.log("auth", auth?.user?._id);
+  console.log("reply", reply?.author)
 
   const handleDialogOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -32,21 +34,21 @@ function ReplyCommentCard({ reply, HtmlTooltip, projectId }) {
 
   const handleEdit = () => {
     setOpenDialog(false);
-    setOpenEditDialog(true)
+    setOpenEditDialog(true);
   };
 
   const editDialogClose = () => {
-    setOpenEditDialog(false)
-  }
+    setOpenEditDialog(false);
+  };
 
   const handleDeleteBtnClick = () => {
     setOpenDialog(false);
-    setOpenDeleteDialog(true)
+    setOpenDeleteDialog(true);
   };
 
   const deleteDialogClose = () => {
-    setOpenDeleteDialog(false)
-  }
+    setOpenDeleteDialog(false);
+  };
   return (
     <>
       <Box
@@ -100,11 +102,13 @@ function ReplyCommentCard({ reply, HtmlTooltip, projectId }) {
             />
           </HtmlTooltip>
           <Box flexGrow={1} />
-          <Box>
-            <IconButton onClick={handleDialogOpen}>
-              <MoreVertIcon fontSize="medium" />
-            </IconButton>
-          </Box>
+          {reply?.author._id === auth?.user?._id && (
+            <Box>
+              <IconButton onClick={handleDialogOpen}>
+                <MoreVertIcon fontSize="medium" />
+              </IconButton>
+            </Box>
+          )}
         </Stack>
         <Typography variant="h7" color="textPrimary" mb={1}>
           {reply?.content}
@@ -121,7 +125,8 @@ function ReplyCommentCard({ reply, HtmlTooltip, projectId }) {
             <img src={reply?.image} alt="reply" />
           </Box>
         )}
-        <Popover
+        {reply?.author._id === auth?.user?._id && (
+          <Popover
             open={openDialog}
             onClose={() => setOpenDialog(false)}
             anchorEl={anchorEl}
@@ -158,8 +163,19 @@ function ReplyCommentCard({ reply, HtmlTooltip, projectId }) {
               </Stack>
             </DialogContent>
           </Popover>
-          <DeleteComment id={reply?._id} openDeleteDialog={openDeleteDialog} deleteDialogClose={deleteDialogClose} projectId={projectId}/>
-          <EditComment comment={reply} openEditDialog={openEditDialog} editDialogClose={editDialogClose} projectId={projectId}/>
+        )}
+        <DeleteComment
+          id={reply?._id}
+          openDeleteDialog={openDeleteDialog}
+          deleteDialogClose={deleteDialogClose}
+          projectId={projectId}
+        />
+        <EditComment
+          comment={reply}
+          openEditDialog={openEditDialog}
+          editDialogClose={editDialogClose}
+          projectId={projectId}
+        />
       </Box>
     </>
   );

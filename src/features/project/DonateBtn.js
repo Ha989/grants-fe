@@ -22,7 +22,7 @@ function DonateBtn({ project }) {
     >
       <Box>
         <Typography variant="h3" fontWeight="bolder" color="primary.dark">
-          ${project?.currentRaised}
+          ${project?.currentRaised.toFixed(2)}
         </Typography>
         <Typography variant="subtitle1" mb={3}>
           Raised

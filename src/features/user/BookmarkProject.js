@@ -3,7 +3,7 @@ import useAuth from "../../hooks/useAuth";
 import { useDispatch, useSelector } from "react-redux";
 import { bookmarkProject, getBookmarkedOfUser } from "./userSlice";
 import { Box, IconButton } from "@mui/material";
-import StarIcon from "@mui/icons-material/Star";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import { useNavigate } from "react-router-dom";
 
 function BookmarkProject({ project }) {
@@ -42,7 +42,7 @@ function BookmarkProject({ project }) {
   return (
     <Box onClick={handleBookmarkClick}>
       <IconButton sx={{ color: starColor }}>
-        <StarIcon />
+        <FavoriteIcon />
       </IconButton>
     </Box>
   );

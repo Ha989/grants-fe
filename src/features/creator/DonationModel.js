@@ -21,7 +21,7 @@ const style = {
   };
 
 
-function DonationModel({ donationId }) {
+function DonationModel({ donationId, handleCloseModal }) {
     const dispatch = useDispatch();
     const donation = useSelector((state) => state.creator.donation);
     
@@ -34,6 +34,7 @@ function DonationModel({ donationId }) {
 
     const handleConfirmDonation = () => {
         dispatch(confirmDonation(donationId));
+        handleCloseModal()
     }
     
   return (

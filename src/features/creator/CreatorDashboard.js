@@ -56,7 +56,7 @@ function CreatorDashboard() {
             Recent Donations
             <Divider />
           </Typography>
-          <RecentDonationsCard projects={projects} />
+          <RecentDonationsCard />
         </Box>
         <Stack
           mt={2}

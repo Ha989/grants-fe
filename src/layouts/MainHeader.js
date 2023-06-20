@@ -98,6 +98,7 @@ function MainHeader() {
 
   const handleLogout = () => {
     auth.logout();
+    handleMenuClose()
   };
 
   const menuId = "primary-search-account-menu";

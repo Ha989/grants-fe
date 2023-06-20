@@ -2,10 +2,20 @@ import { Avatar, Box, Divider, Modal, Typography } from "@mui/material";
 import React from "react";
 import DonationModel from "./DonationModel";
 import { useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getDonationsByCreator } from "./creatorSlice";
 
-function RecentDonationsCard({ projects }) {
+function RecentDonationsCard() {
+  const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState(false);
   const [selectedDonationId, setSelectedDonationId] = useState(null);
+  const donations = useSelector((state) => state.creator.donations);
+  console.log("donations", donations)
+  
+  useEffect(() => {
+    dispatch(getDonationsByCreator())
+  }, [dispatch])
 
   const handleClick = (recentId) => {
     setSelectedDonationId(recentId);
@@ -16,9 +26,9 @@ function RecentDonationsCard({ projects }) {
     setOpenModal(false);
   };
 
-  const flattenedDonations = projects?.flatMap((project) => project.donations);
+  // const flattenedDonations = projects?.flatMap((project) => project.donations);
 
-  const sortedData = flattenedDonations?.sort(
+  const sortedData = [...donations]?.sort(
     (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
   );
 
@@ -93,7 +103,7 @@ function RecentDonationsCard({ projects }) {
       <Modal open={openModal} onClose={handleCloseModal}>
         <DonationModel
           donationId={selectedDonationId}
-          onClose={handleCloseModal}
+          handleCloseModal={handleCloseModal}
         />
       </Modal>
     </div>

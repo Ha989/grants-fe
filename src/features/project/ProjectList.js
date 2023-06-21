@@ -15,11 +15,9 @@ import SortProject from "../../components/SortProject";
 import { useForm } from "react-hook-form";
 import ProjectCard from "./ProjectCard";
 
-// import LoadingScreen from '../../components/LoadingScreen';
-
 function ProjectList() {
   const [page, setPage] = useState(1);
-  // const [limit, setLimit] = useState(6);
+
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("");
@@ -103,7 +101,7 @@ function ProjectList() {
           </Grid>
         ))}
       </Grid>
-      <Stack spacing={2} mt={1} justifyContent="center" alignItems="center">
+      <Stack spacing={2} mt={5} justifyContent="center" alignItems="center">
         <Pagination
           count={totalPage}
           variant="outlined"

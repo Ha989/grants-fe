@@ -37,7 +37,7 @@ function ProjectCard({ project }) {
         <Card
           className={isHovered ? "project-card-hovered" : "project-card"}
           sx={{
-            width: 350,
+            width: 320,
             height: "100%",
             position: "relative",
             overflow: "hidden",
@@ -111,7 +111,7 @@ function ProjectCard({ project }) {
                 color="primary"
                 fontWeight="bolder"
               >
-                ${project?.currentRaised.toFixed(2)} Raised
+                {project?.currentRaised ? `$${project.currentRaised.toFixed(2)} Raised` : `$0 Raised`}
               </Typography>
               <IconButton color="error" size="small">
                 <FavoriteIcon />

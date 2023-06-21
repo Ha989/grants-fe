@@ -51,6 +51,7 @@ function Donation() {
           </Box>
           <Box height={150}>
             <TextField
+              fullWidth
               id="standard-number"
               label="Amount must be greater than 0$"
               type="number"
@@ -60,9 +61,6 @@ function Donation() {
               variant="standard"
               onChange={handleOnChange}
               helperText="0.00$"
-              inputProps={{
-                step: '0.01'
-              }}
             />
           </Box>
 

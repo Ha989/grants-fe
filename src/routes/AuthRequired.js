@@ -13,11 +13,7 @@ function AuthRequired({ children }) {
   if (!isAuthenticated) {
     return <Navigate to="/auth/login" state={{ from: location }} replace />;
   }
-
-  // if (isAuthenticated && !user ) {
-  //   return <Navigate to="creator"/>
-  // }
-
+  
   return children;
 }
 

@@ -35,7 +35,6 @@ function CommentForm({ projectId, parentId, onClose }) {
   } = methods;
 
   const onSubmit = async (data) => {
-    console.log("p", data);
     dispatch(createComment({ projectId, parentId, ...data }));
     reset();
   };

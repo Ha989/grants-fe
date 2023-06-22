@@ -49,14 +49,12 @@ const slice = createSlice({
       state.error = null;
       const bookmark = action.payload.user;
       state.bookmark = bookmark.bookmarked;
-      console.log("bookmark", bookmark.bookmarked);
     },
     getUser(state, action) {
       state.isLoading = false;
       state.error = null;
       state.donation = action.payload.donation;
       state.bookmarked = action.payload.bookmarked;
-      console.log("bookmarked", state.bookmarked)
     },
   },
 });

@@ -13,14 +13,8 @@ import { FormProvider } from "../../components/form";
 import { useForm } from "react-hook-form";
 import FilterBtn from "../../components/FilterBtn";
 
-// const useStyles = makeStyles({
-//   dateText: {
-//     fontWeight: 'bold',
-//     fontSize: '1.5rem',
-//   },
-// });
 
-function UserDonations({ user }) {
+function UserDonations() {
   const dispatch = useDispatch();
   const donations = useSelector((state) => state.user.donation);
   const totalPage = useSelector((state) => state.user.totalPage);

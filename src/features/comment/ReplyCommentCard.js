@@ -24,8 +24,6 @@ function ReplyCommentCard({ reply, HtmlTooltip, projectId }) {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const auth = useAuth();
-  console.log("auth", auth?.user?._id);
-  console.log("reply", reply?.author)
 
   const handleDialogOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -102,7 +100,7 @@ function ReplyCommentCard({ reply, HtmlTooltip, projectId }) {
             />
           </HtmlTooltip>
           <Box flexGrow={1} />
-          {reply?.author._id === auth?.user?._id && (
+          {reply?.author?._id === auth?.user?._id && (
             <Box>
               <IconButton onClick={handleDialogOpen}>
                 <MoreVertIcon fontSize="medium" />
@@ -125,7 +123,7 @@ function ReplyCommentCard({ reply, HtmlTooltip, projectId }) {
             <img src={reply?.image} alt="reply" />
           </Box>
         )}
-        {reply?.author._id === auth?.user?._id && (
+        {reply?.author?._id === auth?.user?._id && (
           <Popover
             open={openDialog}
             onClose={() => setOpenDialog(false)}

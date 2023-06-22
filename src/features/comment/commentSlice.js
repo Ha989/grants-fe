@@ -38,7 +38,7 @@ const slice = createSlice({
       state.isLoading = false;
       state.error = null;
       const { comment } = action.payload;
-      console.log(comment)
+      console.log("comment", comment)
       delete state.comment;
     },
   },

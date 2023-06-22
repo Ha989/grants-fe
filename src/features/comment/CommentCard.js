@@ -225,7 +225,7 @@ const CommentCard = ({ comment, projectId }) => {
               deleteDialogClose={deleteDialogClose}
             />
 
-            {comment?.replies && comment?.replies.length > 0 && (
+            {comment?.replies && (
               <>
                 {comment?.replies.map((reply) => (
                   <ReplyCommentCard

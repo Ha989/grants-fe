@@ -41,14 +41,14 @@ function CreatorDonations() {
       minWidth: 180,
       headerClassName: "header-name",
       headerCellClassName: "header-name",
-      valueGetter: (params) => params.row.userId.name,
+      valueGetter: (params) => params.row.userId?.name,
     },
     {
       field: "userId.email",
       headerName: "Email",
       minWidth: 200,
       headerClassName: "bold-header",
-      valueGetter: (params) => params.row.userId.email,
+      valueGetter: (params) => params.row.userId?.email,
     },
     { field: "amount", headerName: "Amount in $", type: "number", width: 150 },
     {
@@ -62,7 +62,7 @@ function CreatorDonations() {
       field: "projectId.name",
       headerName: "Project",
       width: 180,
-      valueGetter: (params) => params.row.projectId.name,
+      valueGetter: (params) => params.row.projectId?.name,
     },
     {
       field: "isConfirm",

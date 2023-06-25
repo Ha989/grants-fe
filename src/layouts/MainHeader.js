@@ -142,7 +142,7 @@ function MainHeader() {
 
       <MenuItem
         component={RouterLink}
-        to={auth?.creator ? "/creators/account" : "/users/account"}
+        to={creator ? "/creators/account" : "/users/account"}
       >
         <IconButton
           size="large"

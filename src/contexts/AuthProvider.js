@@ -146,22 +146,46 @@ function AuthProvider({ children }) {
     const { creator, user, accessToken } = response.data;
     console.log("response", response.data)
 
+    // if (creator?.role === 'creator') {
+    //   console.log('creator', creator?.role)
+    //   navigate("/creators", { replace: true });
+    //   // setSession(accessToken);
+    // } else if (user?.role === 'user') {
+    //   console.log('user', user?.role)
+    //   navigate("/", { replace: true });
+    //   // setSession(accessToken);
+    // }
+    // setSession(accessToken);
+    // dispatch({
+    //   type: LOGIN_SUCCESS,
+    //   payload: {
+    //     user: user ? user : null,
+    //     creator: creator ? creator : null,
+    //   },
+    // });
     if (creator?.role === 'creator') {
-      console.log('creator', creator?.role)
+      console.log('creator', creator?.role);
       navigate("/creators", { replace: true });
       setSession(accessToken);
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: {
+          user: null,
+          creator,
+        },
+      });
     } else if (user?.role === 'user') {
-      console.log('user', user?.role)
+      console.log('user', user?.role);
       navigate("/", { replace: true });
       setSession(accessToken);
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: {
+          user,
+          creator: null,
+        },
+      });
     }
-    dispatch({
-      type: LOGIN_SUCCESS,
-      payload: {
-        user: user ? user : null,
-        creator: creator ? creator : null,
-      },
-    });
     callback();
   } catch (error) {
       console.log('error', error)

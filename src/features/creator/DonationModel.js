@@ -76,8 +76,7 @@ function DonationModel({ donationId, handleCloseModal }) {
           </Typography>
           <Typography variant='h5' sx={{ mb: 2 }}>
           { donation?.amount} $
-          </Typography>
-          
+          </Typography> 
            
           <Button variant='contained' disabled={isConfirm} onClick={handleConfirmDonation}>
             Confirm

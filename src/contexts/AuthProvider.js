@@ -136,16 +136,22 @@ function AuthProvider({ children }) {
   }, [updatedCreatorProfile, updatedProfile]);
 
   const login = async ({ email, password }, callback) => {
+    try {
+      
+    
     const response = await apiService.post("/auth/login", {
       email,
       password,
     });
     const { creator, user, accessToken } = response.data;
+    console.log("response", response.data)
 
-    if (creator !== null) {
+    if (creator?.role === 'creator') {
+      console.log('creator', creator?.role)
       navigate("/creators", { replace: true });
       setSession(accessToken);
-    } else if (user !== null) {
+    } else if (user?.role === 'user') {
+      console.log('user', user?.role)
       navigate("/", { replace: true });
       setSession(accessToken);
     }
@@ -157,6 +163,9 @@ function AuthProvider({ children }) {
       },
     });
     callback();
+  } catch (error) {
+      console.log('error', error)
+  }
   };
 
   const register = async ({ name, email, password, role }, callback) => {

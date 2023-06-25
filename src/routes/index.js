@@ -39,7 +39,7 @@ function Router() {
           path="/projects/:projectId/donation/:userId"
           element={<Donation />}
         />
-        <Route path="/creators" element={<CreateProject />} />
+          <Route path="/creators" element={<CreateProject />} />
         <Route path="/users/account" element={<UserPanel />} />
       </Route>
       <Route
@@ -48,7 +48,7 @@ function Router() {
             <CreatorLayout />
           </AuthRequired>
         }
-      >
+      > 
         <Route path="/creators/account" element={<CreatorDashboard />} />
         <Route path="/creators/dashboard" element={<CreatorDashboard />} />
         <Route path="/creators/settings" element={<CreatorSettings />} />

@@ -50,7 +50,7 @@ function ReplyCommentCard({ reply, HtmlTooltip, projectId }) {
   return (
     <>
       <Box
-        key={reply._id}
+        key={reply?._id}
         display="flex"
         flexDirection="column"
         alignItems="flex-start"

@@ -17,7 +17,6 @@ import ProjectCard from "./ProjectCard";
 
 function ProjectList() {
   const [page, setPage] = useState(1);
-
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState("");

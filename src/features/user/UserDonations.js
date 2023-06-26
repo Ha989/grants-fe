@@ -95,14 +95,14 @@ function UserDonations() {
                     src={donation?.projectId.logo}
                     alt={donation?.projectId.name}
                   />
-                  <Typography variant="h7">
+                  <Typography variant="h7" >
                     {donation?.projectId.name}
                   </Typography>
                 </Stack>
-                <Typography variant="h7" fontFamily="Arial" color="primary">
+                <Typography variant="h7" fontFamily="Arial" color="primary" >
                   $ {donation?.amount}
                 </Typography>
-                <Typography variant="h7" fontFamily="Arial" color="primary">
+                <Typography variant="h7" fontFamily="Arial" color="primary" >
                   {extractDate(donation?.createdAt)}
                 </Typography>
               </Stack>

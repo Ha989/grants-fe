@@ -13,6 +13,9 @@ function App() {
         </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
+
+    // BrowserRouter
+    // Router
   );
 }
 

@@ -78,18 +78,16 @@ export const getSingleProject = (id) => async (dispatch) => {
 };
 
 export const createDonation =
-  ({ projectId, userId, amount }) =>
+  ({ projectId, userId, amount, status }) =>
   async (dispatch) => {
     try {
       dispatch(slice.actions.startLoading());
       const response = await apiService.post(
         `/projects/${projectId}/donation/${userId}`,
-        { amount }
+        { amount, status }
       );
       dispatch(slice.actions.createDonationSuccess(response.data));
-      toast.success(
-        "Sent donation successfully! Please wait for project owner to confirm!"
-      );
+      
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
       toast.error(error.message);

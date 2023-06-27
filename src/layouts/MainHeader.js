@@ -38,6 +38,7 @@ function MainHeader() {
   const user = auth?.user;
   const creator = auth?.creator;
   const [page, setPage] = useState(1);
+
   const handleChange = (e, value) => {
     setPage(value);
   };
@@ -68,13 +69,17 @@ function MainHeader() {
     }
   }, [dispatch, auth?.user, auth?.creator]);
 
-  useEffect(() => {
-    if (auth?.user || auth?.creator)
-      dispatch(getAllNotificationOfUser({ page }));
-  }, [auth, dispatch, page]);
+  // useEffect(() => {
+  //   if (auth?.user || auth?.creator)
+  //     dispatch(getAllNotificationOfUser({ page }));
+  // }, [auth, dispatch, page]);
 
   const handleDialogOpen = (event) => {
-    dispatch(updateNotification());
+    if (auth?.user || auth?.creator)
+      dispatch(getAllNotificationOfUser({ page }));
+    if (count > 0) {
+      dispatch(updateNotification());
+    }
     setNotificationEl(event.currentTarget);
     setnotifiDialog(true);
   };

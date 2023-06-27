@@ -1,22 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
-import { createDonation, getSingleProject } from "./projectSlice";
+import { useParams } from "react-router-dom";
+import { getSingleProject } from "./projectSlice";
 import { Box, Card, Stack, TextField, Typography } from "@mui/material";
-// import { LoadingButton } from "@mui/lab";
-// import SendIcon from "@mui/icons-material/Send";
-import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { toast } from "react-toastify";
-// import e from "cors";
+import PayPalButton from "./PayPalButton";
+import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 function Donation() {
   const { projectId, userId } = useParams();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [amount, setAmount] = useState(0);
-  // const loading = useSelector((state) => state.project.isLoading);
   const project = useSelector((state) => state.project.currentProject);
-  console.log("amount", amount);
 
   useEffect(() => {
     dispatch(getSingleProject(projectId));
@@ -48,6 +42,7 @@ function Donation() {
                 shrink: true,
               }}
               variant="standard"
+              // value={amount}
               onChange={handleOnChange}
               helperText="0.00$"
             />
@@ -58,51 +53,12 @@ function Donation() {
                 clientId: `${project?.clientID}`,
               }}
             >
-              {amount > 0 && (
-                <PayPalButtons
-                  style={{ layout: "horizontal" }}
-                  createOrder={(data, actions) => {
-                    return actions.order.create({
-                      purchase_units: [
-                        {
-                          amount: {
-                            value: amount,
-                          },
-                        },
-                      ],
-                    });
-                  }}
-                  onApprove={(data, actions) => {
-                    let status = false;
-                    return actions.order.capture().then((details) => {
-                      if (details.status === "COMPLETED") {
-                        status = true;
-                      }
-                      const capturedAmount =
-                        details.purchase_units[0].amount.value;
-                      try {
-                        dispatch(
-                          createDonation({
-                            projectId,
-                            userId,
-                            amount: Number(capturedAmount),
-                            status,
-                          })
-                        );
-                        setTimeout(() => {
-                          navigate("/users/account");
-                        }, 3000);
-                      } catch (error) {
-                        console.log(error);
-                      }
-                      // const name = details.payer.name.given_name;
-                      toast.success(
-                        `Your transaction completed. Thank you for your support!`
-                      );
-                    });
-                  }}
-                />
-              )}
+              <PayPalButton
+                amount={amount}
+                userId={userId}
+                projectId={projectId}
+                project={project}
+              />
             </PayPalScriptProvider>
           )}
         </Card>

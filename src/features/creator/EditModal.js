@@ -20,54 +20,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback } from "react";
 import { updateProject } from "./creatorSlice";
 import * as yup from "yup";
-
-// const CreateProjectSchema = Joi.object({
-//     name: Joi.string().required().messages({
-//       'any.required': 'Name is required',
-//     }),
-//     title: Joi.string().required().max(100).messages({
-//       'any.required': 'Title is required',
-//       'string.max': 'Title must be less than 100 characters',
-//     }),
-//     description: Joi.string().required().messages({
-//       'any.required': 'Description is required',
-//     }),
-//     website: Joi.string().uri().required().messages({
-//       'any.required': 'Website is required',
-//       'string.uri': 'Website must be a valid URL',
-//     }),
-//     logo: Joi.object()
-//       .required()
-//       .custom((value, helpers) => {
-//         if (value && value instanceof File) {
-//           return value;
-//         }
-//         return helpers.error('any.invalid');
-//       })
-//       .messages({
-//         'any.required': 'Logo is required',
-//         'any.invalid': 'Invalid file format',
-//       }),
-//     banner: Joi.object()
-//       .required()
-//       .custom((value, helpers) => {
-//         if (value && value instanceof File) {
-//           return value;
-//         }
-//         return helpers.error('any.invalid');
-//       })
-//       .messages({
-//         'any.required': 'Banner is required',
-//         'any.invalid': 'Invalid file format',
-//       }),
-//     video: Joi.string().uri().required().messages({
-//       'any.required': 'Pitch video is required',
-//       'string.uri': 'Video must be a valid video link',
-//     }),
-//     bankDetail: Joi.string().required().messages({
-//       'any.required': 'Bank Detail is required',
-//     }),
-//   });
+import { Link } from "react-router-dom";
 
 const updateSchema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -86,8 +39,9 @@ function EditModal({ open, handleClose, project }) {
     banner: project?.banner,
     website: project?.website,
     video: project?.video,
-    bankDetail: project?.bankDetail,
+    clientID: project?.clientID,
   };
+  
 
   const [teamMembers, setTeamMembers] = useState([]);
   const newTeamArray = [...(defaultValues?.team || []), ...teamMembers];
@@ -132,7 +86,7 @@ function EditModal({ open, handleClose, project }) {
     logo,
     team,
     video,
-    bankDetail,
+    clientID,
   }) => {
     dispatch(
       updateProject({
@@ -145,7 +99,7 @@ function EditModal({ open, handleClose, project }) {
         logo,
         team: newTeamArray,
         video,
-        bankDetail,
+        clientID,
       })
     );
   };
@@ -314,10 +268,20 @@ function EditModal({ open, handleClose, project }) {
                 />
               </Box>
               <Box mt={5} mb={2}>
+                <Typography variant="subtitle2" mb={1}>
+                  How to get your Paypal clientId? Check out{" "}
+                  <Link
+                    href="https://www.upwork.com/resources/paypal-client-id-secret-key"
+                    target="_blank"
+                  >
+                    here
+                  </Link>{" "}
+                  to get tutorial
+                </Typography>
                 <FTextField
-                  name="bankDetail"
-                  label="Bank Detail"
-                  defaultValue={defaultValues.bankDetail}
+                  name="clientID"
+                  label="Your Paypal clientID"
+                  defaultValue={defaultValues.clientID}
                 />
               </Box>
             </Box>

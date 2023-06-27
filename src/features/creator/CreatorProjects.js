@@ -1,4 +1,4 @@
-import { Box,  Divider, IconButton, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -99,16 +99,22 @@ function CreatorProjects() {
       description: "This column has a value getter and is not sortable.",
       sortable: false,
       width: 90,
-      renderCell: (params) => (
-        <IconButton onClick={() => handleDeleteClick(params)}>
-          <DeleteIcon />
-        </IconButton>
-      ),
+      renderCell: (params) =>
+        projects?.map((project) => {
+          if (project?.currentRaised === 0) {
+            return (
+              <IconButton onClick={() => handleDeleteClick(params)}>
+                <DeleteIcon />
+              </IconButton>
+            );
+          }
+          return null;
+        }),
     },
   ];
 
   return (
-    <Box ml={{ xs: 5, md: 30}}>
+    <Box ml={{ xs: 5, md: 30 }}>
       <Typography variant="h5" color="primary" mb={5}>
         Projects Control
         <Divider />

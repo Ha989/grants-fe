@@ -89,7 +89,7 @@ export const createProject =
     logo,
     banner,
     video,
-    bankDetail,
+    clientID,
   }) =>
   async (dispatch) => {
     dispatch(slice.actions.startLoading());
@@ -107,7 +107,7 @@ export const createProject =
         description,
         team,
         video,
-        bankDetail,
+        clientID,
       };
 
       const response = await apiService.post(
@@ -196,11 +196,11 @@ export const getProjectsByCreator = () => async (dispatch) => {
 
 export const updateProject = ({
   projectId,
-  name, title, description, website, logo, banner, bankDetail, team }
+  name, title, description, website, logo, banner, clientID, team }
 ) => async (dispatch) => {
   dispatch(slice.actions.startLoading());
   try {
-      const data = { name, title, description, website, logo, banner, bankDetail, team }
+      const data = { name, title, description, website, logo, banner, clientID, team }
 
       if (data.logo instanceof File) {
         const logoUrl = await cloudinaryUpload(data.logo);

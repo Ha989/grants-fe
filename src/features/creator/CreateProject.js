@@ -1,13 +1,7 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createProject } from "./creatorSlice";
-import {
-  Box,
-  Button,
-  Divider,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, Stack, Typography, Link } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
@@ -55,7 +49,7 @@ const CreateProjectSchema = yup.object().shape({
     .string()
     .url("Video must be a valid video link")
     .required("Pitch video is required"),
-  bankDetail: yup.string().required("Bank Detail is required"),
+  clientID: yup.string().required("Bank Detail is required"),
 });
 
 function CreateProject() {
@@ -73,7 +67,7 @@ function CreateProject() {
     logo: "",
     banner: "",
     video: "",
-    bankDetail: "",
+    clientID: "",
   };
 
   const [teamMembers, setTeamMembers] = useState([]);
@@ -119,7 +113,7 @@ function CreateProject() {
     logo,
     team,
     video,
-    bankDetail,
+    clientID,
   }) => {
     dispatch(
       createProject({
@@ -132,7 +126,7 @@ function CreateProject() {
         logo,
         team: teamMembers,
         video,
-        bankDetail,
+        clientID,
       })
     );
   };
@@ -267,7 +261,17 @@ function CreateProject() {
             <FTextField name="video" label="Video" />
           </Box>
           <Box mt={5}>
-            <FTextField name="bankDetail" label="Bank Detail" />
+            <Typography variant="subtitle2" mb={1}>
+              How to get your Paypal clientId? Check out {" "}
+              <Link
+                href="https://www.upwork.com/resources/paypal-client-id-secret-key"
+                target="_blank"
+              >
+                here
+              </Link>{" "}
+              to get tutorial
+            </Typography>
+            <FTextField name="clientID" label="Your Paypal clientID" />
           </Box>
         </Box>
         <Box mt={3}>

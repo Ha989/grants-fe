@@ -17,7 +17,7 @@ function Donation() {
   // const loading = useSelector((state) => state.project.isLoading);
   const project = useSelector((state) => state.project.currentProject);
   console.log("amount", amount);
-  
+
   useEffect(() => {
     dispatch(getSingleProject(projectId));
   }, [dispatch, projectId]);
@@ -29,37 +29,37 @@ function Donation() {
 
   return (
     <Stack direction="column" alignItems="center">
-      {project && (
-        <PayPalScriptProvider
-          options={{
-            clientId: `${project?.clientID}`,
-          }}
-        >
-          <Box width={{ xs: "90vw", md: "30vw" }}>
-            <Card sx={{ py: 10, px: 3, textAlign: "center", minWidth: 275 }}>
-              <Box height={100}>
-                <Typography variant="h6">DONATION PAYMENT</Typography>
-                <Typography variant="subtitle2" mb={3}>
-                  Please input the amount you want to donate then click the
-                  payment button when it appear
-                </Typography>
-              </Box>
-              <Box height={150}>
-                <TextField
-                  fullWidth
-                  id="standard-number"
-                  label="Amount must be greater than 0$"
-                  type="number"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  variant="standard"
-                  onChange={handleOnChange}
-                  helperText="0.00$"
-                />
-              </Box>
-
-              { amount > 0 && ( <PayPalButtons
+      <Box width={{ xs: "90vw", md: "30vw" }}>
+        <Card sx={{ py: 10, px: 3, textAlign: "center", minWidth: 275 }}>
+          <Box height={100}>
+            <Typography variant="h6">DONATION PAYMENT</Typography>
+            <Typography variant="subtitle2" mb={3}>
+              Please input the amount you want to donate then click the payment
+              button when it appear
+            </Typography>
+          </Box>
+          <Box height={150}>
+            <TextField
+              fullWidth
+              id="standard-number"
+              label="Amount must be greater than 0$"
+              type="number"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="standard"
+              onChange={handleOnChange}
+              helperText="0.00$"
+            />
+          </Box>
+          {project && (
+            <PayPalScriptProvider
+              options={{
+                clientId: `${project?.clientID}`,
+              }}
+            >
+              {amount > 0 && (
+                <PayPalButtons
                   style={{ layout: "horizontal" }}
                   createOrder={(data, actions) => {
                     return actions.order.create({
@@ -96,15 +96,17 @@ function Donation() {
                         console.log(error);
                       }
                       // const name = details.payer.name.given_name;
-                      toast.success(`Your transaction completed. Thank you for your support!`);
+                      toast.success(
+                        `Your transaction completed. Thank you for your support!`
+                      );
                     });
                   }}
                 />
               )}
-            </Card>
-          </Box>
-        </PayPalScriptProvider>
-      )}
+            </PayPalScriptProvider>
+          )}
+        </Card>
+      </Box>
     </Stack>
   );
 }

@@ -11,7 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
 import WidgetsIcon from "@mui/icons-material/Widgets";
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from "react-router-dom";
 import CategoryIcon from "@mui/icons-material/Category";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import {
@@ -39,12 +39,10 @@ const drawerWidth = 180;
 
 function CreatorPage(props) {
   const auth = useAuth();
-  // const navigate = useNavigate();
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [notificationEl, setNotificationEl] = React.useState(null);
   const [notifiDialog, setnotifiDialog] = useState(false);
-  const creator = auth?.creator;
   const [page, setPage] = useState(1);
   const totalPage = useSelector((state) => state.notification.totalPage);
 
@@ -77,18 +75,22 @@ function CreatorPage(props) {
   }, [dispatch]);
 
   useEffect(() => {
-    if (creator) dispatch(getAllNotificationOfUser({ page }));
-  }, [creator, dispatch, page]);
+    if (auth?.creator) {
+      if (notifiDialog === true) {
+        dispatch(getAllNotificationOfUser({ page }));
+      }
+    }
+  }, [auth?.creator, auth?.user, dispatch, page, notifiDialog]);
+
 
   const handleDialogOpen = (event) => {
-    dispatch(updateNotification());
+    if (count > 0) {
+      dispatch(updateNotification());
+    }
     setNotificationEl(event.currentTarget);
     setnotifiDialog(true);
   };
 
-  // useEffect(() => {
-  //   navigate("/creators/dashboard");
-  // }, []);
 
   const handleDrawerToggle = (route) => {
     setMobileOpen(!mobileOpen);

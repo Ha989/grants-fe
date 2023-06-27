@@ -1,19 +1,11 @@
 import { Box, Container, List, Typography } from "@mui/material";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import { useParams } from "react-router-dom";
-import { getSingleProject } from "../project/projectSlice";
 import CommentCard from "./CommentCard";
 import CommentForm from "./CommentForm";
 
-function Discussion() {
+function Discussion({ project }) {
   const { id } = useParams();
-  const dispatch = useDispatch();
-  const project = useSelector((state) => state.project.currentProject);
-
-  useEffect(() => {
-    dispatch(getSingleProject(id));
-  }, [dispatch, id]);
 
   return (
     <Container >

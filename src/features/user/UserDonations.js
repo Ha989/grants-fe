@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { getDonationsOfUser } from "./userSlice";
-// import { Container, Divider, Stack, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Container,
@@ -20,8 +19,6 @@ function UserDonations() {
   const totalPage = useSelector((state) => state.user.totalPage);
   const [page, setPage] = useState("1");
   const [status, setStatus] = useState("");
-
-
 
   const handleChange = (e, value) => {
     setPage(value);

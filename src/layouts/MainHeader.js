@@ -69,14 +69,16 @@ function MainHeader() {
     }
   }, [dispatch, auth?.user, auth?.creator]);
 
-  // useEffect(() => {
-  //   if (auth?.user || auth?.creator)
-  //     dispatch(getAllNotificationOfUser({ page }));
-  // }, [auth, dispatch, page]);
+
+  useEffect(() => {
+    if (auth?.user || auth?.creator) {
+      if (notifiDialog === true) {
+        dispatch(getAllNotificationOfUser({ page }));
+      }
+    }
+  }, [auth?.creator, auth?.user, dispatch, page, notifiDialog]);
 
   const handleDialogOpen = (event) => {
-    if (auth?.user || auth?.creator)
-      dispatch(getAllNotificationOfUser({ page }));
     if (count > 0) {
       dispatch(updateNotification());
     }

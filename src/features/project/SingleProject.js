@@ -44,11 +44,11 @@ function SingleProject() {
   const PROJECT_TAB = [
     {
       value: "pitch",
-      component: <Pitch />,
+      component: <Pitch project={project}/>,
     },
     {
       value: "discussion",
-      component: <Discussion />,
+      component: <Discussion project={project}/>,
     },
   ];
 

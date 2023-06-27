@@ -10,15 +10,25 @@ function PayPalButton({ amount, projectId, userId }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [updatedAmount, setUpdatedAmount] = useState(amount);
-  
+  const [buttonRendered, setButtonRendered] = useState(false);
 
   useEffect(() => {
     setUpdatedAmount(amount);
+    setButtonRendered(false);
   }, [amount]);
+
+
+  useEffect(() => {
+    if (updatedAmount > 0 && updatedAmount === amount) {
+      setButtonRendered(true);
+    } else {
+      setButtonRendered(false);
+    }
+  }, [updatedAmount, amount]);
 
   return (
     <>
-      {updatedAmount > 0 && updatedAmount === amount && (
+      {buttonRendered && (
         <PayPalButtons
           style={{ layout: "horizontal" }}
           createOrder={(data, actions) => {

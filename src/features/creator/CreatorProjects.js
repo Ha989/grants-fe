@@ -84,7 +84,7 @@ function CreatorProjects() {
     {
       field: "Edit",
       headerName: "Edit",
-      description: "This column has a value getter and is not sortable.",
+      // description: "This column has a value getter and is not sortable.",
       sortable: false,
       width: 90,
       renderCell: (params) => (
@@ -96,7 +96,7 @@ function CreatorProjects() {
     {
       field: "delete",
       headerName: "Delete",
-      description: "This column has a value getter and is not sortable.",
+      description: "You only can delete your project when there is $0 money raised",
       sortable: false,
       width: 90,
       renderCell: (params) =>

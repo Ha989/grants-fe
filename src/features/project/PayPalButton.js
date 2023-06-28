@@ -17,7 +17,6 @@ function PayPalButton({ amount, projectId, userId }) {
     setButtonRendered(false);
   }, [amount]);
 
-
   useEffect(() => {
     if (updatedAmount > 0 && updatedAmount === amount) {
       setButtonRendered(true);

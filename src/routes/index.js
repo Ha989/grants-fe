@@ -11,7 +11,6 @@ import AuthRequired from "./AuthRequired";
 import VerificationPage from "../pages/VerificationPage";
 import ProjectList from "../features/project/ProjectList";
 import SingleProject from "../features/project/SingleProject";
-import Donation from "../features/project/Donation";
 import UserPanel from "../features/user/UserPanel";
 import CreateProject from "../features/creator/CreateProject";
 import CreatorDashboard from "../features/creator/CreatorDashboard";
@@ -35,11 +34,7 @@ function Router() {
           </AuthRequired>
         }
       >
-        <Route
-          path="/projects/:projectId/donation/:userId"
-          element={<Donation />}
-        />
-          <Route path="/creators" element={<CreateProject />} />
+        <Route path="/creators" element={<CreateProject />} />
         <Route path="/users/account" element={<UserPanel />} />
       </Route>
       <Route
@@ -48,7 +43,7 @@ function Router() {
             <CreatorLayout />
           </AuthRequired>
         }
-      > 
+      >
         <Route path="/creators/account" element={<CreatorDashboard />} />
         <Route path="/creators/dashboard" element={<CreatorDashboard />} />
         <Route path="/creators/settings" element={<CreatorSettings />} />

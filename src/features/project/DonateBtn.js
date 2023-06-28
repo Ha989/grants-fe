@@ -5,7 +5,7 @@ import Donate from "./Donate";
 
 function DonateBtn({ project }) {
   const auth = useAuth();
-  const userId = auth?.user._id;
+  const userId = auth?.user?._id;
 
   return (
     <Stack

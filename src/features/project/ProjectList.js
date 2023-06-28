@@ -14,6 +14,7 @@ import SearchInput from "../../components/SearchInput";
 import SortProject from "../../components/SortProject";
 import { useForm } from "react-hook-form";
 import ProjectCard from "./ProjectCard";
+import LoadingScreen from "../../components/LoadingScreen";
 
 function ProjectList() {
   const [page, setPage] = useState(1);
@@ -88,26 +89,32 @@ function ProjectList() {
           </FormProvider>
         </Box>
       </Stack>
-      <Grid
-        container
-        direction="row"
-        spacing={{ xs: 2, md: 3 }}
-        columns={{ xs: 12, sm: 8, md: 12 }}
-      >
-        {projects?.map((project, index) => (
-          <Grid item xs={12} sm={4} md={4} key={index}>
-            <ProjectCard key={project._id} project={project} />
+      {projects ? (
+        <>
+          <Grid
+            container
+            direction="row"
+            spacing={{ xs: 2, md: 3 }}
+            columns={{ xs: 12, sm: 8, md: 12 }}
+          >
+            {projects?.map((project, index) => (
+              <Grid item xs={12} sm={4} md={4} key={index}>
+                <ProjectCard key={project._id} project={project} />
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-      <Stack spacing={2} mt={5} justifyContent="center" alignItems="center">
-        <Pagination
-          count={totalPage}
-          variant="outlined"
-          shape="rounded"
-          onChange={handleChange}
-        />
-      </Stack>
+          <Stack spacing={2} mt={5} justifyContent="center" alignItems="center">
+            <Pagination
+              count={totalPage}
+              variant="outlined"
+              shape="rounded"
+              onChange={handleChange}
+            />
+          </Stack>
+        </>
+      ) : (
+        <LoadingScreen />
+      )}
     </Container>
   );
 }

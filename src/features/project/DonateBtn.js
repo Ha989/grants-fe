@@ -6,7 +6,7 @@ import Donate from "./Donate";
 function DonateBtn({ project }) {
   const auth = useAuth();
   const userId = auth?.user?._id;
-
+  
   return (
     <Stack
       width={{ xs: "100%", md: "25%" }}

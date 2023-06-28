@@ -12,6 +12,7 @@ import { Box, TextField } from "@mui/material";
 import { useState } from "react";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import PayPalButton from "./PayPalButton";
+import { useNavigate } from "react-router-dom";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -54,6 +55,7 @@ BootstrapDialogTitle.propTypes = {
 function Donate({ project, userId }) {
   const [open, setOpen] = React.useState(false);
   const [amount, setAmount] = useState(0);
+  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -67,16 +69,25 @@ function Donate({ project, userId }) {
     setAmount(value);
   };
 
+  const handleDonate = () => {
+    if (!userId) {
+      navigate("/auth/login")
+    }
+  }
+
   return (
     <div>
+        <Box onClick={handleClickOpen}>
       <Button
         size="large"
         variant="contained"
-        onClick={handleClickOpen}
         fullWidth
+        onClick={handleDonate}
+        
       >
         DONATE
       </Button>
+      </Box>
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"

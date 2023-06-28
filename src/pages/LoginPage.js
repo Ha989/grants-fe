@@ -47,7 +47,6 @@ function LoginPage() {
 
     try {
        await auth.login({ email, password }, () => {
-
      });
     
     } catch (error) {

@@ -18,7 +18,7 @@ function UserDonations() {
   const donations = useSelector((state) => state.user.donation);
   const totalPage = useSelector((state) => state.user.totalPage);
   const [page, setPage] = useState("1");
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState("all");
 
   const handleChange = (e, value) => {
     setPage(value);

@@ -3,7 +3,6 @@ import apiService from "../app/apiService";
 import isValidToken from "../utils/jwt";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../features/user/userSlice";
 
 const initialState = {
   isInitialized: false,
@@ -99,10 +98,10 @@ function AuthProvider({ children }) {
               type: INITIALIZE,
               payload: { isAuthenticated: true, user: userResponse.data },
             });
-            const { bookmarked, updatedProfile, bookmark, donation } = user;
-            dispatchRedux(
-              getUser({ bookmarked, updatedProfile, bookmark, donation })
-            );
+            // const { bookmarked, updatedProfile, bookmark, donation } = user;
+            // dispatchRedux(
+            //   getUser({ bookmarked, updatedProfile, bookmark, donation })
+            // );
           } else if (creator) {
             const creatorResponse = await apiService.get("/creators/me");
             dispatch({
@@ -137,8 +136,6 @@ function AuthProvider({ children }) {
 
   const login = async ({ email, password }, callback) => {
     try {
-      
-    
     const response = await apiService.post("/auth/login", {
       email,
       password,

@@ -6,11 +6,12 @@ import LoadingScreen from "../components/LoadingScreen";
 
 function VerificationPage() {
   const param = useParams();
+  console.log("id", param)
   const [validUrl, setValidUrl] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const url = `https://main-grants-2023.netlify.app/auth/${param.id}/verify/${param.code}`;
+    const url = `https://grants-production.up.railway.app/auth/${param.id}/verify/${param.code}`;
     setValidUrl(url);
     const verifyEmail = async () => {
       try {

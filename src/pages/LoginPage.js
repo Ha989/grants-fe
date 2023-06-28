@@ -23,8 +23,6 @@ const defaultValues = {
   remember: true
 }
 
-
-
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const auth = useAuth();
@@ -43,15 +41,12 @@ function LoginPage() {
 
   const onSubmit = async (data) => {
     let { email, password } = data;
-    
-
+  
     try {
-       await auth.login({ email, password }, () => {
-     });
-    
+      await auth.login({ email, password });
     } catch (error) {
       reset();
-      setError("responseError", error);
+      setError("responseError", { message: error.message });
     }
   };
 

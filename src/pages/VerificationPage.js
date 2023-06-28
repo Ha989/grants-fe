@@ -6,7 +6,6 @@ import LoadingScreen from "../components/LoadingScreen";
 
 function VerificationPage() {
   const param = useParams();
-  console.log("id", param)
   const [validUrl, setValidUrl] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 

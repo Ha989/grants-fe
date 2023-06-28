@@ -2,7 +2,7 @@ import { createContext, useReducer, useEffect } from "react";
 import apiService from "../app/apiService";
 import isValidToken from "../utils/jwt";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const initialState = {
   isInitialized: false,
@@ -80,7 +80,6 @@ function AuthProvider({ children }) {
   const updatedCreatorProfile = useSelector(
     (state) => state.creator.updatedCreatorProfile
   );
-  const dispatchRedux = useDispatch();
 
   useEffect(() => {
     const initialize = async () => {
@@ -98,10 +97,6 @@ function AuthProvider({ children }) {
               type: INITIALIZE,
               payload: { isAuthenticated: true, user: userResponse.data },
             });
-            // const { bookmarked, updatedProfile, bookmark, donation } = user;
-            // dispatchRedux(
-            //   getUser({ bookmarked, updatedProfile, bookmark, donation })
-            // );
           } else if (creator) {
             const creatorResponse = await apiService.get("/creators/me");
             dispatch({
@@ -125,7 +120,7 @@ function AuthProvider({ children }) {
       }
     };
     initialize();
-  }, [dispatchRedux]);
+  }, []);
 
   useEffect(() => {
     if (updatedProfile)
@@ -134,6 +129,8 @@ function AuthProvider({ children }) {
       dispatch({ type: UPDATED_PROFILE, payload: updatedCreatorProfile });
   }, [updatedCreatorProfile, updatedProfile]);
 
+
+
   const login = async ({ email, password }, callback) => {
     try {
     const response = await apiService.post("/auth/login", {
@@ -141,25 +138,6 @@ function AuthProvider({ children }) {
       password,
     });
     const { creator, user, accessToken } = response.data;
-    console.log("response", response.data)
-
-    // if (creator?.role === 'creator') {
-    //   console.log('creator', creator?.role)
-    //   navigate("/creators", { replace: true });
-    //   // setSession(accessToken);
-    // } else if (user?.role === 'user') {
-    //   console.log('user', user?.role)
-    //   navigate("/", { replace: true });
-    //   // setSession(accessToken);
-    // }
-    // setSession(accessToken);
-    // dispatch({
-    //   type: LOGIN_SUCCESS,
-    //   payload: {
-    //     user: user ? user : null,
-    //     creator: creator ? creator : null,
-    //   },
-    // });
     if (creator?.role === 'creator') {
       console.log('creator', creator?.role);
       navigate("/creators", { replace: true });
@@ -172,7 +150,6 @@ function AuthProvider({ children }) {
         },
       });
     } else if (user?.role === 'user') {
-      console.log('user', user?.role);
       navigate("/", { replace: true });
       setSession(accessToken);
       dispatch({
@@ -185,9 +162,8 @@ function AuthProvider({ children }) {
     }
     callback();
   } catch (error) {
-      console.log('error', error)
-  }
-  };
+      throw new Error(error.message)
+  }};
 
   const register = async ({ name, email, password, role }, callback) => {
     const response = await apiService.post("/auth/register", {

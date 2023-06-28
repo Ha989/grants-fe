@@ -43,7 +43,7 @@ function TotalCalculateCard({ projects }) {
           Total Revenue{" "}
         </Typography>
         <Typography variant="h4" color="primary">
-          $ {calculateTotalRevenue(projects)}
+          $ {calculateTotalRevenue(projects).toFixed(2)}
         </Typography>
       </Box>
       <Box

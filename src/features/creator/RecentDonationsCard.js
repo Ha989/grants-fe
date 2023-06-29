@@ -11,7 +11,6 @@ function RecentDonationsCard() {
   const [openModal, setOpenModal] = useState(false);
   const [selectedDonationId, setSelectedDonationId] = useState(null);
   const donations = useSelector((state) => state.creator.donations);
-  console.log("donations", donations)
   
   useEffect(() => {
     dispatch(getDonationsByCreator())

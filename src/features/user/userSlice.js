@@ -11,6 +11,7 @@ const initialState = {
   bookmarked: [],
   updatedProfile: null,
   bookmark: [],
+  user: {}
 };
 
 const slice = createSlice({
@@ -36,7 +37,6 @@ const slice = createSlice({
       state.error = null;
       const bookmarked = action.payload.bookmarkedProjects;
       state.bookmarked = bookmarked;
-      console.log("userBo", bookmarked);
     },
     updateUserProfileSuccess(state, action) {
       state.isLoading = false;
@@ -50,14 +50,25 @@ const slice = createSlice({
       const bookmark = action.payload.user;
       state.bookmark = bookmark.bookmarked;
     },
-    // getUser(state, action) {
-    //   state.isLoading = false;
-    //   state.error = null;
-    //   state.donation = action.payload.donation;
-    //   state.bookmarked = action.payload.bookmarked;
-    // },
+    getUserSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const user = action.payload;
+      state.user = user
+    }
   },
 });
+
+export const getUser = () =>  async (dispatch) => {
+    dispatch(slice.actions.startLoading());
+    try {
+      const response = await apiService.get("/users/me");
+      dispatch(slice.actions.getUserSuccess(response.data))
+    } catch (error) {
+      dispatch(slice.actions.hasError(error.message));
+      // toast.error(error.message);
+    }
+  }
 
 export const getDonationsOfUser =
   ({ limit = DONATIONS_LIMIT_PER_PAGE, page, status }) =>
@@ -72,7 +83,7 @@ export const getDonationsOfUser =
       dispatch(slice.actions.getDonationsOfUserSuccess(response.data));
     } catch (error) {
       dispatch(slice.actions.hasError(error.message));
-      toast.error(error.message);
+      // toast.error(error.message);
     }
   };
 

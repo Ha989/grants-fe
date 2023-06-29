@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Stack, Tab, Tabs } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import UserDonations from "./UserDonations";
@@ -7,6 +7,9 @@ import UserSetting from "./UserSetting";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "./userSlice";
+import { useNavigate } from "react-router-dom";
 
 const TabWrapperStyle = styled("div")(({ theme }) => ({
   display: "flex",
@@ -26,11 +29,35 @@ const TabWrapperStyle = styled("div")(({ theme }) => ({
 
 function UserPanel() {
   const [currentTab, setCurrentTab] = useState("donations");
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  console.log("user", user)
 
   const handleChangeTab = (newValue) => {
     setCurrentTab(newValue);
   };
 
+  useEffect(() => {
+    dispatch(getUser())
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setIsLoading(false);
+        console.error("Error fetching user:", error);
+      });
+  }, [dispatch]);
+  
+  useEffect(() => {
+    if (!isLoading && user && user.role !== "user") {
+      navigate("/");
+    }
+  }, [navigate, user, isLoading]);
+  
+  
+  
   const USER_TAB = [
     {
       value: "donations",

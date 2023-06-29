@@ -15,6 +15,9 @@ import PayPalButton from "./PayPalButton";
 import { useNavigate } from "react-router-dom";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+  "& .MuiDialog-paper": {
+    height: "500px", 
+  },
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
   },
@@ -77,7 +80,7 @@ function Donate({ project, userId }) {
 
   return (
     <div>
-        <Box onClick={handleClickOpen}>
+      <Box onClick={handleClickOpen}>
       <Button
         size="large"
         variant="contained"

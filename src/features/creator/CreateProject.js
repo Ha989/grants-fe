@@ -1,17 +1,18 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createProject } from "./creatorSlice";
+import { createProject, getCreator } from "./creatorSlice";
 import { Box, Button, Divider, Stack, Typography, Link } from "@mui/material";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
-import useAuth from "../../hooks/useAuth";
 import FUpLoadAvatar from "../../components/form/FUpLoadAvatar";
 import FUpLoadImage from "../../components/form/FUpLoadImage";
 import { fData } from "../../utils/numberFormat";
 import { FTextField, FormProvider } from "../../components/form";
 import { LoadingButton } from "@mui/lab";
 import { useState } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const CreateProjectSchema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -52,11 +53,15 @@ const CreateProjectSchema = yup.object().shape({
   clientID: yup.string().required("Bank Detail is required"),
 });
 
+
+
+
 function CreateProject() {
-  const auth = useAuth();
-  const creator = auth?.creator;
   const dispatch = useDispatch();
   const isLoading = useSelector((state) => state.creator.isLoading);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const creator = useSelector((state) => state.creator.creator);
 
   const defaultValues = {
     name: "",
@@ -91,6 +96,23 @@ function CreateProject() {
       return updatedMembers;
     });
   };
+
+  useEffect(() => {
+    dispatch(getCreator())
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error("Error fetching user:", error);
+      });
+  }, [dispatch]);
+  
+  useEffect(() => {
+    if (!loading && creator && creator.role !== "creator") {
+      navigate("/");
+    }
+  }, [navigate, creator, loading]);
 
   const methods = useForm({
     resolver: yupResolver(CreateProjectSchema),
@@ -163,7 +185,7 @@ function CreateProject() {
       flexDirection="column"
       justifyContent="center"
       alignItems="center"
-      minHeight="100vh" // Adjust the height as needed
+      minHeight="100vh"
     >
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Typography

@@ -43,7 +43,7 @@ function Router() {
             <CreatorLayout />
           </AuthRequired>
         }
-      >
+      > 
         <Route path="/creators/account" element={<CreatorDashboard />} />
         <Route path="/creators/dashboard" element={<CreatorDashboard />} />
         <Route path="/creators/settings" element={<CreatorSettings />} />

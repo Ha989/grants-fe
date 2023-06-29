@@ -35,7 +35,7 @@ const HtmlTooltip = styled(({ className, ...props }) => (
   },
 }));
 
-const CommentCard = ({ comment, projectId }) => {
+export default function CommentCard ({ comment, projectId, html}) {
   const [parentId, setParentId] = useState(null);
   const [open, setOpen] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -76,9 +76,10 @@ const CommentCard = ({ comment, projectId }) => {
     setOpenDeleteDialog(false);
   };
 
+
   return (
     <>
-      <Box backgroundColor="#f8f9fa" border="1px solid #adb5bd" mt={10}>
+      <Box backgroundColor="#f8f9fa" border="1px solid #adb5bd" mt={5}>
         {comment && (
           <Box>
             <Box
@@ -127,6 +128,7 @@ const CommentCard = ({ comment, projectId }) => {
                   >
                     <ListItemText
                       primary={
+          
                         <Typography
                           variant="h7"
                           color="primary"
@@ -134,6 +136,7 @@ const CommentCard = ({ comment, projectId }) => {
                         >
                           {comment?.author?.name}
                         </Typography>
+                        
                       }
                     />
                   </HtmlTooltip>
@@ -265,4 +268,3 @@ const CommentCard = ({ comment, projectId }) => {
   );
 };
 
-export default CommentCard;

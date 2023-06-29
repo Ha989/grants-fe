@@ -16,9 +16,14 @@ import FilterBtn from "../../components/FilterBtn";
 function UserDonations() {
   const dispatch = useDispatch();
   const donations = useSelector((state) => state.user.donation);
+  console.log("donations", donations)
   const totalPage = useSelector((state) => state.user.totalPage);
   const [page, setPage] = useState("1");
   const [status, setStatus] = useState("all");
+
+  useEffect(() => {
+    
+  })
 
   const handleChange = (e, value) => {
     setPage(value);

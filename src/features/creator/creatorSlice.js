@@ -6,6 +6,7 @@ import { cloudinaryUpload } from "../../utils/cloudinary";
 const initialState = {
   isLoading: false,
   error: null,
+  creator: {},
   donations: [],
   donation: {},
   updatedCreatorProfile: null,
@@ -75,8 +76,26 @@ const slice = createSlice({
         (projectId) => projectId !== action.payload.projectId
       );
     },
+    getUserSuccess(state, action) {
+      state.isLoading = false;
+      state.error = null;
+      const creator = action.payload;
+      state.creator = creator
+    }
   },
 });
+
+
+export const getCreator = () =>  async (dispatch) => {
+  dispatch(slice.actions.startLoading());
+  try {
+    const response = await apiService.get("/creators/me");
+    dispatch(slice.actions.getUserSuccess(response.data))
+  } catch (error) {
+    dispatch(slice.actions.hasError(error.message));
+    // toast.error(error.message);
+  }
+}
 
 export const createProject =
   ({

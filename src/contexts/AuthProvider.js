@@ -1,4 +1,4 @@
-import { createContext, useReducer, useEffect } from "react";
+import { createContext, useReducer, useEffect} from "react";
 import apiService from "../app/apiService";
 import isValidToken from "../utils/jwt";
 import { useNavigate } from "react-router-dom";
@@ -85,29 +85,30 @@ function AuthProvider({ children }) {
     const initialize = async () => {
       try {
         const accessToken = window.localStorage.getItem("accessToken");
-
+        setSession(accessToken);
         if (accessToken && isValidToken(accessToken)) {
-          setSession(accessToken);
           const response = await apiService.get("/auth/me");
 
           const { creator, user } = response.data;
+
           if (user) {
             const userResponse = await apiService.get("/users/me");
             dispatch({
               type: INITIALIZE,
-              payload: { isAuthenticated: true, user: userResponse.data },
+              payload: {
+                isAuthenticated: true,
+                user: userResponse.data,
+              },
             });
-          } else if (creator) {
+          } 
+          if (creator) {
             const creatorResponse = await apiService.get("/creators/me");
             dispatch({
               type: INITIALIZE,
-              payload: { isAuthenticated: true, creator: creatorResponse.data },
-            });
-          } else {
-            setSession(null);
-            dispatch({
-              type: INITIALIZE,
-              payload: { isAuthenticated: false, user: null, creator: null },
+              payload: {
+                isAuthenticated: true,
+                creator: creatorResponse.data,
+              },
             });
           }
         }
@@ -120,7 +121,7 @@ function AuthProvider({ children }) {
       }
     };
     initialize();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     if (updatedProfile)
@@ -129,41 +130,40 @@ function AuthProvider({ children }) {
       dispatch({ type: UPDATED_PROFILE, payload: updatedCreatorProfile });
   }, [updatedCreatorProfile, updatedProfile]);
 
-
-
   const login = async ({ email, password }, callback) => {
     try {
-    const response = await apiService.post("/auth/login", {
-      email,
-      password,
-    });
-    const { creator, user, accessToken } = response.data;
-    if (creator?.role === 'creator') {
-      console.log('creator', creator?.role);
-      navigate("/creators", { replace: true });
-      setSession(accessToken);
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: {
-          user: null,
-          creator,
-        },
+      const response = await apiService.post("/auth/login", {
+        email,
+        password,
       });
-    } else if (user?.role === 'user') {
-      navigate("/", { replace: true });
-      setSession(accessToken);
-      dispatch({
-        type: LOGIN_SUCCESS,
-        payload: {
-          user,
-          creator: null,
-        },
-      });
+      const { creator, user, accessToken } = response.data;
+      if (creator?.role === "creator") {
+        navigate("/creators", { replace: true });
+        setSession(accessToken);
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: {
+            user: null,
+            creator,
+          },
+        });
+      }
+      if (user?.role === "user") {
+        navigate("/", { replace: true });
+        setSession(accessToken);
+        dispatch({
+          type: LOGIN_SUCCESS,
+          payload: {
+            user,
+            creator: null,
+          },
+        });
+      }
+      callback();
+    } catch (error) {
+      throw new Error(error.message);
     }
-    callback();
-  } catch (error) {
-      throw new Error(error.message)
-  }};
+  };
 
   const register = async ({ name, email, password, role }, callback) => {
     const response = await apiService.post("/auth/register", {

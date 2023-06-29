@@ -11,7 +11,7 @@ import MenuItem from "@mui/material/MenuItem";
 import HomeIcon from "@mui/icons-material/Home";
 import LogoutIcon from "@mui/icons-material/Logout";
 import WidgetsIcon from "@mui/icons-material/Widgets";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import CategoryIcon from "@mui/icons-material/Category";
 import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
 import {
@@ -35,6 +35,7 @@ import {
   getAllNotificationOfUser,
   updateNotification,
 } from "../notification/notificationSlice";
+import { getCreator } from "./creatorSlice";
 const drawerWidth = 180;
 
 function CreatorPage(props) {
@@ -45,12 +46,32 @@ function CreatorPage(props) {
   const [notifiDialog, setnotifiDialog] = useState(false);
   const [page, setPage] = useState(1);
   const totalPage = useSelector((state) => state.notification.totalPage);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const creator = useSelector((state) => state.creator.creator);
 
   const dispatch = useDispatch();
   const notifications = useSelector(
     (state) => state.notification.notifications
   );
+  
 
+  useEffect(() => {
+    dispatch(getCreator())
+      .then(() => {
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.error("Error fetching user:", error);
+      });
+  }, [dispatch]);
+  
+  useEffect(() => {
+    if (!loading && creator && creator.role !== "creator") {
+      navigate("/");
+    }
+  }, [navigate, creator, loading]);
   const handleChange = (e, value) => {
     setPage(value);
   };
@@ -82,7 +103,7 @@ function CreatorPage(props) {
     }
   }, [auth?.creator, auth?.user, dispatch, page, notifiDialog]);
 
-
+  
   const handleDialogOpen = (event) => {
     if (count > 0) {
       dispatch(updateNotification());

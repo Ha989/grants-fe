@@ -44,7 +44,6 @@ export const getAllNotificationOfUser = ({ limit = 10, page }) => async (dispatc
     dispatch(slice.actions.getNotificationSuccess(response.data));
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
-    toast.error(error.message);
   }
 };
 
@@ -55,7 +54,6 @@ export const updateNotification = () => async (dispatch) => {
     console.log(response.data)
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
-    toast.error(error.message);
   }
 }
 
@@ -66,7 +64,6 @@ export const countNewNotifications = () => async (dispatch) => {
     dispatch(slice.actions.countNewNotificationSuccess(response.data))
   } catch (error) {
     dispatch(slice.actions.hasError(error.message));
-    toast.error(error.message);
   }
 }
 

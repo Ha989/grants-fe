@@ -137,30 +137,22 @@ function AuthProvider({ children }) {
         password,
       });
       const { creator, user, accessToken } = response.data;
-      if (creator?.role === "creator") {
+      if (creator !== null) {
         navigate("/creators", { replace: true });
-        setSession(accessToken);
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: {
-            user: null,
-            creator,
-          },
-        });
-      }
-      if (user?.role === "user") {
+      } else if (user !== null) {
         navigate("/", { replace: true });
-        setSession(accessToken);
-        dispatch({
-          type: LOGIN_SUCCESS,
-          payload: {
-            user,
-            creator: null,
-          },
-        });
       }
+      setSession(accessToken);
+      dispatch({
+        type: LOGIN_SUCCESS,
+        payload: {
+          user: user ? user : null,
+          creator: creator ? creator : null,
+        },
+      });
       callback();
     } catch (error) {
+      console.log("error", error)
       throw new Error(error.message);
     }
   };

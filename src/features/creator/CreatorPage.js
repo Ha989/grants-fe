@@ -22,7 +22,6 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import useAuth from "../../hooks/useAuth";
 import SettingsIcon from "@mui/icons-material/Settings";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Logo from "../../components/Logo";
@@ -36,6 +35,7 @@ import {
   updateNotification,
 } from "../notification/notificationSlice";
 import { getCreator } from "./creatorSlice";
+import useAuth from "../../hooks/useAuth";
 const drawerWidth = 180;
 
 function CreatorPage(props) {
@@ -68,10 +68,11 @@ function CreatorPage(props) {
   }, [dispatch]);
   
   useEffect(() => {
-    if (!loading && creator && creator.role !== "creator") {
+    if (!loading && creator.role !== "creator") {
       navigate("/");
     }
   }, [navigate, creator, loading]);
+
   const handleChange = (e, value) => {
     setPage(value);
   };
@@ -79,29 +80,33 @@ function CreatorPage(props) {
   const count = useSelector((state) => state.notification.count);
 
   useEffect(() => {
-    const fetchNewNotifications = async () => {
-      try {
-        dispatch(countNewNotifications());
-      } catch (error) {
-        console.error("Error fetching new notifications count:", error);
-      }
-    };
-    setTimeout(async () => {
-      await fetchNewNotifications();
-    }, 60000); // 1 minute
-
-    return () => {
-      clearTimeout(fetchNewNotifications);
-    };
-  }, [dispatch]);
+    if (creator) {
+      const fetchNewNotifications = async () => {
+        try {
+          dispatch(countNewNotifications());
+        } catch (error) {
+          console.error("Error fetching new notifications count:", error);
+        }
+      };
+  
+      const timeoutId = setInterval(async () => {
+        await fetchNewNotifications();
+      }, 60000); // 1 minute
+  
+      return () => {
+        clearInterval(timeoutId);
+      };
+    }
+  }, [dispatch, creator]);
+  
 
   useEffect(() => {
-    if (auth?.creator) {
+    if (creator) {
       if (notifiDialog === true) {
         dispatch(getAllNotificationOfUser({ page }));
       }
     }
-  }, [auth?.creator, auth?.user, dispatch, page, notifiDialog]);
+  }, [creator, dispatch, page, notifiDialog]);
 
   
   const handleDialogOpen = (event) => {

@@ -59,15 +59,17 @@ function MainHeader() {
           console.error("Error fetching new notifications count:", error);
         }
       };
-      setTimeout(async () => {
+  
+      const timeoutId = setInterval(async () => {
         await fetchNewNotifications();
       }, 60000); // 1 minute
-
+  
       return () => {
-        clearTimeout(fetchNewNotifications);
+        clearInterval(timeoutId);
       };
     }
   }, [dispatch, auth?.user, auth?.creator]);
+  
 
 
   useEffect(() => {

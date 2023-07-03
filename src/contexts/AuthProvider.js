@@ -150,7 +150,7 @@ function AuthProvider({ children }) {
           creator: creator ? creator : null,
         },
       });
-      callback();
+      // callback();
     } catch (error) {
       console.log("error", error)
       throw new Error(error.message);

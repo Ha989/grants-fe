@@ -42,7 +42,7 @@ function UserPanel() {
   useEffect(() => {
     dispatch(getUser())
       .then(() => {
-        setIsLoading(false);
+        setIsLoading(false)
       })
       .catch((error) => {
         setIsLoading(false);
@@ -51,10 +51,8 @@ function UserPanel() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!isLoading && user) {
-      if (user.role !== "user") {
-        navigate("/");
-      }
+    if (!isLoading && user && user.role !== "user") {
+      navigate("/");
     }
     setIsLoading(false);
   }, [isLoading, user, navigate]);

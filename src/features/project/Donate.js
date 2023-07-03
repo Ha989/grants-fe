@@ -10,13 +10,13 @@ import CloseIcon from "@mui/icons-material/Close";
 import Typography from "@mui/material/Typography";
 import { Box, TextField } from "@mui/material";
 import { useState } from "react";
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import PayPalButton from "./PayPalButton";
 import { useNavigate } from "react-router-dom";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialog-paper": {
-    height: "500px", 
+    height: "550px",
   },
   "& .MuiDialogContent-root": {
     padding: theme.spacing(2),
@@ -55,17 +55,19 @@ BootstrapDialogTitle.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 
+
 function Donate({ project, userId }) {
   const [open, setOpen] = React.useState(false);
   const [amount, setAmount] = useState(0);
   const navigate = useNavigate();
-
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
+    setAmount(0)
   };
+
 
   const handleOnChange = (e) => {
     const value = e.target.value;
@@ -74,22 +76,22 @@ function Donate({ project, userId }) {
 
   const handleDonate = () => {
     if (!userId) {
-      navigate("/auth/login")
+      navigate("/auth/login");
     }
-  }
+  };
+
 
   return (
     <div>
       <Box onClick={handleClickOpen}>
-      <Button
-        size="large"
-        variant="contained"
-        fullWidth
-        onClick={handleDonate}
-        
-      >
-        DONATE
-      </Button>
+        <Button
+          size="large"
+          variant="contained"
+          fullWidth
+          onClick={handleDonate}
+        >
+          DONATE
+        </Button>
       </Box>
       <BootstrapDialog
         onClose={handleClose}
@@ -104,41 +106,53 @@ function Donate({ project, userId }) {
         >
           DONATION PAYMENT
         </BootstrapDialogTitle>
-        <DialogContent >
+        <DialogContent>
           <Typography gutterBottom textAlign="center" mb={10}>
             Please input the amount you want to donate then click the payment
             button when it appear
           </Typography>
           <Box mb={5}>
-          <TextField
+            <TextField
               fullWidth
+              name="amount"
               id="standard-number"
               label="Amount must be greater than 0$"
               type="number"
               InputLabelProps={{
                 shrink: true,
               }}
-              variant="standard"
-              // value={amount}
-              onChange={handleOnChange}
               helperText="0.00$"
+              onChange={handleOnChange}
             />
-            </Box>
-        </DialogContent>
-        <Box padding={3}>
+          </Box>
+          <Box mt={10}>
+          {amount ? (
+            amount > 0 && (
+              <PayPalScriptProvider
+                options={{
+                  clientId: `${project?.clientID}`,
+                }}
+                fullWidth
+              >
+                <PayPalButton
+                  amount={amount}
+                  projectId={project._id}
+                  userId={userId}
+                />
+              </PayPalScriptProvider>
+            )
+          ) : (
             <PayPalScriptProvider
-              options={{
-                clientId: `${project?.clientID}`,
-              }}
-            >
-              <PayPalButton
-                amount={amount}
-                userId={userId}
-                projectId={project._id}
-                project={project}
-              />
-            </PayPalScriptProvider>
-            </Box>
+            options={{
+              clientId: `${project?.clientID}`,
+            }}
+            style={{ layout: "horizontal" }}
+          >
+             <PayPalButtons disabled/>
+          </PayPalScriptProvider>
+          )}
+          </Box>
+        </DialogContent>
       </BootstrapDialog>
     </div>
   );

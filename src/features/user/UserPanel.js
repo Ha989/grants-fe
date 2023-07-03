@@ -10,6 +10,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "./userSlice";
 import { useNavigate } from "react-router-dom";
+import { LoadingButton } from "@mui/lab";
 
 const TabWrapperStyle = styled("div")(({ theme }) => ({
   display: "flex",
@@ -33,7 +34,6 @@ function UserPanel() {
   const user = useSelector((state) => state.user.user);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-  console.log("user", user)
 
   const handleChangeTab = (newValue) => {
     setCurrentTab(newValue);
@@ -49,15 +49,16 @@ function UserPanel() {
         console.error("Error fetching user:", error);
       });
   }, [dispatch]);
-  
+
   useEffect(() => {
-    if (!isLoading && user && user.role !== "user") {
-      navigate("/");
+    if (!isLoading && user) {
+      if (user.role !== "user") {
+        navigate("/");
+      }
     }
-  }, [navigate, user, isLoading]);
-  
-  
-  
+    setIsLoading(false);
+  }, [isLoading, user, navigate]);
+
   const USER_TAB = [
     {
       value: "donations",
@@ -104,10 +105,16 @@ function UserPanel() {
             ))}
           </Tabs>
         </TabWrapperStyle>
-        {USER_TAB.map((tab) => {
-          const isMatched = tab.value === currentTab;
-          return isMatched && <Box key={tab.value}>{tab.component}</Box>;
-        })}
+        {isLoading ? (
+          <LoadingButton />
+        ) : (
+          <>
+            {USER_TAB.map((tab) => {
+              const isMatched = tab.value === currentTab;
+              return isMatched && <Box key={tab.value}>{tab.component}</Box>;
+            })}
+          </>
+        )}
       </Box>
     </Stack>
   );

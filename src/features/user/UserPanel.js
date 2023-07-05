@@ -10,7 +10,6 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser } from "./userSlice";
 import { useNavigate } from "react-router-dom";
-import { LoadingButton } from "@mui/lab";
 
 const TabWrapperStyle = styled("div")(({ theme }) => ({
   display: "flex",
@@ -42,7 +41,7 @@ function UserPanel() {
   useEffect(() => {
     dispatch(getUser())
       .then(() => {
-        setIsLoading(false)
+        setIsLoading(false);
       })
       .catch((error) => {
         setIsLoading(false);
@@ -54,7 +53,6 @@ function UserPanel() {
     if (!isLoading && user && user.role !== "user") {
       navigate("/");
     }
-    setIsLoading(false);
   }, [isLoading, user, navigate]);
 
   const USER_TAB = [
@@ -103,16 +101,10 @@ function UserPanel() {
             ))}
           </Tabs>
         </TabWrapperStyle>
-        {isLoading ? (
-          <LoadingButton />
-        ) : (
-          <>
-            {USER_TAB.map((tab) => {
-              const isMatched = tab.value === currentTab;
-              return isMatched && <Box key={tab.value}>{tab.component}</Box>;
-            })}
-          </>
-        )}
+        {USER_TAB.map((tab) => {
+          const isMatched = tab.value === currentTab;
+          return isMatched && <Box key={tab.value}>{tab.component}</Box>;
+        })}
       </Box>
     </Stack>
   );
